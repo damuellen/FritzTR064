@@ -16,44 +16,69 @@ class TR064 {
   let desc = "/tr64desc.xml"
   var services = [Service]() {
     didSet {
-      print(services)
+   //   print(services)
     }
   }
+  var lastSOAPResponse = [String: String]() {
+    didSet {
+         print(lastSOAPResponse)
+    }
+  }
+  
   init() {
     getServices()
   }
+  
   func getServices() {
     let requestURL = self.serviceURL + self.desc
     Alamofire.request(.GET, requestURL)
       .responseData { (_, _, data) -> Void in
         guard let xmlRaw = data.value, xml = try? AEXMLDocument.init(xmlData: xmlRaw) else { return }
-        self.services = xml.root["device"]["serviceList"].children.map { service in Service(element: service, manager: self) }.flatMap {$0}
+        self.services = xml.root["device"]["serviceList"].children.map { service in
+          Service(element: service, manager: self) }.flatMap {$0}
     }
   }
-  func sendMessage(action: Action, arguments: [String] = []) {
-    var soapMessageHeader = "<?xml version=\"1.0\"?>"
-    soapMessageHeader += "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\""
-    soapMessageHeader += "s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
-    soapMessageHeader += "<s:Body><u:\(action.name) xmlns:u=\"\(action.service.serviceType)\">"
+  
+  func createSOAPMessageBody(action: Action, arguments: [String] = []) -> NSData? {
+    let soapRequest = AEXMLDocument()
+    let envelope = soapRequest.addChild(name: "s:Envelope", attributes:
+      ["xmlns:s" : "http://schemas.xmlsoap.org/soap/envelope/",
+      "s:encodingStyle" : "http://schemas.xmlsoap.org/soap/encoding/"])
+    let body = envelope.addChild(name: "s:Body")
+    let actionBody = body.addChild(name: "u:\(action.name)", attributes:
+      ["xmlns:u": action.service.serviceType])
     for (argument, value) in zip(action.input.keys, arguments) {
-      soapMessageHeader += "<\(argument)>\(value)</\(argument)>"
+      actionBody.addChild(name: argument, value: value)
     }
-    soapMessageHeader += "</u:\(action.name)></s:Body></s:Envelope>"
-    let requestBody = soapMessageHeader.dataUsingEncoding(NSUTF8StringEncoding)!
+    return soapRequest.xmlString.dataUsingEncoding(NSUTF8StringEncoding)
+  }
+  
+  func createSOAPRequest(action: Action) -> NSMutableURLRequest {
     let request = NSMutableURLRequest(URL: NSURL(string: action.url)!)
     request.addValue("text/xml; charset=utf-8", forHTTPHeaderField:"Content-Type")
     request.addValue("\(action.service.serviceType)#\(action.name)", forHTTPHeaderField: "SOAPAction")
     request.HTTPMethod = "POST"
-    request.HTTPBody = requestBody
+    return request
+  }
+  
+  func sendSOAPRequest(action: Action, arguments: [String] = []) {
+    let request = createSOAPRequest(action)
+    request.HTTPBody = createSOAPMessageBody(action)
     let account = "admin"
     let pass = "6473"
+    var response = [String: String]()
     Alamofire.request(request)
       .authenticate(user: account, password: pass)
       .responseData { (_, _, data) -> Void in
         if let xmlRaw = data.value, xml = try? AEXMLDocument.init(xmlData: xmlRaw) {
-          print(xml.xmlString)
+          let soapResponse = xml.root["s:Body"]["u:\(action.name)Response"]
+          for key in action.output.keys {
+            if let value = soapResponse[key].value {
+              response[key] = value
+            }
+          }
+          self.lastSOAPResponse = response
         }
     }
-    
   }
 }

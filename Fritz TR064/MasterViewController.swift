@@ -50,7 +50,7 @@ class MasterViewController: UITableViewController {
         if let indexPath = self.tableView.indexPathForSelectedRow {
             let object = server.services[indexPath.section].actions[indexPath.row]
           if object.input.count == 0 {
-            server.sendMessage(object) }
+            server.sendSOAPRequest(object) }
             let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
             controller.detailItem = object
             controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
@@ -69,7 +69,14 @@ class MasterViewController: UITableViewController {
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return server.services[section].actions.count
   }
-
+  
+  override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let cell = tableView.dequeueReusableCellWithIdentifier("Cell")
+    let object = server.services[section]
+    cell?.textLabel!.text = object.serviceType
+    return cell
+  }
+  
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 
