@@ -8,42 +8,47 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UITableViewController {
 
-
-  @IBOutlet weak var textView: UITextView!
-
-  var detailItem: Action? {
-    didSet {
-        // Update the view.
-        self.configureView()
-    }
+  var response = [String]()
+  
+  func sendAction(detailItem: Action) {
+    detailItem.service.manager.sendSOAPRequest(detailItem, arguments: [], block: { responseDict in
+      self.response = responseDict.values.flatMap {$0}
+      self.tableView.reloadData()
+    })
   }
-
-  func configureView() {
-    // Update the user interface for the detail item.
-    if let detail = self.detailItem {
-        if let textView = self.textView {
-          var text = "Action Output\n"
-          text += detail.output.keys.reduce("", combine: { $0 + "\n" + $1})
-          text += "\nAction Input\n"
-          text += detail.input.keys.reduce("", combine: { $0 + "\n" + $1})
-          textView.text = text
-        }
-    }
-  }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
-    self.configureView()
   }
 
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
+  override func viewWillAppear(animated: Bool) {
+    self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
+    super.viewWillAppear(animated)
   }
 
+  // MARK: - Table View
+  
+  override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    return 1
+  }
+  
+  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return (self.response.count)
+  }
+  
+  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    let object = self.response[indexPath.row]
+    cell.textLabel!.text = object
+    return cell
+  }
+  
+  override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    // Return false if you do not want the specified item to be editable.
+    return false
+  }
 
 }
 
