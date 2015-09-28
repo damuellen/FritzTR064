@@ -10,29 +10,32 @@ import Foundation
 import Alamofire
 import UIKit
 
+protocol TR064ServiceDelegate {
+  func refresh()
+}
+
 class TR064 {
-  var responder: MasterViewController?
+  
+  static let sharedInstance = TR064()
+  
+  var serviceDelegate: TR064ServiceDelegate?
   let serviceURL = "http://192.168.178.1:49000"
   let desc = "/tr64desc.xml"
   var services = [Service]() {
     didSet {
-   //   print(services)
-    }
+      services.forEach { $0.getActions() }
+      }
   }
-  var lastSOAPResponse = [String: String]() {
-    didSet {
-         print(lastSOAPResponse)
-    }
-  }
-  
+
   init() {
-    getServices()
+      getServices()
   }
   
   func getServices() {
     let requestURL = self.serviceURL + self.desc
     Alamofire.request(.GET, requestURL)
-      .responseData { (_, _, data) -> Void in
+      .responseData { (_, response, data) -> Void in
+        guard response?.statusCode == 200 else { return }
         guard let xmlRaw = data.value, xml = try? AEXMLDocument.init(xmlData: xmlRaw) else { return }
         self.services = xml.root["device"]["serviceList"].children.map { service in
           Service(element: service, manager: self) }.flatMap {$0}
@@ -61,24 +64,31 @@ class TR064 {
     return request
   }
   
-  func sendSOAPRequest(action: Action, arguments: [String] = []) {
+  func sendSOAPRequest(action: Action, arguments: [String] = [], block: ([String:String])->()) {
     let request = createSOAPRequest(action)
     request.HTTPBody = createSOAPMessageBody(action)
     let account = "admin"
     let pass = "6473"
-    var response = [String: String]()
     Alamofire.request(request)
       .authenticate(user: account, password: pass)
       .responseData { (_, _, data) -> Void in
-        if let xmlRaw = data.value, xml = try? AEXMLDocument.init(xmlData: xmlRaw) {
-          let soapResponse = xml.root["s:Body"]["u:\(action.name)Response"]
-          for key in action.output.keys {
-            if let value = soapResponse[key].value {
-              response[key] = value
-            }
-          }
-          self.lastSOAPResponse = response
+        if data.isSuccess {
+        guard let xmlRaw = data.value, xml = try? AEXMLDocument.init(xmlData: xmlRaw) else { return }
+        let responseDict = self.handleResponseForAction(xml, action: action)
+        block(responseDict)
         }
     }
   }
+ 
+  func handleResponseForAction(response: AEXMLDocument, action: Action) -> [String:String] {
+    var result = [String: String]()
+    let soapResponse = response.root["s:Body"]["u:\(action.name)Response"]
+    for key in action.output.keys {
+      if let value = soapResponse[key].value {
+        result[key] = value
+      }
+    }
+    return result
+  }
+  
 }
