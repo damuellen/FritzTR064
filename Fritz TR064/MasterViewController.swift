@@ -8,28 +8,26 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController {
+class MasterViewController: UITableViewController, TR064ServiceDelegate {
 
   var detailViewController: DetailViewController? = nil
   var objects: [Action] {
-    return server.services.map { $0.actions }.flatMap {$0}
+    return TR064.sharedInstance.services.map { $0.actions }.flatMap {$0}
   }
-  var server = TR064()
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
-       server.responder = self
-    
-    // Do any additional setup after loading the view, typically from a nib.
-    let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "updateTable")
-    self.navigationItem.rightBarButtonItem = addButton
+    TR064.sharedInstance.serviceDelegate = self
+    //Do any additional setup after loading the view, typically from a nib.
+    //let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "updateTable")
+    //self.navigationItem.rightBarButtonItem = addButton
     if let split = self.splitViewController {
         let controllers = split.viewControllers
         self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
     }
   }
 
-  func updateTable() {
+  func refresh() {
       self.tableView.reloadData()
   }
   
@@ -38,21 +36,14 @@ class MasterViewController: UITableViewController {
     super.viewWillAppear(animated)
   }
 
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-
   // MARK: - Segues
 
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "showDetail" {
         if let indexPath = self.tableView.indexPathForSelectedRow {
-            let object = server.services[indexPath.section].actions[indexPath.row]
-          if object.input.count == 0 {
-            server.sendSOAPRequest(object) }
+            let action = TR064.sharedInstance.services[indexPath.section].actions[indexPath.row]
             let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
-            controller.detailItem = object
+            controller.sendAction(action)
             controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
             controller.navigationItem.leftItemsSupplementBackButton = true
         }
@@ -62,26 +53,25 @@ class MasterViewController: UITableViewController {
   // MARK: - Table View
 
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    
-    return server.services.count
+    return TR064.sharedInstance.services.count
   }
 
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return server.services[section].actions.count
+    return TR064.sharedInstance.services[section].actions.count
   }
   
   override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let cell = tableView.dequeueReusableCellWithIdentifier("Cell")
-    let object = server.services[section]
-    cell?.textLabel!.text = object.serviceType
+    let cell = tableView.dequeueReusableCellWithIdentifier("Section")
+    let object = TR064.sharedInstance.services[section]
+    cell?.textLabel!.text = object.serviceType.stringByReplacingOccurrencesOfString("urn:dslforum-org:service:", withString: "")
     return cell
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 
-    let object = server.services[indexPath.section].actions[indexPath.row]
-    cell.textLabel!.text = object.name
+    let object = TR064.sharedInstance.services[indexPath.section].actions[indexPath.row]
+    cell.textLabel!.text = object.name.stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
     return cell
   }
 
@@ -89,7 +79,5 @@ class MasterViewController: UITableViewController {
     // Return false if you do not want the specified item to be editable.
     return false
   }
-
-
+  
 }
-
