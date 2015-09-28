@@ -16,6 +16,7 @@ struct Action {
   var name: String
   var input = [String: StateVariable]()
   var output = [String: StateVariable]()
+  var needsInput = false
   init?(element: AEXMLElement, stateVariables: [StateVariable], service: Service) {
     self.service = service
     guard let value = element["name"].value else { return nil }
@@ -24,8 +25,10 @@ struct Action {
       let stateVariable = stateVariables.lazy.filter { argument["relatedStateVariable"].value == $0.name }.first!
       switch argument["direction"].value {
       case "in"?:
+        self.needsInput = true
         self.input[argument["name"].value!] = stateVariable
       case "out"?:
+        print(argument["name"].value!)
         self.output[argument["name"].value!] = stateVariable
       default:
         return
