@@ -82,6 +82,7 @@ class TR064 {
  
   func handleResponseForAction(response: AEXMLDocument, action: Action) -> [String:String] {
     var result = [String: String]()
+    print(response.xmlString)
     let soapResponse = response.root["s:Body"]["u:\(action.name)Response"]
     for key in action.output.keys {
       if let value = soapResponse[key].value {
