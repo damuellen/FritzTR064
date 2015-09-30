@@ -21,21 +21,25 @@ class Service {
       self.init(serviceType: serviceType, controlURL: controlURL, SCPDURL: SCPDURL, manager: manager)
     } else { return nil }
   }
+  
   init(serviceType: String, controlURL: String, SCPDURL: String, manager: TR064) {
     self.serviceType = serviceType
     self.controlURL = controlURL
     self.SCPDURL = SCPDURL
     self.manager = manager
   }
-  func getActions(){
-    let requestURL = self.manager.serviceURL + self.SCPDURL
-    Alamofire.request(.GET, requestURL)
-      .responseData { (_, _, data) -> Void in
-        if let xmlRaw = data.value, xml = try? AEXMLDocument.init(xmlData: xmlRaw) {
-          let stateVariables = xml.root["serviceStateTable"].children.map {StateVariable(element: $0)}.flatMap {$0}
-          self.actions = xml.root["actionList"].children.map { Action(element: $0, stateVariables: stateVariables, service: self) }.flatMap {$0}
-          self.manager.serviceDelegate?.refresh()
-        }
-    }
+
+  class func discoverServices(discription: AEXMLDocument) {
+    let internetGatewayDevice = discription.root["device"],
+    LANDevice = discription.root["device"]["deviceList"].children[0],
+    WANDevice = discription.root["device"]["deviceList"].children[1]
+    
+    var serviceList = internetGatewayDevice["serviceList"].children
+    serviceList += LANDevice["serviceList"].children
+    serviceList += WANDevice["serviceList"].children
+    
+    TR064.sharedInstance.services = serviceList.map { service in
+      Service(element: service, manager: TR064.sharedInstance) }.flatMap {$0}
   }
 }
+

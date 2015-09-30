@@ -17,10 +17,20 @@ struct Action {
   var input = [String: StateVariable]()
   var output = [String: StateVariable]()
   var needsInput = false
+  
+  let obsoleteActions:[String:[String]] =
+  ["urn:dslforum-org:service:X_AVM-DE_OnTel:1":["GetInfo", "SetEnable", "SetConfig"],
+  "urn:X_VoIP-com:serviceId:X_VoIP1:1":["X_AVM-DE_GetClient","X_AVM-DE_SetClient"]]
+  
   init?(element: AEXMLElement, stateVariables: [StateVariable], service: Service) {
-    self.service = service
     guard let value = element["name"].value else { return nil }
+    if let obsoleteActionsOfService = obsoleteActions[service.serviceType] {
+      if obsoleteActionsOfService.contains(value) {
+        return nil
+      }
+    }
     self.name = value
+    self.service = service
     element["argumentList"].children.forEach { argument in
       let stateVariable = stateVariables.lazy.filter { argument["relatedStateVariable"].value == $0.name }.first!
       switch argument["direction"].value {
@@ -28,7 +38,6 @@ struct Action {
         self.needsInput = true
         self.input[argument["name"].value!] = stateVariable
       case "out"?:
-        print(argument["name"].value!)
         self.output[argument["name"].value!] = stateVariable
       default:
         return
@@ -62,3 +71,10 @@ struct StateVariable {
     }
   }
 }
+
+struct ObsoleteActions {
+ // var list = [String:[String]]()
+  let list:[String:[String]] = ["urn:dslforum-org:service:X_AVM-DE_OnTel:1":["GetInfo", "SetConfig"]]
+}
+
+

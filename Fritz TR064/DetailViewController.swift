@@ -25,8 +25,9 @@ class DetailViewController: UITableViewController, SOAPDelegate {
   func sendCurrentAction() {
     if currentAction?.needsInput == true { return }
     guard let action = self.currentAction else { return }
-    action.service.manager.sendSOAPRequest(action, arguments: [], block: { responseDict in
-      self.response = responseDict.values.flatMap {$0}
+    action.service.manager.sendSOAPRequest(action, arguments: [], block: {
+      let response = TR064.handleResponse(action)
+      self.response = response.values.flatMap {$0}
       self.navigationItem.title = "Response"
       self.tableView.reloadData()
       self.currentAction = nil
@@ -74,6 +75,8 @@ class DetailViewController: UITableViewController, SOAPDelegate {
     cell.textLabel?.numberOfLines = 0
     cell.textLabel?.lineBreakMode = .ByWordWrapping
     cell.textLabel!.text = object
+    cell.detailTextLabel?.text = currentAction?.output.keys.map {$0}[indexPath.row]
+    
     return cell
   }
 

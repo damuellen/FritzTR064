@@ -19,6 +19,7 @@
 		65C825851BB76079005DF551 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C825841BB76079005DF551 /* Action.swift */; };
 		65C8258B1BB7627D005DF551 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C8258A1BB7627D005DF551 /* Alamofire.framework */; };
 		65C8258D1BB762F5005DF551 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 65C8258A1BB7627D005DF551 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E9F9521BBC4AE600DDA8E7 /* Call.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +50,7 @@
 		65C825821BB76048005DF551 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		65C825841BB76079005DF551 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		65C8258A1BB7627D005DF551 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		65E9F9521BBC4AE600DDA8E7 /* Call.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 				65C825781BB75E02005DF551 /* Info.plist */,
 				65C8257E1BB75E86005DF551 /* AEXML.swift */,
 				65C825801BB76010005DF551 /* TR064.swift */,
+				65E9F9521BBC4AE600DDA8E7 /* Call.swift */,
 				65C825821BB76048005DF551 /* Service.swift */,
 				65C825841BB76079005DF551 /* Action.swift */,
 			);
@@ -170,6 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65C8256F1BB75E02005DF551 /* DetailViewController.swift in Sources */,
+				65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */,
 				65C8257F1BB75E86005DF551 /* AEXML.swift in Sources */,
 				65C825811BB76010005DF551 /* TR064.swift in Sources */,
 				65C8256D1BB75E02005DF551 /* MasterViewController.swift in Sources */,
