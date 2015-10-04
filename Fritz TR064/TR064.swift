@@ -25,7 +25,15 @@ class TR064 {
   
   var pendingRequest = false
   
-  var lastResponseXML: AEXMLDocument? {
+  private var lastResponseXML: AEXMLDocument? {
+    didSet {
+      if lastResponseXML != nil {
+        print(lastResponseXML?.xmlString)
+      }
+    }
+  }
+  
+  private var lastXMLFromURLinResponseXML: AEXMLDocument? {
     didSet {
       if lastResponseXML != nil {
         print(lastResponseXML?.xmlString)
@@ -71,6 +79,7 @@ class TR064 {
     for (argument, value) in zip(action.input.keys, arguments) {
       actionBody.addChild(name: argument, value: value)
     }
+    print("SEND",soapRequest.xmlString)
     return soapRequest.xmlString.dataUsingEncoding(NSUTF8StringEncoding)
   }
   
@@ -84,7 +93,7 @@ class TR064 {
   
   func sendSOAPRequest(action: Action, arguments: [String] = [], block: ()->() ) {
     let request = createSOAPRequest(action)
-    request.HTTPBody = createSOAPMessageBody(action)
+    request.HTTPBody = createSOAPMessageBody(action, arguments: arguments)
     let account = "admin"
     let pass = "6473"
     Alamofire.request(request)
@@ -102,10 +111,15 @@ class TR064 {
   }
   
   func checkSOAPResponseForURL(action: Action) -> String? {
+    var URL: String?
     guard let soapResponse = self.lastResponseXML?.root["s:Body"]["u:\(action.name)Response"] else { return nil }
-    guard let possibleURL = soapResponse.children[0].value else { return nil }
-    guard possibleURL.containsString("http") else { return nil }
-    return possibleURL
+    if soapResponse.name == "AEXMLError" { return nil }
+    for possibleURL in soapResponse.children where possibleURL.value != nil {
+      if possibleURL.value!.containsString("http") {
+        URL = possibleURL.value!
+      }
+    }
+    return URL
   }
   
   func getActions(service: Service){
@@ -125,31 +139,33 @@ class TR064 {
     Alamofire.request(.GET, requestURL)
       .responseData { (_, _, data) -> Void in
         if data.isSuccess {
-          self.lastResponseXML = try? AEXMLDocument.init(xmlData: data.value!)
+          self.lastXMLFromURLinResponseXML = try? AEXMLDocument.init(xmlData: data.value!)
           block()
         }
     }
   }
   
-  class func handleResponse(action: Action) -> [String:String] {
+  class func returnLastResponseForAction(action: Action) -> SOAPBody {
     let XML = TR064.sharedInstance.lastResponseXML
-    var result = [String: String]()
-    if let callsXML = XML?.root["Call"].all {
+    let XML2 = TR064.sharedInstance.lastXMLFromURLinResponseXML
+    var result = [String:[String]]()
+    if let callsXML = XML2?.root["Call"].all {
+      print("dfgdfgfdgdfgdf")
       let calls = callsXML.map { Call.CallFromXML($0) }
-      calls.forEach { result[String($0.id)] = $0.name }
+      calls.forEach { result[String($0.id)] = [$0.name, $0.called, $0.caller]}
+      TR064.sharedInstance.lastXMLFromURLinResponseXML = nil
     } else {
       if let soapResponse = XML?.root["s:Body"]["u:\(action.name)Response"] {
         for key in action.output.keys {
           if let value = soapResponse[key].value {
-            result[key] = value
+            result[key] = [value]
           }
         }
       }
     }
     return result
   }
-  
 }
 
-
+typealias SOAPBody = [String:[String]]
 

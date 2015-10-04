@@ -28,7 +28,7 @@ class Service {
     self.SCPDURL = SCPDURL
     self.manager = manager
   }
-
+  
   class func discoverServices(discription: AEXMLDocument) {
     let internetGatewayDevice = discription.root["device"],
     LANDevice = discription.root["device"]["deviceList"].children[0],
@@ -42,4 +42,3 @@ class Service {
       Service(element: service, manager: TR064.sharedInstance) }.flatMap {$0}
   }
 }
-

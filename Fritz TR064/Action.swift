@@ -8,19 +8,21 @@
 
 import Foundation
 
+typealias Name = String
+
+let obsoleteActions:[String:[String]] =
+["urn:dslforum-org:service:X_AVM-DE_OnTel:1":["GetInfo", "SetEnable", "SetConfig"],
+  "urn:X_VoIP-com:serviceId:X_VoIP1:1":["X_AVM-DE_GetClient","X_AVM-DE_SetClient"]]
+
 struct Action {
   let service: Service
   var url: String {
     return service.manager.serviceURL + service.controlURL
   }
   var name: String
-  var input = [String: StateVariable]()
-  var output = [String: StateVariable]()
+  var input = [Name: StateVariable]()
+  var output = [Name: StateVariable]()
   var needsInput = false
-  
-  let obsoleteActions:[String:[String]] =
-  ["urn:dslforum-org:service:X_AVM-DE_OnTel:1":["GetInfo", "SetEnable", "SetConfig"],
-  "urn:X_VoIP-com:serviceId:X_VoIP1:1":["X_AVM-DE_GetClient","X_AVM-DE_SetClient"]]
   
   init?(element: AEXMLElement, stateVariables: [StateVariable], service: Service) {
     guard let value = element["name"].value else { return nil }
@@ -44,6 +46,7 @@ struct Action {
       }
     }
   }
+  
 }
 
 struct StateVariable {
@@ -71,10 +74,4 @@ struct StateVariable {
     }
   }
 }
-
-struct ObsoleteActions {
- // var list = [String:[String]]()
-  let list:[String:[String]] = ["urn:dslforum-org:service:X_AVM-DE_OnTel:1":["GetInfo", "SetConfig"]]
-}
-
 

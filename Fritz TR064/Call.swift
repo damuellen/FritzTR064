@@ -28,12 +28,7 @@ enum CallType: Int {
 struct Call {
   let id: Int
   let type: CallType
-  let called: String
-  let caller: String
-  let name: String
-  let numbertype: String
-  let device: String
-  let port: String
+  let called: String, caller: String, name: String, numbertype: String, device: String, port: String
   let date: NSDate?
   let duration: NSTimeInterval
   let pathURL: String?
@@ -98,38 +93,34 @@ struct Call {
     let content = call.children
     for value in content where value.value != nil {
       
-    switch value.name {
+      switch value.name {
       case "Id":
-    id = Int(value.value!)!
+        id = Int(value.value!)!
       case "Called":
-    called = value.value!
+        called = value.value!
       case "Caller":
-    caller = value.value!
+        caller = value.value!
       case "Name":
-    name = value.value!
-    case "Numbertype":
-    numbertype = value.value!
-    case "Device":
-    device = value.value!
-    case "Port":
-    port = value.value!
-    case "Type":
-    type = Int(value.value!)!
-    case "Date":
-    date = value.value!
-    case "Duration":
-    duration = value.value!
-    case "Path":
-    pathURL = value.value
-    default:
-      break
-    }
+        name = value.value!
+      case "Numbertype":
+        numbertype = value.value!
+      case "Device":
+        device = value.value!
+      case "Port":
+        port = value.value!
+      case "Type":
+        type = Int(value.value!)!
+      case "Date":
+        date = value.value!
+      case "Duration":
+        duration = value.value!
+      case "Path":
+        pathURL = value.value
+      default:
+        break
+      }
     }
     return Call(id,type,called,caller,name,numbertype,device,port,date,duration,pathURL)
   }
-  
-  
-  
+
 }
-
-

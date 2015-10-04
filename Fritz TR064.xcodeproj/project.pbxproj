@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		655EBB591BC050720002B217 /* TableViewInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655EBB581BC050720002B217 /* TableViewInputCell.swift */; };
 		65C8256B1BB75E02005DF551 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256A1BB75E02005DF551 /* AppDelegate.swift */; };
 		65C8256D1BB75E02005DF551 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256C1BB75E02005DF551 /* MasterViewController.swift */; };
 		65C8256F1BB75E02005DF551 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256E1BB75E02005DF551 /* DetailViewController.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		655EBB581BC050720002B217 /* TableViewInputCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewInputCell.swift; path = ../TableViewInputCell.swift; sourceTree = "<group>"; };
 		65C825671BB75E02005DF551 /* Fritz TR064.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fritz TR064.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65C8256A1BB75E02005DF551 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65C8256C1BB75E02005DF551 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		65C825691BB75E02005DF551 /* Fritz TR064 */ = {
 			isa = PBXGroup;
 			children = (
+				655EBB581BC050720002B217 /* TableViewInputCell.swift */,
 				65C8256A1BB75E02005DF551 /* AppDelegate.swift */,
 				65C8256C1BB75E02005DF551 /* MasterViewController.swift */,
 				65C8256E1BB75E02005DF551 /* DetailViewController.swift */,
@@ -178,6 +181,7 @@
 				65C825811BB76010005DF551 /* TR064.swift in Sources */,
 				65C8256D1BB75E02005DF551 /* MasterViewController.swift in Sources */,
 				65C825851BB76079005DF551 /* Action.swift in Sources */,
+				655EBB591BC050720002B217 /* TableViewInputCell.swift in Sources */,
 				65C8256B1BB75E02005DF551 /* AppDelegate.swift in Sources */,
 				65C825831BB76048005DF551 /* Service.swift in Sources */,
 			);
