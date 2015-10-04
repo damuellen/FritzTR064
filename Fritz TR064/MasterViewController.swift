@@ -77,7 +77,6 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
-    print(segue)
     var action: Action
     if !resultSearchController.active {
       action = self.filteredData[indexPath.section].actions[indexPath.row]

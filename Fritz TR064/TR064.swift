@@ -28,7 +28,7 @@ class TR064 {
   private var lastResponseXML: AEXMLDocument? {
     didSet {
       if lastResponseXML != nil {
-        print(lastResponseXML?.xmlString)
+        print("lastResponseXML", lastResponseXML?.xmlString)
       }
     }
   }
@@ -36,7 +36,7 @@ class TR064 {
   private var lastXMLFromURLinResponseXML: AEXMLDocument? {
     didSet {
       if lastResponseXML != nil {
-        print(lastResponseXML?.xmlString)
+        print("lastXMLFromURLinResponseXML", lastResponseXML?.xmlString)
       }
     }
   }
@@ -95,7 +95,7 @@ class TR064 {
     let request = createSOAPRequest(action)
     request.HTTPBody = createSOAPMessageBody(action, arguments: arguments)
     let account = "admin"
-    let pass = "6473"
+    let pass = ""
     Alamofire.request(request)
       .authenticate(user: account, password: pass)
       .responseData { (_, _, data) -> Void in
@@ -150,7 +150,6 @@ class TR064 {
     let XML2 = TR064.sharedInstance.lastXMLFromURLinResponseXML
     var result = [String:[String]]()
     if let callsXML = XML2?.root["Call"].all {
-      print("dfgdfgfdgdfgdf")
       let calls = callsXML.map { Call.CallFromXML($0) }
       calls.forEach { result[String($0.id)] = [$0.name, $0.called, $0.caller]}
       TR064.sharedInstance.lastXMLFromURLinResponseXML = nil

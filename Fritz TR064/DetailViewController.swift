@@ -30,11 +30,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDele
   }
   
   var actionOutput: SOAPBody!
-  var arguments = [String]() {
-    didSet {
-      print(arguments.count)
-    }
-  }
+  var arguments = [String]()
   
   func sendCurrentAction() {
     guard let action = self.currentTransmission else { return }
