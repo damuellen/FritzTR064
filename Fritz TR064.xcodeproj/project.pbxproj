@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		65337A3E1BC16526009925E5 /* CallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3D1BC16526009925E5 /* CallCell.swift */; };
 		65337A401BC166BB009925E5 /* CallListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */; };
+		65337A421BC2E3C4009925E5 /* TR064Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A411BC2E3C4009925E5 /* TR064Manager.swift */; };
 		655EBB591BC050720002B217 /* TableViewInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655EBB581BC050720002B217 /* TableViewInputCell.swift */; };
 		655F61FE1BC12C9000D723EE /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FD1BC12C9000D723EE /* Contact.swift */; };
 		655F62001BC139A900D723EE /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FF1BC139A900D723EE /* WebViewController.swift */; };
@@ -46,6 +47,7 @@
 /* Begin PBXFileReference section */
 		65337A3D1BC16526009925E5 /* CallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallCell.swift; sourceTree = "<group>"; };
 		65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallListTableViewController.swift; sourceTree = "<group>"; };
+		65337A411BC2E3C4009925E5 /* TR064Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TR064Manager.swift; sourceTree = "<group>"; };
 		655EBB581BC050720002B217 /* TableViewInputCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewInputCell.swift; path = ../TableViewInputCell.swift; sourceTree = "<group>"; };
 		655F61FD1BC12C9000D723EE /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		655F61FF1BC139A900D723EE /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				65C825751BB75E02005DF551 /* LaunchScreen.storyboard */,
 				65C825781BB75E02005DF551 /* Info.plist */,
 				65C8257E1BB75E86005DF551 /* AEXML.swift */,
+				65337A411BC2E3C4009925E5 /* TR064Manager.swift */,
 				65C825801BB76010005DF551 /* TR064.swift */,
 				655F61FD1BC12C9000D723EE /* Contact.swift */,
 				65E9F9521BBC4AE600DDA8E7 /* Call.swift */,
@@ -201,6 +204,7 @@
 				65C825811BB76010005DF551 /* TR064.swift in Sources */,
 				65C8256D1BB75E02005DF551 /* MasterViewController.swift in Sources */,
 				65C005991BC1478100FDCFFA /* WebViewSegue.swift in Sources */,
+				65337A421BC2E3C4009925E5 /* TR064Manager.swift in Sources */,
 				65C825851BB76079005DF551 /* Action.swift in Sources */,
 				65337A3E1BC16526009925E5 /* CallCell.swift in Sources */,
 				65337A401BC166BB009925E5 /* CallListTableViewController.swift in Sources */,

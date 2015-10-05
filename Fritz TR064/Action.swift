@@ -6,8 +6,6 @@
 //  Copyright © 2015 Daniel Müllenborn. All rights reserved.
 //
 
-import Foundation
-
 typealias Name = String
 
 let obsoleteActions:[String:[String]] =
@@ -15,9 +13,10 @@ let obsoleteActions:[String:[String]] =
   "urn:X_VoIP-com:serviceId:X_VoIP1:1":["X_AVM-DE_GetClient","X_AVM-DE_SetClient"]]
 
 struct Action {
+  
   let service: Service
   var url: String {
-    return service.manager.serviceURL + service.controlURL
+    return TR064.serviceURL + service.controlURL
   }
   var name: String
   var input = [Name: StateVariable]()
@@ -73,5 +72,11 @@ struct StateVariable {
       self.type = "String"
     }
   }
+}
+
+extension Action: Equatable { }
+
+func ==(lhs: Action, rhs: Action) -> Bool {
+  return lhs.name == rhs.name
 }
 

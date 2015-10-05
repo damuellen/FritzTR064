@@ -15,8 +15,6 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate {
       self.tableView.reloadData()
     }
   }
-  var response: AEXMLDocument!
-  
   var action: Action!
   
   override func viewDidLoad() {
@@ -36,7 +34,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate {
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "showCallList" {
       let controller = (segue.destinationViewController as! CallListTableViewController)
-      controller.tableData = self.response.transformXMLtoCalls()
+      controller.tableData = TR064Manager.sharedInstance.lastResponse!.transformXMLtoCalls()
     }
   }
   
@@ -44,10 +42,9 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate {
   // MARK: - Table View
   
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    guard let URL = TR064.checkResponseForURL(self.response, action: self.action) else { return }
+    guard let URL = TR064.checkResponseForURL(TR064Manager.sharedInstance.lastResponse!, action: self.action) else { return }
     TR064.getXMLFromURL(URL, block: { XML in
       if URL.containsString("calllist") {
-      self.response = XML
         self.performSegueWithIdentifier("showCallList", sender: self) }
     })
   }

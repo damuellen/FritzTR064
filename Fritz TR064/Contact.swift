@@ -6,8 +6,6 @@
 //  Copyright © 2015 Daniel Müllenborn. All rights reserved.
 //
 
-import Foundation
-
 struct Number {
   let quickdial: String
   let prio: String
@@ -83,3 +81,11 @@ struct Contact {
   }
   */
 }
+
+extension Contact: Equatable { }
+
+func ==(lhs: Contact, rhs: Contact) -> Bool {
+  return lhs.uniqueid == rhs.uniqueid
+}
+
+

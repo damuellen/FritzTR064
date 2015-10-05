@@ -8,7 +8,28 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController, UISearchBarDelegate, UISearchDisplayDelegate, UISearchResultsUpdating, TR064ServiceDelegate {
+protocol TR064ResponseDelegate {
+  func refresh()
+}
+protocol TR064ServiceDelegate {
+  func refresh()
+}
+
+extension MasterViewController: TR064ServiceDelegate {
+  
+  func refresh() {
+    var result = [(service: Service, actions: [Action])]()
+    result = TR064Manager.sharedInstance.services.map { service in
+      (service: service, actions: TR064Manager.sharedInstance.actions.filter { $0.service == service })
+    }
+    self.tableData = result
+    self.filteredData = result
+    self.tableView.reloadData()
+  }
+  
+}
+
+class MasterViewController: UITableViewController, UISearchBarDelegate, UISearchDisplayDelegate, UISearchResultsUpdating  {
   
   var tableData = [(service: Service, actions: [Action])]()
   var filteredData = [(service: Service, actions: [Action])]()
@@ -17,7 +38,7 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    TR064.sharedInstance.serviceDelegate = self
+    TR064Manager.sharedInstance.delegate = self
     if let split = self.splitViewController {
       let controllers = split.viewControllers
       self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
@@ -56,13 +77,6 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
     return actions.filter { $0.service.serviceType.lowercaseString.containsString(filter.lowercaseString) }
   }
   
-  func refresh() {
-    var result = [(service: Service, actions: [Action])]()
-    result = TR064.sharedInstance.services.map { service in (service, service.actions) }
-    self.tableData = result
-    self.filteredData = result
-    self.tableView.reloadData()
-  }
   
   override func viewWillAppear(animated: Bool) {
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
@@ -87,7 +101,7 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
       controller.showOutputArguments()
     }
     if segue.identifier == "showInput" {
-       controller.showInputArguments()
+      controller.showInputArguments()
     }
     self.resultSearchController.dismissViewControllerAnimated(true, completion: {})
   }
@@ -111,7 +125,7 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
     let cell = tableView.dequeueReusableCellWithIdentifier("Section")
     cell?.backgroundColor = UIColor.blackColor()
     cell?.textLabel?.textColor = UIColor.whiteColor()
-    let object = TR064.sharedInstance.services[section]
+    let object = TR064Manager.sharedInstance.services[section]
     cell?.textLabel!.text = object.serviceType.stringByReplacingOccurrencesOfString("urn:dslforum-org:service:", withString: "")
     return cell
   }

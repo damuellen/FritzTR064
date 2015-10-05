@@ -15,16 +15,14 @@ protocol SOAPDelegate {
   var action: Action! { get set }
 }
 
-class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDelegate {
+class DetailViewController: UITableViewController, UITextFieldDelegate {
   
   var tableData = (input: [Argument](),output: [Argument]()) {
     didSet {
       self.tableView.reloadData()
     }
   }
-  
-  var response: AEXMLDocument!
-  
+
   var action: Action!
 
   var needsInput = false {
@@ -32,8 +30,6 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDele
       self.tableView.reloadData()
     }
   }
-
-  var actionOutput: SOAPBody!
   var arguments = [String]()
   
   func sendCurrentAction() {
@@ -42,8 +38,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDele
     if self.needsInput == true {
       guard self.tableData.input.count == self.arguments.count else { return }
     }
-   TR064.sendSOAPRequest(action, arguments: self.arguments, block: { XML in
-      self.response = XML
+   TR064.sendSOAPRequest(action, arguments: self.arguments, block: {
       self.performSegueWithIdentifier("showResponse", sender: self)
     })
   }
@@ -92,9 +87,8 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDele
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "showResponse" {
       let controller = ((segue.destinationViewController as! UINavigationController).topViewController as! XMLResponseViewController)
-      controller.tableData = TR064.convertActionResponse(self.response, action: self.action)
+      controller.tableData = TR064.convertActionResponse(TR064Manager.sharedInstance.lastResponse!, action: self.action)
       controller.action = self.action
-      controller.response = self.response
     }
   }
   

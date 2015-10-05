@@ -15,6 +15,7 @@ extension NSDateFormatter {
     return _DateFormatterSharedInstance
   }
 }
+
 enum CallType: Int {
   case incoming = 1
   case missed = 2
@@ -124,3 +125,11 @@ struct Call {
   }
 
 }
+
+extension Call: Equatable { }
+
+func ==(lhs: Call, rhs: Call) -> Bool {
+  return lhs.id == rhs.id
+}
+
+
