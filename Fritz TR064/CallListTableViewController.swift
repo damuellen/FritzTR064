@@ -53,8 +53,25 @@ class CallListTableViewController: UITableViewController, UITextFieldDelegate {
     cell.port.text = call.port
     cell.device.text = call.device
     let dateFormatter = NSDateFormatter.sharedInstance
+    dateFormatter.dateStyle = .ShortStyle
     cell.date.text = dateFormatter.stringFromDate(call.date!)
     cell.duration.text = "\(call.duration)"
+    switch call.type {
+    case .activeIncoming:
+      cell.backgroundColor = UIColor.redColor()
+    case .activeOutgoing:
+      cell.backgroundColor = UIColor.blueColor()
+    case .incoming:
+      cell.backgroundColor = UIColor.greenColor()
+    case .missed:
+      cell.backgroundColor = UIColor.grayColor()
+    case .outgoing:
+      cell.backgroundColor = UIColor.orangeColor()
+    case .rejectedIncoming:
+      cell.backgroundColor = UIColor.brownColor()
+    case .error:
+      cell.backgroundColor = UIColor.blackColor()
+    }
     return cell
   }
   
