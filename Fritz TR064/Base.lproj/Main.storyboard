@@ -304,7 +304,7 @@
             </objects>
             <point key="canvasLocation" x="109" y="-704"/>
         </scene>
-        <!--Call List Table View Controller-->
+        <!--Call List-->
         <scene sceneID="gts-eE-L3Y">
             <objects>
                 <tableViewController id="0vC-yw-nYe" customClass="CallListTableViewController" customModule="Fritz_TR064" customModuleProvider="target" sceneMemberID="viewController">
@@ -321,13 +321,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="caller" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2gf-Bs-zk1">
-                                            <rect key="frame" x="8" y="8" width="130" height="21"/>
+                                            <rect key="frame" x="8" y="8" width="145" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d8O-40-PbS">
-                                            <rect key="frame" x="8" y="37" width="130" height="21"/>
+                                            <rect key="frame" x="8" y="37" width="145" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -351,13 +351,13 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="called" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cN6-jB-1vG">
-                                            <rect key="frame" x="169" y="8" width="130" height="21"/>
+                                            <rect key="frame" x="163" y="8" width="145" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="device" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bJ5-l6-nGm">
-                                            <rect key="frame" x="169" y="37" width="130" height="21"/>
+                                            <rect key="frame" x="163" y="37" width="145" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -380,7 +380,7 @@
                             <outlet property="delegate" destination="0vC-yw-nYe" id="Q3L-6p-vAj"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="njq-Jw-1VU"/>
+                    <navigationItem key="navigationItem" title="Call List" id="njq-Jw-1VU"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7ky-ej-Cbl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
