@@ -33,8 +33,8 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate {
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "showCallList" {
-      let controller = (segue.destinationViewController as! CallListTableViewController)
-      controller.tableData = TR064Manager.sharedInstance.lastResponse!.transformXMLtoCalls()
+      let controller = ((segue.destinationViewController as! UINavigationController).topViewController as! CallListTableViewController)
+      controller.tableData = TR064Manager.sharedInstance.lastResponse!.transformXMLtoCalls().sort(<)
     }
   }
   
@@ -42,11 +42,10 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate {
   // MARK: - Table View
   
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    guard let URL = TR064.checkResponseForURL(TR064Manager.sharedInstance.lastResponse!, action: self.action) else { return }
-    TR064.getXMLFromURL(URL, block: { XML in
-      if URL.containsString("calllist") {
-        self.performSegueWithIdentifier("showCallList", sender: self) }
-    })
+    if let text = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text {
+      UIPasteboard.generalPasteboard().string = text }
+    guard let XML = TR064Manager.sharedInstance.lastResponse, URL = TR064.checkResponseForURL(XML, action: self.action) else { return }
+    TR064.getXMLFromURL(URL, block: { if URL.containsString("calllist") { self.performSegueWithIdentifier("showCallList", sender: self) } })
   }
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
