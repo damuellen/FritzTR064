@@ -7,7 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65337A3E1BC16526009925E5 /* CallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3D1BC16526009925E5 /* CallCell.swift */; };
+		65337A401BC166BB009925E5 /* CallListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */; };
 		655EBB591BC050720002B217 /* TableViewInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655EBB581BC050720002B217 /* TableViewInputCell.swift */; };
+		655F61FE1BC12C9000D723EE /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FD1BC12C9000D723EE /* Contact.swift */; };
+		655F62001BC139A900D723EE /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FF1BC139A900D723EE /* WebViewController.swift */; };
+		65C005991BC1478100FDCFFA /* WebViewSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C005981BC1478100FDCFFA /* WebViewSegue.swift */; };
+		65C0059B1BC14E3300FDCFFA /* XMLResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */; };
 		65C8256B1BB75E02005DF551 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256A1BB75E02005DF551 /* AppDelegate.swift */; };
 		65C8256D1BB75E02005DF551 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256C1BB75E02005DF551 /* MasterViewController.swift */; };
 		65C8256F1BB75E02005DF551 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256E1BB75E02005DF551 /* DetailViewController.swift */; };
@@ -38,7 +44,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		65337A3D1BC16526009925E5 /* CallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallCell.swift; sourceTree = "<group>"; };
+		65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallListTableViewController.swift; sourceTree = "<group>"; };
 		655EBB581BC050720002B217 /* TableViewInputCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewInputCell.swift; path = ../TableViewInputCell.swift; sourceTree = "<group>"; };
+		655F61FD1BC12C9000D723EE /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		655F61FF1BC139A900D723EE /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		65C005981BC1478100FDCFFA /* WebViewSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewSegue.swift; sourceTree = "<group>"; };
+		65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLResponseViewController.swift; sourceTree = "<group>"; };
 		65C825671BB75E02005DF551 /* Fritz TR064.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fritz TR064.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65C8256A1BB75E02005DF551 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65C8256C1BB75E02005DF551 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -87,19 +99,25 @@
 		65C825691BB75E02005DF551 /* Fritz TR064 */ = {
 			isa = PBXGroup;
 			children = (
-				655EBB581BC050720002B217 /* TableViewInputCell.swift */,
 				65C8256A1BB75E02005DF551 /* AppDelegate.swift */,
 				65C8256C1BB75E02005DF551 /* MasterViewController.swift */,
 				65C8256E1BB75E02005DF551 /* DetailViewController.swift */,
+				655EBB581BC050720002B217 /* TableViewInputCell.swift */,
+				65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */,
+				65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */,
 				65C825701BB75E02005DF551 /* Main.storyboard */,
 				65C825731BB75E02005DF551 /* Assets.xcassets */,
 				65C825751BB75E02005DF551 /* LaunchScreen.storyboard */,
 				65C825781BB75E02005DF551 /* Info.plist */,
 				65C8257E1BB75E86005DF551 /* AEXML.swift */,
 				65C825801BB76010005DF551 /* TR064.swift */,
+				655F61FD1BC12C9000D723EE /* Contact.swift */,
 				65E9F9521BBC4AE600DDA8E7 /* Call.swift */,
+				65337A3D1BC16526009925E5 /* CallCell.swift */,
 				65C825821BB76048005DF551 /* Service.swift */,
 				65C825841BB76079005DF551 /* Action.swift */,
+				65C005981BC1478100FDCFFA /* WebViewSegue.swift */,
+				655F61FF1BC139A900D723EE /* WebViewController.swift */,
 			);
 			path = "Fritz TR064";
 			sourceTree = "<group>";
@@ -177,12 +195,18 @@
 			files = (
 				65C8256F1BB75E02005DF551 /* DetailViewController.swift in Sources */,
 				65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */,
+				655F61FE1BC12C9000D723EE /* Contact.swift in Sources */,
 				65C8257F1BB75E86005DF551 /* AEXML.swift in Sources */,
+				655F62001BC139A900D723EE /* WebViewController.swift in Sources */,
 				65C825811BB76010005DF551 /* TR064.swift in Sources */,
 				65C8256D1BB75E02005DF551 /* MasterViewController.swift in Sources */,
+				65C005991BC1478100FDCFFA /* WebViewSegue.swift in Sources */,
 				65C825851BB76079005DF551 /* Action.swift in Sources */,
+				65337A3E1BC16526009925E5 /* CallCell.swift in Sources */,
+				65337A401BC166BB009925E5 /* CallListTableViewController.swift in Sources */,
 				655EBB591BC050720002B217 /* TableViewInputCell.swift in Sources */,
 				65C8256B1BB75E02005DF551 /* AppDelegate.swift in Sources */,
+				65C0059B1BC14E3300FDCFFA /* XMLResponseViewController.swift in Sources */,
 				65C825831BB76048005DF551 /* Service.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

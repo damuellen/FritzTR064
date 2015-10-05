@@ -22,36 +22,18 @@ class TR064 {
   
   let serviceURL = "http://192.168.178.1:49000"
   let descURL = "/tr64desc.xml"
+  static let account = "admin"
+  static let pass = "6473"
   
-  var pendingRequest = false
-  
-  private var lastResponseXML: AEXMLDocument? {
+  var descXML: AEXMLDocument! {
     didSet {
-      if lastResponseXML != nil {
-        print("lastResponseXML", lastResponseXML?.xmlString)
-      }
-    }
-  }
-  
-  private var lastXMLFromURLinResponseXML: AEXMLDocument? {
-    didSet {
-      if lastResponseXML != nil {
-        print("lastXMLFromURLinResponseXML", lastResponseXML?.xmlString)
-      }
-    }
-  }
-  
-  var descXML: AEXMLDocument? {
-    didSet {
-      if descXML != nil {
-        Service.discoverServices(descXML!)
-      }
+      Service.discoverServices(descXML)
     }
   }
   
   var services = [Service]() {
     didSet {
-      services.forEach { getActions($0) }
+      services.forEach { askForActions($0) }
     }
   }
   
@@ -60,7 +42,7 @@ class TR064 {
   }
   
   func getServicesDescription() {
-    let requestURL = self.serviceURL + self.descURL
+    let requestURL = serviceURL + descURL
     Alamofire.request(.GET, requestURL)
       .responseData { (_, _, data) -> Void in
         guard data.isSuccess else { return }
@@ -68,7 +50,19 @@ class TR064 {
     }
   }
   
-  func createSOAPMessageBody(action: Action, arguments: [String] = []) -> NSData? {
+  func askForActions(service: Service){
+    let requestURL = serviceURL + service.SCPDURL
+    Alamofire.request(.GET, requestURL)
+      .responseData { (_, _, data) -> Void in
+        if let xmlRaw = data.value, xml = try? AEXMLDocument.init(xmlData: xmlRaw) {
+          let stateVariables = xml.root["serviceStateTable"].children.map {StateVariable(element: $0)}.flatMap {$0}
+          service.actions = xml.root["actionList"].children.map { Action(element: $0, stateVariables: stateVariables, service: service) }.flatMap {$0}
+          self.serviceDelegate?.refresh()
+        }
+    }
+  }
+  
+  class func createSOAPMessageBody(action: Action, arguments: [String] = []) -> NSData? {
     let soapRequest = AEXMLDocument()
     let envelope = soapRequest.addChild(name: "s:Envelope", attributes:
       ["xmlns:s" : "http://schemas.xmlsoap.org/soap/envelope/",
@@ -83,7 +77,7 @@ class TR064 {
     return soapRequest.xmlString.dataUsingEncoding(NSUTF8StringEncoding)
   }
   
-  func createSOAPRequest(action: Action) -> NSMutableURLRequest {
+  class func createSOAPRequest(action: Action) -> NSMutableURLRequest {
     let request = NSMutableURLRequest(URL: NSURL(string: action.url)!)
     request.addValue("text/xml; charset=utf-8", forHTTPHeaderField:"Content-Type")
     request.addValue("\(action.service.serviceType)#\(action.name)", forHTTPHeaderField: "SOAPAction")
@@ -91,29 +85,21 @@ class TR064 {
     return request
   }
   
-  func sendSOAPRequest(action: Action, arguments: [String] = [], block: ()->() ) {
+  class func sendSOAPRequest(action: Action, arguments: [String] = [], block: (AEXMLDocument?)->() ) {
     let request = createSOAPRequest(action)
     request.HTTPBody = createSOAPMessageBody(action, arguments: arguments)
-    let account = "admin"
-    let pass = ""
     Alamofire.request(request)
       .authenticate(user: account, password: pass)
       .responseData { (_, _, data) -> Void in
         if data.isSuccess {
-          self.lastResponseXML = try? AEXMLDocument.init(xmlData: data.value!)
-          if let URL = self.checkSOAPResponseForURL(action) {
-            self.getXMLFromURL(URL, block: block)
-          } else {
-            block()
-          }
+          block((try? AEXMLDocument.init(xmlData: data.value!)))
         }
     }
   }
   
-  func checkSOAPResponseForURL(action: Action) -> String? {
+  class func checkResponseForURL(XML: AEXMLDocument, action: Action) -> String? {
     var URL: String?
-    guard let soapResponse = self.lastResponseXML?.root["s:Body"]["u:\(action.name)Response"] else { return nil }
-    if soapResponse.name == "AEXMLError" { return nil }
+    guard let soapResponse = self.checkActionResponse(XML, action: action) else { return nil }
     for possibleURL in soapResponse.children where possibleURL.value != nil {
       if possibleURL.value!.containsString("http") {
         URL = possibleURL.value!
@@ -122,44 +108,28 @@ class TR064 {
     return URL
   }
   
-  func getActions(service: Service){
-    let requestURL = self.serviceURL + service .SCPDURL
-    Alamofire.request(.GET, requestURL)
-      .responseData { (_, _, data) -> Void in
-        if let xmlRaw = data.value, xml = try? AEXMLDocument.init(xmlData: xmlRaw) {
-          let stateVariables = xml.root["serviceStateTable"].children.map {StateVariable(element: $0)}.flatMap {$0}
-          service.actions = xml.root["actionList"].children.map { Action(element: $0, stateVariables: stateVariables, service: service) }.flatMap {$0}
-          self.serviceDelegate?.refresh()
-        }
-    }
-  }
-  
-  func getXMLFromURL(requestURL: String, block: ()->() ) {
-    pendingRequest = true
-    Alamofire.request(.GET, requestURL)
+  class func getXMLFromURL(requestURL: String, block: (AEXMLDocument?)->() ) {
+    print("getXMLFromURL", requestURL)
+     Alamofire.request(.GET, requestURL)
       .responseData { (_, _, data) -> Void in
         if data.isSuccess {
-          self.lastXMLFromURLinResponseXML = try? AEXMLDocument.init(xmlData: data.value!)
-          block()
+          block((try? AEXMLDocument.init(xmlData: data.value!)))
         }
     }
   }
   
-  class func returnLastResponseForAction(action: Action) -> SOAPBody {
-    let XML = TR064.sharedInstance.lastResponseXML
-    let XML2 = TR064.sharedInstance.lastXMLFromURLinResponseXML
-    var result = [String:[String]]()
-    if let callsXML = XML2?.root["Call"].all {
-      let calls = callsXML.map { Call.CallFromXML($0) }
-      calls.forEach { result[String($0.id)] = [$0.name, $0.called, $0.caller]}
-      TR064.sharedInstance.lastXMLFromURLinResponseXML = nil
-    } else {
-      if let soapResponse = XML?.root["s:Body"]["u:\(action.name)Response"] {
-        for key in action.output.keys {
-          if let value = soapResponse[key].value {
-            result[key] = [value]
-          }
-        }
+  class func checkActionResponse(XML: AEXMLDocument, action: Action) -> AEXMLElement? {
+    let soapResponse = XML.root["s:Body"]["u:\(action.name)Response"]
+    if soapResponse.name == "AEXMLError" { return nil }
+    return soapResponse
+  }
+  
+  class func convertActionResponse(XML: AEXMLDocument, action: Action) -> [String:String]? {
+    var result = [String:String]()
+    guard let soapResponse = self.checkActionResponse(XML, action: action) else { return nil }
+    for key in action.output.keys {
+      if let value = soapResponse[key].value {
+        result[key] = value
       }
     }
     return result
@@ -167,4 +137,24 @@ class TR064 {
 }
 
 typealias SOAPBody = [String:[String]]
+
+
+extension AEXMLDocument {
+  
+  func transformXMLtoCalls() -> [Call] {
+    if let callsXML = self.root["Call"].all {
+      return callsXML.map { Call.CallFromXML($0) }
+    }
+    return []
+  }
+  /*
+  func transformXMLtoContacts() -> [Contact] {
+    if let contactsXML = self.root["phonebooks"]["phonebook"]["contact"].all {
+      return contactsXML.map { Contact.ContactFromXML($0) }
+    }
+    return []
+  }
+ */ 
+}
+
 

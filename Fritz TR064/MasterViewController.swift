@@ -11,12 +11,8 @@ import UIKit
 class MasterViewController: UITableViewController, UISearchBarDelegate, UISearchDisplayDelegate, UISearchResultsUpdating, TR064ServiceDelegate {
   
   var tableData = [(service: Service, actions: [Action])]()
-  
   var filteredData = [(service: Service, actions: [Action])]()
-  
   var resultSearchController = UISearchController()
-  
-  
   var detailViewController: DetailViewController? = nil
   
   override func viewDidLoad() {
@@ -77,25 +73,21 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
-    var action: Action
+    let action: Action
     if !resultSearchController.active {
       action = self.filteredData[indexPath.section].actions[indexPath.row]
     }else {
       action = self.tableData[indexPath.section].actions[indexPath.row]
     }
+    let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
+    controller.action = action
+    controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+    controller.navigationItem.leftItemsSupplementBackButton = true
     if segue.identifier == "showOutput" {
-      let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
-      controller.currentTransmission = action
       controller.showOutputArguments()
-      controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-      controller.navigationItem.leftItemsSupplementBackButton = true
     }
     if segue.identifier == "showInput" {
-      let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
-      controller.currentTransmission = action
-      controller.showInputArguments()
-      controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-      controller.navigationItem.leftItemsSupplementBackButton = true
+       controller.showInputArguments()
     }
     self.resultSearchController.dismissViewControllerAnimated(true, completion: {})
   }
@@ -113,7 +105,6 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
     } else {
       return self.filteredData[section].actions.count
     }
-    //  return TR064.sharedInstance.services[section].actions.count
   }
   
   override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -131,14 +122,11 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let object: Action
-    // let object = TR064.sharedInstance.services[indexPath.section].actions[indexPath.row]
     if !resultSearchController.active {
       object = self.tableData[indexPath.section].actions[indexPath.row]
     } else {
       object = self.filteredData[indexPath.section].actions[indexPath.row]
     }
-    
-    
     if object.needsInput {
       let cell = tableView.dequeueReusableCellWithIdentifier("Input", forIndexPath: indexPath)
       cell.textLabel!.text = object.name.stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
@@ -150,11 +138,6 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
       cell.detailTextLabel?.text = object.url
       return cell
     }
-  }
-  
-  override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return false
   }
   
 }

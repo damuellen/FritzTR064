@@ -12,7 +12,7 @@ import UIKit
 typealias Argument = (name: String, value: String)
 
 protocol SOAPDelegate {
-  var currentTransmission: Action? { get set }
+  var action: Action! { get set }
 }
 
 class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDelegate {
@@ -22,37 +22,36 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDele
       self.tableView.reloadData()
     }
   }
-  var currentTransmission: Action?
+  
+  var response: AEXMLDocument!
+  
+  var action: Action!
+
   var needsInput = false {
     didSet {
       self.tableView.reloadData()
     }
   }
-  
+
   var actionOutput: SOAPBody!
   var arguments = [String]()
   
   func sendCurrentAction() {
-    guard let action = self.currentTransmission else { return }
+    guard let action = self.action else { return }
     
-    if currentTransmission?.needsInput == true {
-      guard currentTransmission?.input.count == self.arguments.count else { return }
+    if self.needsInput == true {
+      guard self.tableData.input.count == self.arguments.count else { return }
     }
-    action.service.manager.sendSOAPRequest(action, arguments: self.arguments, block: {
-      self.actionOutput = TR064.returnLastResponseForAction(action)
-      self.tableData.output = self.actionOutput.flatMap {(name: $0.0, value: $0.1.first!)}
-      //  self.tableData.input = action.input.map { (name: $0.0, value: $0.1.defaultValue) }
-      self.tableData.input.removeAll()
-      
-      self.navigationItem.title = "Response"
-      self.currentTransmission = nil
+   TR064.sendSOAPRequest(action, arguments: self.arguments, block: { XML in
+      self.response = XML
+      self.performSegueWithIdentifier("showResponse", sender: self)
     })
   }
   
   func textFieldShouldReturn(textField: UITextField) -> Bool {
     textField.resignFirstResponder()
     arguments.removeAll()
-    for n in 0..<currentTransmission!.input.count {
+    for n in 0..<action!.input.count {
       arguments.append((tableView.cellForRowAtIndexPath(NSIndexPath(forRow: n, inSection: 0)) as! TableViewInputCell).textField.text!)
     }
     self.navigationItem.rightBarButtonItem?.enabled = true
@@ -61,14 +60,14 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDele
   
   func showOutputArguments() {
     needsInput = false
-    guard let action = self.currentTransmission else { return }
+    guard let action = self.action else { return }
     self.tableData.output = action.output.keys.map { ($0.stringByReplacingOccurrencesOfString("New", withString: ""),"") }
     self.navigationItem.title = action.name
   }
   
   func showInputArguments() {
     needsInput = true
-    guard let action = self.currentTransmission else { return }
+    guard let action = self.action else { return }
     self.tableData.input = action.input.map { (name: $0.0, value: $0.1.defaultValue) }
     self.tableData.output = action.output.keys.map { ($0.stringByReplacingOccurrencesOfString("New", withString: ""),"") }
     self.navigationItem.rightBarButtonItem?.enabled = false
@@ -85,14 +84,22 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDele
     self.navigationItem.rightBarButtonItem = addButton
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableViewAutomaticDimension
+    self
   }
+
+  // MARK: - Segues
   
-  override func viewWillAppear(animated: Bool) {
-    self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
-    super.viewWillAppear(animated)
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    if segue.identifier == "showResponse" {
+      let controller = ((segue.destinationViewController as! UINavigationController).topViewController as! XMLResponseViewController)
+      controller.tableData = TR064.convertActionResponse(self.response, action: self.action)
+      controller.action = self.action
+      controller.response = self.response
+    }
   }
   
   @IBOutlet weak var text: UITextField!
+
   // MARK: - Table View
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -121,7 +128,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDele
     if section == 0 && self.tableData.input.count > 0{
       cell?.textLabel!.text = "needed Input"
       return cell
-    }else if self.currentTransmission != nil {
+    }else if self.action != nil {
       cell?.textLabel!.text = "expected Output"
       return cell
     }else {
@@ -130,27 +137,25 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDele
     }
   }
   
+  override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return 30
+  }
+  
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     var argument: Argument
     if indexPath.section == 0 && self.tableData.input.count > 0 {
       argument = self.tableData.input[indexPath.row]
-      let cell = tableView.dequeueReusableCellWithIdentifier("Input", forIndexPath: indexPath) as! TableViewInputCell
+      let cell = tableView.dequeueReusableCellWithIdentifier("InputArgument", forIndexPath: indexPath) as! TableViewInputCell
       cell.textField.delegate = self
       cell.textField.text = argument.value
       cell.label.text = argument.name
       return cell
     }else {
       argument = self.tableData.output[indexPath.row]
-      let cell = tableView.dequeueReusableCellWithIdentifier("Output", forIndexPath: indexPath)
+      let cell = tableView.dequeueReusableCellWithIdentifier("OutputArgument", forIndexPath: indexPath)
       cell.textLabel?.numberOfLines = 0
       cell.textLabel?.lineBreakMode = .ByWordWrapping
-      if currentTransmission == nil {
-        cell.textLabel!.text = argument.value
-        cell.detailTextLabel?.text = argument.name
-      }else {
-        cell.textLabel!.text = argument.name
-        cell.detailTextLabel?.text = ""
-      }
+      cell.textLabel?.text = argument.name
       return cell
     }
   }
@@ -162,10 +167,10 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, SOAPDele
       return UITableViewAutomaticDimension
     }
   }
-  
+    
   override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
     return false
   }
-  
+
 }
 
