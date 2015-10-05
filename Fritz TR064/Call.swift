@@ -126,10 +126,13 @@ struct Call {
 
 }
 
-extension Call: Equatable { }
+extension Call: Equatable, Comparable { }
 
 func ==(lhs: Call, rhs: Call) -> Bool {
-  return lhs.id == rhs.id
+  return lhs.id < rhs.id
 }
 
+func < (lhs: Call, rhs: Call) -> Bool {
+  return lhs.id == rhs.id
+}
 
