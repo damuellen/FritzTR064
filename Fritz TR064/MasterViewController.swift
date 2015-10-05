@@ -135,21 +135,16 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let object: Action
-    if !resultSearchController.active {
-      object = self.tableData[indexPath.section].actions[indexPath.row]
-    } else {
-      object = self.filteredData[indexPath.section].actions[indexPath.row]
-    }
-    if object.needsInput {
+    let action = self.tableData[indexPath.section].actions[indexPath.row]
+    if action.needsInput {
       let cell = tableView.dequeueReusableCellWithIdentifier("Input", forIndexPath: indexPath)
-      cell.textLabel!.text = object.name.stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
-      cell.detailTextLabel?.text = object.url
+      cell.textLabel!.text = action.name.stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
+      cell.detailTextLabel?.text = action.url
       return cell
     } else {
       let cell = tableView.dequeueReusableCellWithIdentifier("Output", forIndexPath: indexPath)
-      cell.textLabel!.text = object.name.stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
-      cell.detailTextLabel?.text = object.url
+      cell.textLabel!.text = action.name.stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
+      cell.detailTextLabel?.text = action.url
       return cell
     }
   }
