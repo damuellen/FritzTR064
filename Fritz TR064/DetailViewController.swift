@@ -33,12 +33,14 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
   var arguments = [String]()
   
   func sendCurrentAction() {
+    self.navigationItem.rightBarButtonItem?.enabled = false
     guard let action = self.action else { return }
-    
     if self.needsInput == true {
       guard self.tableData.input.count == self.arguments.count else { return }
     }
+    UIApplication.sharedApplication().networkActivityIndicatorVisible = true
    TR064.sendSOAPRequest(action, arguments: self.arguments) {
+    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
       self.performSegueWithIdentifier("showResponse", sender: self)
     }
   }
