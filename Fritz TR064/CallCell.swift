@@ -18,4 +18,32 @@ class CallCell: UITableViewCell {
   @IBOutlet weak var date: UILabel!
   @IBOutlet weak var duration: UILabel!
 
+  func configure(call: Call) {
+    called.text = call.called
+    caller.text = call.caller
+    name.text = call.name
+    port.text = call.port
+    device.text = call.device
+    let dateFormatter = NSDateFormatter.sharedInstance
+    dateFormatter.dateStyle = .ShortStyle
+    date.text = dateFormatter.stringFromDate(call.date!)
+    duration.text = "\(call.duration)"
+    switch call.type {
+    case .activeIncoming:
+      backgroundColor = UIColor.redColor()
+    case .activeOutgoing:
+      backgroundColor = UIColor.blueColor()
+    case .incoming:
+      backgroundColor = UIColor.greenColor()
+    case .missed:
+      backgroundColor = UIColor.grayColor()
+    case .outgoing:
+      backgroundColor = UIColor.orangeColor()
+    case .rejectedIncoming:
+      backgroundColor = UIColor.brownColor()
+    case .error:
+      backgroundColor = UIColor.blackColor()
+    }
+  }
+  
 }

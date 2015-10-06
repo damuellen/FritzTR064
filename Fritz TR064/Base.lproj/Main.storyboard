@@ -110,7 +110,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="mOI-FS-AaM"/>
                     <connections>
-                        <segue destination="QNM-7J-jen" kind="showDetail" identifier="showResponse" id="JdU-zT-xbZ"/>
+                        <segue destination="QNM-7J-jen" kind="show" identifier="showResponse" id="JdU-zT-xbZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
@@ -175,7 +175,7 @@
                     <navigationItem key="navigationItem" id="JJ4-sc-WkJ"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
-                        <segue destination="xa0-E2-kEW" kind="showDetail" identifier="showCallList" id="ToQ-L7-DMx"/>
+                        <segue destination="xa0-E2-kEW" kind="show" identifier="showCallList" id="ToQ-L7-DMx"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r8F-LP-e8j" userLabel="First Responder" sceneMemberID="firstResponder"/>

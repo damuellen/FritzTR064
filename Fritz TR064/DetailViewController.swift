@@ -38,9 +38,9 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
     if self.needsInput == true {
       guard self.tableData.input.count == self.arguments.count else { return }
     }
-   TR064.sendSOAPRequest(action, arguments: self.arguments, block: {
+   TR064.sendSOAPRequest(action, arguments: self.arguments) {
       self.performSegueWithIdentifier("showResponse", sender: self)
-    })
+    }
   }
   
   func textFieldShouldReturn(textField: UITextField) -> Bool {

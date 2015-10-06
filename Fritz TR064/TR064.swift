@@ -13,8 +13,6 @@ struct TR064 {
   static let manager = TR064Manager.sharedInstance
   static let serviceURL = "http://192.168.178.1:49000"
   static let descURL = "/tr64desc.xml"
-  static let account = "admin"
-  static let pass = "6473"
   
   static func getAvailableServices() {
     let requestURL = TR064.serviceURL + TR064.descURL
@@ -25,6 +23,10 @@ struct TR064 {
             manager.descXML = try? AEXMLDocument.init(xmlData: XML)
             manager.services = TR064.getServicesFromXML(TR064Manager.sharedInstance.descXML)
           }
+        }else {
+          let when = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * Double(NSEC_PER_SEC)))
+          let queue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)
+          dispatch_after(when, queue) { getAvailableServices() }
         }
     }
   }
@@ -45,7 +47,7 @@ struct TR064 {
     let soapRequest = AEXMLDocument()
     let envelope = soapRequest.addChild(name: "s:Envelope", attributes:
       ["xmlns:s" : "http://schemas.xmlsoap.org/soap/envelope/",
-        "s:encodingStyle" : "http://schemas.xmlsoap.org/soap/encoding/"])
+       "s:encodingStyle" : "http://schemas.xmlsoap.org/soap/encoding/"])
     let body = envelope.addChild(name: "s:Body")
     let actionBody = body.addChild(name: "u:\(action.name)", attributes:
       ["xmlns:u": action.service.serviceType])

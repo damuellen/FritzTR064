@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import NetworkExtension
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
   var window: UIWindow?
+  var vpnConnection: NEVPNConnection?
   
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // Override point for customization after application launch.
@@ -19,7 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
     navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
     splitViewController.delegate = self
-    
+    storeCredentials() // private file
+    vpnConnection = VPN()
     return true
   }
 
@@ -29,11 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
 
   func applicationDidEnterBackground(application: UIApplication) {
+    vpnConnection?.stopVPNTunnel()
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
   }
 
   func applicationWillEnterForeground(application: UIApplication) {
+    do { try vpnConnection?.startVPNTunnel() } catch { debugPrint("Did not reconnect") }
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
   }
 

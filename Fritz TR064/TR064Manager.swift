@@ -20,15 +20,30 @@ class TR064Manager {
     didSet { delegate.refresh() }
   }
   
-  var lastResponse: AEXMLDocument? {
-    didSet { delegate.refresh() }
-  }
+  var lastResponse: AEXMLDocument?
   
   var descXML: AEXMLDocument!
   
   init() {
     TR064.getAvailableServices()
   }
-
+  
 }
 
+protocol TR064ServiceDelegate {
+  func refresh()
+}
+
+extension MasterViewController: TR064ServiceDelegate {
+  
+  func refresh() {
+    var result = [(service: Service, actions: [Action])]()
+    result = TR064Manager.sharedInstance.services.map { service in
+      (service: service, actions: TR064Manager.sharedInstance.actions.filter { $0.service == service })
+    }
+    self.tableData = result
+    self.filteredData = result
+    self.tableView.reloadData()
+  }
+  
+}

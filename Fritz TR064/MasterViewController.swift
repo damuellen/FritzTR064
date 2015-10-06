@@ -8,26 +8,6 @@
 
 import UIKit
 
-protocol TR064ResponseDelegate {
-  func refresh()
-}
-protocol TR064ServiceDelegate {
-  func refresh()
-}
-
-extension MasterViewController: TR064ServiceDelegate {
-  
-  func refresh() {
-    var result = [(service: Service, actions: [Action])]()
-    result = TR064Manager.sharedInstance.services.map { service in
-      (service: service, actions: TR064Manager.sharedInstance.actions.filter { $0.service == service })
-    }
-    self.tableData = result
-    self.filteredData = result
-    self.tableView.reloadData()
-  }
-  
-}
 
 class MasterViewController: UITableViewController, UISearchBarDelegate, UISearchDisplayDelegate, UISearchResultsUpdating  {
   
@@ -35,6 +15,7 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   var filteredData = [(service: Service, actions: [Action])]()
   var resultSearchController = UISearchController()
   var detailViewController: DetailViewController? = nil
+
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -110,7 +91,6 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return self.tableData.count
-    // return TR064.sharedInstance.services.count
   }
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -45,7 +45,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate {
     if let text = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text {
       UIPasteboard.generalPasteboard().string = text }
     guard let XML = TR064Manager.sharedInstance.lastResponse, URL = TR064.checkResponseForURL(XML, action: self.action) else { return }
-    TR064.getXMLFromURL(URL, block: { if URL.containsString("calllist") { self.performSegueWithIdentifier("showCallList", sender: self) } })
+    TR064.getXMLFromURL(URL) { if URL.containsString("calllist") { self.performSegueWithIdentifier("showCallList", sender: self) } }
   }
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
