@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		651BAD671BC5317100DBB9EC /* TableViewInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651BAD661BC5317100DBB9EC /* TableViewInputCell.swift */; };
 		65287C0B1BC30E8000103231 /* VPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65287C0A1BC30E8000103231 /* VPN.swift */; };
 		65337A3E1BC16526009925E5 /* CallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3D1BC16526009925E5 /* CallCell.swift */; };
 		65337A401BC166BB009925E5 /* CallListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */; };
 		65337A421BC2E3C4009925E5 /* TR064Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A411BC2E3C4009925E5 /* TR064Manager.swift */; };
-		655EBB591BC050720002B217 /* TableViewInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655EBB581BC050720002B217 /* TableViewInputCell.swift */; };
 		655F61FE1BC12C9000D723EE /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FD1BC12C9000D723EE /* Contact.swift */; };
 		655F62001BC139A900D723EE /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FF1BC139A900D723EE /* WebViewController.swift */; };
-		65B389331BC473F10059D63F /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B389321BC473F10059D63F /* Credentials.swift */; };
+		65B389371BC489960059D63F /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B389361BC489960059D63F /* Credentials.swift */; };
 		65C005991BC1478100FDCFFA /* WebViewSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C005981BC1478100FDCFFA /* WebViewSegue.swift */; };
 		65C0059B1BC14E3300FDCFFA /* XMLResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */; };
 		65C8256B1BB75E02005DF551 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256A1BB75E02005DF551 /* AppDelegate.swift */; };
@@ -49,15 +49,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		651BAD661BC5317100DBB9EC /* TableViewInputCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewInputCell.swift; sourceTree = "<group>"; };
 		65287C0A1BC30E8000103231 /* VPN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPN.swift; sourceTree = "<group>"; };
 		65287C0E1BC3175D00103231 /* Fritz TR064.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Fritz TR064.entitlements"; sourceTree = "<group>"; };
 		65337A3D1BC16526009925E5 /* CallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallCell.swift; sourceTree = "<group>"; };
 		65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallListTableViewController.swift; sourceTree = "<group>"; };
 		65337A411BC2E3C4009925E5 /* TR064Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TR064Manager.swift; sourceTree = "<group>"; };
-		655EBB581BC050720002B217 /* TableViewInputCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewInputCell.swift; path = ../TableViewInputCell.swift; sourceTree = "<group>"; };
 		655F61FD1BC12C9000D723EE /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		655F61FF1BC139A900D723EE /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		65B389321BC473F10059D63F /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
+		65B389361BC489960059D63F /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		65C005981BC1478100FDCFFA /* WebViewSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewSegue.swift; sourceTree = "<group>"; };
 		65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLResponseViewController.swift; sourceTree = "<group>"; };
 		65C825671BB75E02005DF551 /* Fritz TR064.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fritz TR064.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +100,7 @@
 				65C8258A1BB7627D005DF551 /* Alamofire.framework */,
 				65C825691BB75E02005DF551 /* Fritz TR064 */,
 				65C825681BB75E02005DF551 /* Products */,
+				65B389361BC489960059D63F /* Credentials.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -114,11 +115,11 @@
 		65C825691BB75E02005DF551 /* Fritz TR064 */ = {
 			isa = PBXGroup;
 			children = (
+				651BAD661BC5317100DBB9EC /* TableViewInputCell.swift */,
 				65287C0E1BC3175D00103231 /* Fritz TR064.entitlements */,
 				65C8256A1BB75E02005DF551 /* AppDelegate.swift */,
 				65C8256C1BB75E02005DF551 /* MasterViewController.swift */,
 				65C8256E1BB75E02005DF551 /* DetailViewController.swift */,
-				655EBB581BC050720002B217 /* TableViewInputCell.swift */,
 				65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */,
 				65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */,
 				65C825701BB75E02005DF551 /* Main.storyboard */,
@@ -135,7 +136,6 @@
 				65C825841BB76079005DF551 /* Action.swift */,
 				65C005981BC1478100FDCFFA /* WebViewSegue.swift */,
 				65287C0A1BC30E8000103231 /* VPN.swift */,
-				65B389321BC473F10059D63F /* Credentials.swift */,
 				655F61FF1BC139A900D723EE /* WebViewController.swift */,
 				65DB0B261BC3328600D88E40 /* Fritz TR064-Bridging-Header.h */,
 				65DB0B291BC3334400D88E40 /* keychain.h */,
@@ -231,12 +231,12 @@
 				65DB0B2B1BC3334400D88E40 /* keychain.m in Sources */,
 				65C8256D1BB75E02005DF551 /* MasterViewController.swift in Sources */,
 				65C005991BC1478100FDCFFA /* WebViewSegue.swift in Sources */,
+				651BAD671BC5317100DBB9EC /* TableViewInputCell.swift in Sources */,
 				65337A421BC2E3C4009925E5 /* TR064Manager.swift in Sources */,
 				65C825851BB76079005DF551 /* Action.swift in Sources */,
 				65337A3E1BC16526009925E5 /* CallCell.swift in Sources */,
-				65B389331BC473F10059D63F /* Credentials.swift in Sources */,
+				65B389371BC489960059D63F /* Credentials.swift in Sources */,
 				65337A401BC166BB009925E5 /* CallListTableViewController.swift in Sources */,
-				655EBB591BC050720002B217 /* TableViewInputCell.swift in Sources */,
 				65C8256B1BB75E02005DF551 /* AppDelegate.swift in Sources */,
 				65C0059B1BC14E3300FDCFFA /* XMLResponseViewController.swift in Sources */,
 				65C825831BB76048005DF551 /* Service.swift in Sources */,
