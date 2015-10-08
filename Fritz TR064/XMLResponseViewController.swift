@@ -8,14 +8,21 @@
 
 import UIKit
 
-class XMLResponseViewController: UITableViewController, UITextFieldDelegate {
+class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR064ServiceObserver {
   
-  var tableData: [String:String]! {
+  var tableData = [String:String]() {
     didSet {
       self.tableView.reloadData()
     }
   }
   var action: Action!
+  
+  func refresh() {
+    if let actionResponse = TR064Manager.sharedInstance.lastResponse?.checkResponseOf(Action: self.action),
+      validResponse = actionResponse.convertResponseWith(Action: self.action) {
+        self.tableData = validResponse
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -25,6 +32,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate {
   }
   
   override func viewWillAppear(animated: Bool) {
+    TR064Manager.sharedInstance.observer = self
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
   }
@@ -33,8 +41,6 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate {
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "showCallList" {
-      let controller = ((segue.destinationViewController as! UINavigationController).topViewController as! CallListTableViewController)
-      controller.tableData = TR064Manager.sharedInstance.lastResponse!.transformXMLtoCalls().sort(<)
     }
   }
   
@@ -44,8 +50,9 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate {
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     if let text = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text {
       UIPasteboard.generalPasteboard().string = text }
-    guard let XML = TR064Manager.sharedInstance.lastResponse, URL = TR064.checkResponseForURL(XML, action: self.action) else { return }
-    TR064.getXMLFromURL(URL) { if URL.containsString("calllist") { self.performSegueWithIdentifier("showCallList", sender: self) } }
+    guard let XML = TR064Manager.sharedInstance.lastResponse, URL = XML.checkResponseForURL(self.action) else { return }
+    TR064.getXMLFromURL(URL)?.responseXMLDocument(TR064.completionHandler)
+    if URL.containsString("calllist") { self.performSegueWithIdentifier("showCallList", sender: self) }
   }
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

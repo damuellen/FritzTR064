@@ -8,12 +8,16 @@
 
 import UIKit
 
-class CallListTableViewController: UITableViewController, UITextFieldDelegate {
+class CallListTableViewController: UITableViewController, UITextFieldDelegate, TR064ServiceObserver {
   
   var tableData: [Call]? {
     didSet {
       self.tableView.reloadData()
     }
+  }
+  
+  func refresh() {
+    self.tableData = TR064Manager.sharedInstance.lastResponse!.transformXMLtoCalls().sort(<)
   }
   
   override func viewDidLoad() {
@@ -24,6 +28,7 @@ class CallListTableViewController: UITableViewController, UITextFieldDelegate {
   }
   
   override func viewWillAppear(animated: Bool) {
+    TR064Manager.sharedInstance.observer = self
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
   }

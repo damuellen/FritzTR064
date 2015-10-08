@@ -19,7 +19,7 @@
 		65C0059B1BC14E3300FDCFFA /* XMLResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */; };
 		65C8256B1BB75E02005DF551 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256A1BB75E02005DF551 /* AppDelegate.swift */; };
 		65C8256D1BB75E02005DF551 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256C1BB75E02005DF551 /* MasterViewController.swift */; };
-		65C8256F1BB75E02005DF551 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256E1BB75E02005DF551 /* DetailViewController.swift */; };
+		65C8256F1BB75E02005DF551 /* ActionArgumentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256E1BB75E02005DF551 /* ActionArgumentsVC.swift */; };
 		65C825721BB75E02005DF551 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65C825701BB75E02005DF551 /* Main.storyboard */; };
 		65C825741BB75E02005DF551 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65C825731BB75E02005DF551 /* Assets.xcassets */; };
 		65C825771BB75E02005DF551 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65C825751BB75E02005DF551 /* LaunchScreen.storyboard */; };
@@ -63,7 +63,7 @@
 		65C825671BB75E02005DF551 /* Fritz TR064.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fritz TR064.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65C8256A1BB75E02005DF551 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65C8256C1BB75E02005DF551 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
-		65C8256E1BB75E02005DF551 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		65C8256E1BB75E02005DF551 /* ActionArgumentsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionArgumentsVC.swift; sourceTree = "<group>"; };
 		65C825711BB75E02005DF551 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		65C825731BB75E02005DF551 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65C825761BB75E02005DF551 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -119,7 +119,7 @@
 				65287C0E1BC3175D00103231 /* Fritz TR064.entitlements */,
 				65C8256A1BB75E02005DF551 /* AppDelegate.swift */,
 				65C8256C1BB75E02005DF551 /* MasterViewController.swift */,
-				65C8256E1BB75E02005DF551 /* DetailViewController.swift */,
+				65C8256E1BB75E02005DF551 /* ActionArgumentsVC.swift */,
 				65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */,
 				65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */,
 				65C825701BB75E02005DF551 /* Main.storyboard */,
@@ -221,7 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65C8256F1BB75E02005DF551 /* DetailViewController.swift in Sources */,
+				65C8256F1BB75E02005DF551 /* ActionArgumentsVC.swift in Sources */,
 				65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */,
 				65287C0B1BC30E8000103231 /* VPN.swift in Sources */,
 				655F61FE1BC12C9000D723EE /* Contact.swift in Sources */,

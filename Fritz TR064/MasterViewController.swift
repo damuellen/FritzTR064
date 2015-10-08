@@ -8,21 +8,34 @@
 
 import UIKit
 
-
-class MasterViewController: UITableViewController, UISearchBarDelegate, UISearchDisplayDelegate, UISearchResultsUpdating  {
+extension MasterViewController: UISearchResultsUpdating {
   
+  func updateSearchResultsForSearchController(searchController: UISearchController) {
+    filteredData.removeAll(keepCapacity: false)
+    guard let searchText = searchController.searchBar.text else { return }
+    switch searchController.searchBar.selectedScopeButtonIndex {
+    case 1:
+      filteredData = self.tableData.map { service in (service: service.service, actions: filterActionByService(service.actions, filter: searchText)) }
+    default:
+      filteredData = self.tableData.map { service in (service: service.service, actions: filterActionByName(service.actions, filter: searchText)) }
+    }
+    tableView.reloadData()
+  }
+  
+}
+
+class MasterViewController: UITableViewController, UISearchBarDelegate, UISearchDisplayDelegate   {
   var tableData = [(service: Service, actions: [Action])]()
   var filteredData = [(service: Service, actions: [Action])]()
   var resultSearchController = UISearchController()
-  var detailViewController: DetailViewController? = nil
+  var detailViewController: ActionArgumentsVC? = nil
 
-  
   override func viewDidLoad() {
     super.viewDidLoad()
-    TR064Manager.sharedInstance.delegate = self
+    
     if let split = self.splitViewController {
       let controllers = split.viewControllers
-      self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+      self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ActionArgumentsVC
     }
     resultSearchController = {
       let controller = UISearchController(searchResultsController: nil)
@@ -38,17 +51,13 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
       }()
   }
   
-  func updateSearchResultsForSearchController(searchController: UISearchController) {
-    filteredData.removeAll(keepCapacity: false)
-    guard let searchText = searchController.searchBar.text else { return }
-    switch searchController.searchBar.selectedScopeButtonIndex {
-    case 1:
-      filteredData = self.tableData.map { service in (service: service.service, actions: filterActionByService(service.actions, filter: searchText)) }
-    default:
-      filteredData = self.tableData.map { service in (service: service.service, actions: filterActionByName(service.actions, filter: searchText)) }
-    }
-    tableView.reloadData()
+  override func viewWillAppear(animated: Bool) {
+    TR064Manager.sharedInstance.observer = self
+    self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
+    super.viewWillAppear(animated)
   }
+  
+  // MARK: - Search
   
   func filterActionByName(actions: [Action], filter: String)-> [Action] {
     return actions.filter { $0.name.lowercaseString.containsString(filter.lowercaseString) || filter == "" }
@@ -56,12 +65,6 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   
   func filterActionByService(actions: [Action], filter: String)-> [Action] {
     return actions.filter { $0.service.serviceType.lowercaseString.containsString(filter.lowercaseString) }
-  }
-  
-  
-  override func viewWillAppear(animated: Bool) {
-    self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
-    super.viewWillAppear(animated)
   }
   
   // MARK: - Segues
@@ -74,7 +77,7 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
     }else {
       action = self.tableData[indexPath.section].actions[indexPath.row]
     }
-    let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
+    let controller = (segue.destinationViewController as! UINavigationController).topViewController as! ActionArgumentsVC
     controller.action = action
     controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
     controller.navigationItem.leftItemsSupplementBackButton = true

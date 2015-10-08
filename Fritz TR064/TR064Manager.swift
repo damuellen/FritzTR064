@@ -10,31 +10,32 @@ class TR064Manager {
   
   static let sharedInstance = TR064Manager()
   
-  var delegate: TR064ServiceDelegate!
-  
+  var observer: TR064ServiceObserver!
+
   var services = [Service]()  {
     didSet { services.forEach { service in TR064.getActionsFor(service) } }
   }
   
   var actions = [Action]() {
-    didSet { delegate.refresh() }
+    didSet { observer.refresh() }
   }
   
-  var lastResponse: AEXMLDocument?
-  
-  var descXML: AEXMLDocument!
-  
+  var lastResponse: AEXMLDocument? {
+    didSet { observer.refresh() }
+  }
+
+    
   init() {
     TR064.getAvailableServices()
   }
   
 }
 
-protocol TR064ServiceDelegate {
+protocol TR064ServiceObserver {
   func refresh()
 }
 
-extension MasterViewController: TR064ServiceDelegate {
+extension MasterViewController: TR064ServiceObserver {
   
   func refresh() {
     var result = [(service: Service, actions: [Action])]()

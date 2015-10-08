@@ -15,7 +15,7 @@ protocol SOAPDelegate {
   var action: Action! { get set }
 }
 
-class DetailViewController: UITableViewController, UITextFieldDelegate {
+class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   
   var tableData = (input: [Argument](),output: [Argument]()) {
     didSet {
@@ -35,14 +35,18 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
   func sendCurrentAction() {
     self.navigationItem.rightBarButtonItem?.enabled = false
     guard let action = self.action else { return }
+    var arguments = [String]()
     if self.needsInput == true {
       guard self.tableData.input.count == self.arguments.count else { return }
+      arguments = self.arguments
     }
-    UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-   TR064.sendSOAPRequest(action, arguments: self.arguments) {
-    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+  //  UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    TR064.sendRequest(action, arguments: arguments).responseXMLDocument(TR064.completionHandler)
+
+    
+  //  UIApplication.sharedApplication().networkActivityIndicatorVisible = false
       self.performSegueWithIdentifier("showResponse", sender: self)
-    }
+    
   }
   
   func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -83,13 +87,12 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
     tableView.rowHeight = UITableViewAutomaticDimension
     self
   }
-
+  
   // MARK: - Segues
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "showResponse" {
       let controller = ((segue.destinationViewController as! UINavigationController).topViewController as! XMLResponseViewController)
-      controller.tableData = TR064.convertActionResponse(TR064Manager.sharedInstance.lastResponse!, action: self.action)
       controller.action = self.action
     }
   }
