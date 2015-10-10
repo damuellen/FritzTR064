@@ -10,7 +10,7 @@ import Alamofire
 
 struct TR064 {
   
-  static let manager = TR064Manager.sharedInstance
+  static let manager = TR064Manager.sharedManager
   static let serviceURL = "http://192.168.178.1:49000"
   static let descURL = "/tr64desc.xml"
   static let completionHandler = { (_:NSURLRequest?, _:NSHTTPURLResponse?, XML:Result<AEXMLDocument>) -> Void in
@@ -26,9 +26,7 @@ struct TR064 {
           if let xml = XML.value {
             manager.services = TR064.getServicesFromXML(xml)
           }else {
-          let when = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * Double(NSEC_PER_SEC)))
-          let queue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)
-          dispatch_after(when, queue) { getAvailableServices() }
+            delay(2) { getAvailableServices() }
           }
     }
   }
@@ -111,4 +109,3 @@ extension Request {
     return response(responseSerializer: Request.XMLResponseSerializer(), completionHandler: completionHandler)
   }
 }
-

@@ -13,9 +13,10 @@ struct Service {
   var SCPDURL: String
   
   init?(element: AEXMLElement) {
-    if let serviceType = element["serviceType"].value, controlURL = element["controlURL"].value, SCPDURL = element["SCPDURL"].value {
-      self.init(serviceType: serviceType, controlURL: controlURL, SCPDURL: SCPDURL)
-    } else { return nil }
+    guard let serviceType = element["serviceType"].value,
+      controlURL = element["controlURL"].value,
+      SCPDURL = element["SCPDURL"].value else { return nil }
+    self.init(serviceType: serviceType, controlURL: controlURL, SCPDURL: SCPDURL)
    }
 
   init(serviceType: String, controlURL: String, SCPDURL: String) {
@@ -23,7 +24,6 @@ struct Service {
     self.controlURL = controlURL
     self.SCPDURL = SCPDURL
   }
-  
 
 }
 

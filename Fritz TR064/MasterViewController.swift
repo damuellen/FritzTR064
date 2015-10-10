@@ -22,9 +22,18 @@ extension MasterViewController: UISearchResultsUpdating {
     tableView.reloadData()
   }
   
+  func filterActionByName(actions: [Action], filter: String)-> [Action] {
+    return actions.filter { $0.name.lowercaseString.containsString(filter.lowercaseString) || filter == "" }
+  }
+  
+  func filterActionByService(actions: [Action], filter: String)-> [Action] {
+    return actions.filter { $0.service.serviceType.lowercaseString.containsString(filter.lowercaseString) }
+  }
+  
 }
 
 class MasterViewController: UITableViewController, UISearchBarDelegate, UISearchDisplayDelegate   {
+  
   var tableData = [(service: Service, actions: [Action])]()
   var filteredData = [(service: Service, actions: [Action])]()
   var resultSearchController = UISearchController()
@@ -52,19 +61,9 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   }
   
   override func viewWillAppear(animated: Bool) {
-    TR064Manager.sharedInstance.observer = self
+    TR064Manager.sharedManager.observer = self
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
-  }
-  
-  // MARK: - Search
-  
-  func filterActionByName(actions: [Action], filter: String)-> [Action] {
-    return actions.filter { $0.name.lowercaseString.containsString(filter.lowercaseString) || filter == "" }
-  }
-  
-  func filterActionByService(actions: [Action], filter: String)-> [Action] {
-    return actions.filter { $0.service.serviceType.lowercaseString.containsString(filter.lowercaseString) }
   }
   
   // MARK: - Segues
@@ -108,7 +107,7 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
     let cell = tableView.dequeueReusableCellWithIdentifier("Section")
     cell?.backgroundColor = UIColor.blackColor()
     cell?.textLabel?.textColor = UIColor.whiteColor()
-    let object = TR064Manager.sharedInstance.services[section]
+    let object = TR064Manager.sharedManager.services[section]
     cell?.textLabel!.text = object.serviceType.stringByReplacingOccurrencesOfString("urn:dslforum-org:service:", withString: "")
     return cell
   }

@@ -8,7 +8,7 @@
 
 class TR064Manager {
   
-  static let sharedInstance = TR064Manager()
+  static let sharedManager = TR064Manager()
   
   var observer: TR064ServiceObserver!
 
@@ -24,7 +24,6 @@ class TR064Manager {
     didSet { observer.refresh() }
   }
 
-    
   init() {
     TR064.getAvailableServices()
   }
@@ -39,8 +38,8 @@ extension MasterViewController: TR064ServiceObserver {
   
   func refresh() {
     var result = [(service: Service, actions: [Action])]()
-    result = TR064Manager.sharedInstance.services.map { service in
-      (service: service, actions: TR064Manager.sharedInstance.actions.filter { $0.service == service })
+    result = TR064Manager.sharedManager.services.map { service in
+      (service: service, actions: TR064Manager.sharedManager.actions.filter { $0.service == service })
     }
     self.tableData = result
     self.filteredData = result

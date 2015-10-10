@@ -17,7 +17,7 @@ class CallListTableViewController: UITableViewController, UITextFieldDelegate, T
   }
   
   func refresh() {
-    self.tableData = TR064Manager.sharedInstance.lastResponse!.transformXMLtoCalls().sort(<)
+    self.tableData = TR064Manager.sharedManager.lastResponse!.transformXMLtoCalls().sort(<)
   }
   
   override func viewDidLoad() {
@@ -28,7 +28,7 @@ class CallListTableViewController: UITableViewController, UITextFieldDelegate, T
   }
   
   override func viewWillAppear(animated: Bool) {
-    TR064Manager.sharedInstance.observer = self
+    TR064Manager.sharedManager.observer = self
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
   }

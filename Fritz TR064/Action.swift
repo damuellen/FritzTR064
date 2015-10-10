@@ -12,6 +12,7 @@ let obsoleteActions:[String:[String]] =
 ["urn:dslforum-org:service:X_AVM-DE_OnTel:1":["GetInfo", "SetEnable", "SetConfig"],
   "urn:X_VoIP-com:serviceId:X_VoIP1:1":["X_AVM-DE_GetClient","X_AVM-DE_SetClient"]]
 
+
 struct Action {
   
   let service: Service

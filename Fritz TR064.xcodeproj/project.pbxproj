@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		651B04701BC9C17A00DD81BD /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 651B046F1BC9C17A00DD81BD /* Alamofire.framework */; };
+		651B04711BC9C17A00DD81BD /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 651B046F1BC9C17A00DD81BD /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		651BAD671BC5317100DBB9EC /* TableViewInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651BAD661BC5317100DBB9EC /* TableViewInputCell.swift */; };
 		65287C0B1BC30E8000103231 /* VPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65287C0A1BC30E8000103231 /* VPN.swift */; };
 		65337A3E1BC16526009925E5 /* CallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3D1BC16526009925E5 /* CallCell.swift */; };
@@ -14,7 +16,14 @@
 		65337A421BC2E3C4009925E5 /* TR064Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A411BC2E3C4009925E5 /* TR064Manager.swift */; };
 		655F61FE1BC12C9000D723EE /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FD1BC12C9000D723EE /* Contact.swift */; };
 		655F62001BC139A900D723EE /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FF1BC139A900D723EE /* WebViewController.swift */; };
-		65B389371BC489960059D63F /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B389361BC489960059D63F /* Credentials.swift */; };
+		656BDA2F1BC9C9520083D0DE /* Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA291BC9C9520083D0DE /* Combinators.swift */; };
+		656BDA301BC9C9520083D0DE /* Delay+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA2A1BC9C9520083D0DE /* Delay+Promise.swift */; };
+		656BDA311BC9C9520083D0DE /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA2B1BC9C9520083D0DE /* Future.swift */; };
+		656BDA321BC9C9520083D0DE /* FutureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA2C1BC9C9520083D0DE /* FutureSource.swift */; };
+		656BDA331BC9C9520083D0DE /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA2D1BC9C9520083D0DE /* Promise.swift */; };
+		656BDA341BC9C9520083D0DE /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA2E1BC9C9520083D0DE /* State.swift */; };
+		656BDA361BC9C9790083D0DE /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA351BC9C9790083D0DE /* Credentials.swift */; };
+		659D59231BC9B72D006382A4 /* AlamofireXMLPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659D59221BC9B72D006382A4 /* AlamofireXMLPromise.swift */; };
 		65C005991BC1478100FDCFFA /* WebViewSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C005981BC1478100FDCFFA /* WebViewSegue.swift */; };
 		65C0059B1BC14E3300FDCFFA /* XMLResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */; };
 		65C8256B1BB75E02005DF551 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8256A1BB75E02005DF551 /* AppDelegate.swift */; };
@@ -27,21 +36,21 @@
 		65C825811BB76010005DF551 /* TR064.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C825801BB76010005DF551 /* TR064.swift */; };
 		65C825831BB76048005DF551 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C825821BB76048005DF551 /* Service.swift */; };
 		65C825851BB76079005DF551 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C825841BB76079005DF551 /* Action.swift */; };
-		65C8258B1BB7627D005DF551 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C8258A1BB7627D005DF551 /* Alamofire.framework */; };
-		65C8258D1BB762F5005DF551 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 65C8258A1BB7627D005DF551 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		65D5A1371BC6E98200D691DB /* Hosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D5A1361BC6E98200D691DB /* Hosts.swift */; };
+		65D5A1391BC708C900D691DB /* HostsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D5A1381BC708C900D691DB /* HostsVC.swift */; };
 		65DB0B231BC3191900D88E40 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65DB0B221BC3191900D88E40 /* NetworkExtension.framework */; };
 		65DB0B2B1BC3334400D88E40 /* keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 65DB0B2A1BC3334400D88E40 /* keychain.m */; };
 		65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E9F9521BBC4AE600DDA8E7 /* Call.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		65C8258E1BB762F5005DF551 /* Embed Frameworks */ = {
+		651B04721BC9C17A00DD81BD /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				65C8258D1BB762F5005DF551 /* Alamofire.framework in Embed Frameworks */,
+				651B04711BC9C17A00DD81BD /* Alamofire.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,6 +58,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		651B046F1BC9C17A00DD81BD /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		651BAD661BC5317100DBB9EC /* TableViewInputCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewInputCell.swift; sourceTree = "<group>"; };
 		65287C0A1BC30E8000103231 /* VPN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPN.swift; sourceTree = "<group>"; };
 		65287C0E1BC3175D00103231 /* Fritz TR064.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Fritz TR064.entitlements"; sourceTree = "<group>"; };
@@ -57,7 +67,14 @@
 		65337A411BC2E3C4009925E5 /* TR064Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TR064Manager.swift; sourceTree = "<group>"; };
 		655F61FD1BC12C9000D723EE /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		655F61FF1BC139A900D723EE /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		65B389361BC489960059D63F /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
+		656BDA291BC9C9520083D0DE /* Combinators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Combinators.swift; sourceTree = "<group>"; };
+		656BDA2A1BC9C9520083D0DE /* Delay+Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Delay+Promise.swift"; sourceTree = "<group>"; };
+		656BDA2B1BC9C9520083D0DE /* Future.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
+		656BDA2C1BC9C9520083D0DE /* FutureSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureSource.swift; sourceTree = "<group>"; };
+		656BDA2D1BC9C9520083D0DE /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
+		656BDA2E1BC9C9520083D0DE /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		656BDA351BC9C9790083D0DE /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Credentials.swift; path = "Fritz TR064/Credentials.swift"; sourceTree = "<group>"; };
+		659D59221BC9B72D006382A4 /* AlamofireXMLPromise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireXMLPromise.swift; sourceTree = "<group>"; };
 		65C005981BC1478100FDCFFA /* WebViewSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewSegue.swift; sourceTree = "<group>"; };
 		65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLResponseViewController.swift; sourceTree = "<group>"; };
 		65C825671BB75E02005DF551 /* Fritz TR064.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fritz TR064.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,6 +90,8 @@
 		65C825821BB76048005DF551 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		65C825841BB76079005DF551 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		65C8258A1BB7627D005DF551 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		65D5A1361BC6E98200D691DB /* Hosts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hosts.swift; sourceTree = "<group>"; };
+		65D5A1381BC708C900D691DB /* HostsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostsVC.swift; sourceTree = "<group>"; };
 		65DB0B221BC3191900D88E40 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		65DB0B261BC3328600D88E40 /* Fritz TR064-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fritz TR064-Bridging-Header.h"; sourceTree = "<group>"; };
 		65DB0B291BC3334400D88E40 /* keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keychain.h; sourceTree = "<group>"; };
@@ -85,8 +104,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65C8258B1BB7627D005DF551 /* Alamofire.framework in Frameworks */,
 				65DB0B231BC3191900D88E40 /* NetworkExtension.framework in Frameworks */,
+				651B04701BC9C17A00DD81BD /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,11 +115,12 @@
 		65C8255E1BB75E02005DF551 = {
 			isa = PBXGroup;
 			children = (
+				651B046F1BC9C17A00DD81BD /* Alamofire.framework */,
 				65DB0B221BC3191900D88E40 /* NetworkExtension.framework */,
 				65C8258A1BB7627D005DF551 /* Alamofire.framework */,
 				65C825691BB75E02005DF551 /* Fritz TR064 */,
 				65C825681BB75E02005DF551 /* Products */,
-				65B389361BC489960059D63F /* Credentials.swift */,
+				656BDA351BC9C9790083D0DE /* Credentials.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -120,6 +140,7 @@
 				65C8256A1BB75E02005DF551 /* AppDelegate.swift */,
 				65C8256C1BB75E02005DF551 /* MasterViewController.swift */,
 				65C8256E1BB75E02005DF551 /* ActionArgumentsVC.swift */,
+				65D5A1381BC708C900D691DB /* HostsVC.swift */,
 				65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */,
 				65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */,
 				65C825701BB75E02005DF551 /* Main.storyboard */,
@@ -127,8 +148,16 @@
 				65C825751BB75E02005DF551 /* LaunchScreen.storyboard */,
 				65C825781BB75E02005DF551 /* Info.plist */,
 				65C8257E1BB75E86005DF551 /* AEXML.swift */,
+				659D59221BC9B72D006382A4 /* AlamofireXMLPromise.swift */,
 				65337A411BC2E3C4009925E5 /* TR064Manager.swift */,
+				656BDA291BC9C9520083D0DE /* Combinators.swift */,
+				656BDA2A1BC9C9520083D0DE /* Delay+Promise.swift */,
+				656BDA2B1BC9C9520083D0DE /* Future.swift */,
+				656BDA2C1BC9C9520083D0DE /* FutureSource.swift */,
+				656BDA2D1BC9C9520083D0DE /* Promise.swift */,
+				656BDA2E1BC9C9520083D0DE /* State.swift */,
 				65C825801BB76010005DF551 /* TR064.swift */,
+				65D5A1361BC6E98200D691DB /* Hosts.swift */,
 				655F61FD1BC12C9000D723EE /* Contact.swift */,
 				65E9F9521BBC4AE600DDA8E7 /* Call.swift */,
 				65337A3D1BC16526009925E5 /* CallCell.swift */,
@@ -154,7 +183,7 @@
 				65C825631BB75E02005DF551 /* Sources */,
 				65C825641BB75E02005DF551 /* Frameworks */,
 				65C825651BB75E02005DF551 /* Resources */,
-				65C8258E1BB762F5005DF551 /* Embed Frameworks */,
+				651B04721BC9C17A00DD81BD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -222,21 +251,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				65C8256F1BB75E02005DF551 /* ActionArgumentsVC.swift in Sources */,
+				656BDA2F1BC9C9520083D0DE /* Combinators.swift in Sources */,
 				65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */,
+				656BDA361BC9C9790083D0DE /* Credentials.swift in Sources */,
+				65D5A1371BC6E98200D691DB /* Hosts.swift in Sources */,
 				65287C0B1BC30E8000103231 /* VPN.swift in Sources */,
 				655F61FE1BC12C9000D723EE /* Contact.swift in Sources */,
 				65C8257F1BB75E86005DF551 /* AEXML.swift in Sources */,
+				656BDA301BC9C9520083D0DE /* Delay+Promise.swift in Sources */,
 				655F62001BC139A900D723EE /* WebViewController.swift in Sources */,
 				65C825811BB76010005DF551 /* TR064.swift in Sources */,
 				65DB0B2B1BC3334400D88E40 /* keychain.m in Sources */,
+				659D59231BC9B72D006382A4 /* AlamofireXMLPromise.swift in Sources */,
 				65C8256D1BB75E02005DF551 /* MasterViewController.swift in Sources */,
 				65C005991BC1478100FDCFFA /* WebViewSegue.swift in Sources */,
 				651BAD671BC5317100DBB9EC /* TableViewInputCell.swift in Sources */,
 				65337A421BC2E3C4009925E5 /* TR064Manager.swift in Sources */,
 				65C825851BB76079005DF551 /* Action.swift in Sources */,
+				656BDA321BC9C9520083D0DE /* FutureSource.swift in Sources */,
 				65337A3E1BC16526009925E5 /* CallCell.swift in Sources */,
-				65B389371BC489960059D63F /* Credentials.swift in Sources */,
+				656BDA341BC9C9520083D0DE /* State.swift in Sources */,
+				656BDA311BC9C9520083D0DE /* Future.swift in Sources */,
+				65D5A1391BC708C900D691DB /* HostsVC.swift in Sources */,
 				65337A401BC166BB009925E5 /* CallListTableViewController.swift in Sources */,
+				656BDA331BC9C9520083D0DE /* Promise.swift in Sources */,
 				65C8256B1BB75E02005DF551 /* AppDelegate.swift in Sources */,
 				65C0059B1BC14E3300FDCFFA /* XMLResponseViewController.swift in Sources */,
 				65C825831BB76048005DF551 /* Service.swift in Sources */,

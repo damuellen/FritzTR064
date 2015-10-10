@@ -40,13 +40,8 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
       guard self.tableData.input.count == self.arguments.count else { return }
       arguments = self.arguments
     }
-  //  UIApplication.sharedApplication().networkActivityIndicatorVisible = true
     TR064.sendRequest(action, arguments: arguments).responseXMLDocument(TR064.completionHandler)
-
-    
-  //  UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-      self.performSegueWithIdentifier("showResponse", sender: self)
-    
+    self.performSegueWithIdentifier("showResponse", sender: self)
   }
   
   func textFieldShouldReturn(textField: UITextField) -> Bool {
