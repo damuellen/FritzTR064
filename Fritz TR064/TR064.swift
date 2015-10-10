@@ -105,6 +105,29 @@ extension Request {
     }
   }
   
+  static func XMLResponseSerializerFor(action: Action) -> GenericResponseSerializer<AEXMLElement> {
+    return GenericResponseSerializer { request, response, data in
+      guard let validData = data else {
+        let failureReason = "Data could not be serialized. Input data was nil."
+        let error = Error.errorWithCode(.DataSerializationFailed, failureReason: failureReason)
+        return .Failure(data, error)
+      }
+      do {
+        let XML = try AEXMLDocument(xmlData: validData)
+        if let validXML = XML.checkResponseOf(Action: action) {
+          return .Success(validXML)
+        }else {
+          let failureReason = "XML is no valid response for action."
+          let error = Error.errorWithCode(.ContentTypeValidationFailed, failureReason: failureReason)
+          return .Failure(data, error)
+        }
+      } catch {
+        return .Failure(data, error as NSError)
+      }
+    }
+  }
+  
+
   public func responseXMLDocument(completionHandler: (NSURLRequest?, NSHTTPURLResponse?, Result<AEXMLDocument>) -> Void) -> Self {
     return response(responseSerializer: Request.XMLResponseSerializer(), completionHandler: completionHandler)
   }

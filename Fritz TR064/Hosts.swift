@@ -25,21 +25,21 @@ class Hosts {
     }
   }
   
-  func getHostNumberOfEntries() -> Promise<AFPValue<AEXMLDocument>, AFPError> {
+  func getHostNumberOfEntries() -> Promise<AFPValue<AEXMLElement>, AFPError> {
     let getHostNumberOfEntries = self.foundedActions.lazy.filter { $0.name == "GetHostNumberOfEntries" }.first!
-    return TR064.sendRequest(getHostNumberOfEntries).responseXMLPromise()
+    return TR064.sendRequest(getHostNumberOfEntries).responsePromiseFor(Action: getHostNumberOfEntries)
   }
 
-  func getHost(index: Int) -> Promise<AFPValue<AEXMLDocument>, AFPError>  {
+  func getHost(index: Int) -> Promise<AFPValue<AEXMLElement>, AFPError>  {
     let getGenericHostEntry = self.foundedActions.lazy.filter { $0.name == "GetGenericHostEntry" }.first!
-    return TR064.sendRequest(getGenericHostEntry, arguments: ["\(index)"]).responseXMLPromise()
+    return TR064.sendRequest(getGenericHostEntry, arguments: ["\(index)"]).responsePromiseFor(Action: getGenericHostEntry)
   }
 
-  func getAllHosts() {
-    var hosts = [Promise<AFPValue<AEXMLDocument>, AFPError>]()
+  func getAllHosts() -> [Promise<AFPValue<AEXMLElement>, AFPError>] {
+    var hosts = [Promise<AFPValue<AEXMLElement>, AFPError>]()
     var action = self.foundedActions.lazy.filter { $0.name == "GetHostNumberOfEntries" }.first!
-    getHostNumberOfEntries().then { XML in
-      if let number = Int((XML.value.checkResponseOf(Action: action)?.convertResponseWith(Action: action)?.values.first)!) {
+    getHostNumberOfEntries().then { xml in
+      if let number = Int((xml.value.convertResponseWith(Action: action)?.values.first!)!) {
         for n in 0..<number {
           hosts.append(self.getHost(n))
         }
@@ -48,9 +48,10 @@ class Hosts {
     action = self.foundedActions.lazy.filter { $0.name == "GetGenericHostEntry" }.first!
     whenAll(hosts).then { hosts in
       self.entries = hosts.map {
-        $0.value.checkResponseOf(Action: action)?.convertResponseWith(Action: action)
+        $0.value.convertResponseWith(Action: action)
         }.flatMap {$0}
     }
+    return hosts
   }
   
 }

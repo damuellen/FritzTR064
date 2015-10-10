@@ -80,6 +80,9 @@ extension Request {
   public func responseXMLPromise() -> Promise<AFPValue<AEXMLDocument>, AFPError> {
     return self.responsePromise(responseSerializer: Request.XMLResponseSerializer())
   }
+  func responsePromiseFor(Action action: Action) -> Promise<AFPValue<AEXMLElement>, AFPError> {
+    return self.responsePromise(responseSerializer: Request.XMLResponseSerializerFor(action))
+  }
 }
 
 
