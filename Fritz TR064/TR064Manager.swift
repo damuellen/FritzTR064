@@ -28,6 +28,10 @@ class TR064Manager {
     TR064.getAvailableServices()
   }
   
+  subscript(name: String) -> Action? {
+    return self.actions.filter { $0.name == name }.first
+  }
+  
 }
 
 protocol TR064ServiceObserver {
@@ -47,3 +51,4 @@ extension MasterViewController: TR064ServiceObserver {
   }
   
 }
+

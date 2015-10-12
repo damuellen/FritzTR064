@@ -18,8 +18,8 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   var action: Action!
   
   func refresh() {
-    if let actionResponse = TR064Manager.sharedManager.lastResponse?.checkResponseOf(Action: self.action),
-      validResponse = actionResponse.convertResponseWith(Action: self.action) {
+    if let actionResponse = TR064Manager.sharedManager.lastResponse?.checkResponseOfAction(self.action),
+      validResponse = actionResponse.convertResponseWithAction(self.action) {
         self.tableData = validResponse
     }
   }

@@ -22,6 +22,7 @@ class HostsVC: UITableViewController, UITextFieldDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     Hosts.sharedHosts.observer = self
+    Hosts.sharedHosts.getAllHosts()
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableViewAutomaticDimension
     self
@@ -52,7 +53,7 @@ class HostsVC: UITableViewController, UITextFieldDelegate {
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-    cell.textLabel!.text = self.tableData[indexPath.section].values.map{$0}[indexPath.row]
+    cell.textLabel?.text = self.tableData[indexPath.section].values.map{$0}[indexPath.row]
     cell.detailTextLabel?.text = self.tableData[indexPath.section].keys.map{$0}[indexPath.row]
     return cell
   }

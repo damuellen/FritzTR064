@@ -43,7 +43,7 @@ extension AEXMLDocument {
   
    func checkResponseForURL(action: Action) -> String? {
     var URL: String?
-    guard let validResponse = self.checkResponseOf(Action: action) else { return nil }
+    guard let validResponse = self.checkResponseOfAction(action) else { return nil }
     for possibleURL in validResponse.children where possibleURL.value != nil {
       if possibleURL.value!.containsString("http") {
         URL = possibleURL.value!
@@ -53,7 +53,7 @@ extension AEXMLDocument {
   }
   
   
-  func checkResponseOf(Action action: Action) -> AEXMLElement? {
+  func checkResponseOfAction(action: Action) -> AEXMLElement? {
     let soapResponse = self.root["s:Body"]["u:\(action.name)Response"]
     if soapResponse.name == "AEXMLError" { return nil }
     return soapResponse
@@ -62,7 +62,7 @@ extension AEXMLDocument {
 
 extension AEXMLElement {
 
-func convertResponseWith(Action action: Action) -> [String:String]? {
+func convertResponseWithAction(action: Action) -> [String:String]? {
   var result = [String:String]()
   for key in action.output.keys {
     if let value = self[key].value {
@@ -73,6 +73,8 @@ func convertResponseWith(Action action: Action) -> [String:String]? {
 }
 
 }
+
+
 /**
     This is base class for holding XML structure.
 
