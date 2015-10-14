@@ -41,7 +41,6 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     if let split = self.splitViewController {
       let controllers = split.viewControllers
       self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ActionArgumentsVC
@@ -62,6 +61,7 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   
   override func viewWillAppear(animated: Bool) {
     TR064Manager.sharedManager.observer = self
+    self.refresh()
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
   }

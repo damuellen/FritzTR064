@@ -10,18 +10,18 @@ class TR064Manager {
   
   static let sharedManager = TR064Manager()
   
-  var observer: TR064ServiceObserver!
+  var observer: TR064ServiceObserver?
 
   var services = [Service]()  {
     didSet { services.forEach { service in TR064.getActionsFor(service) } }
   }
   
   var actions = [Action]() {
-    didSet { observer.refresh() }
+    didSet { observer?.refresh() }
   }
   
   var lastResponse: AEXMLDocument? {
-    didSet { observer.refresh() }
+    didSet { observer?.refresh() }
   }
 
   init() {

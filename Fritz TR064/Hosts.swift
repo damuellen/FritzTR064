@@ -28,32 +28,36 @@ class Hosts {
     return Hosts.expectedActionNames.count == self.foundedActions.count
   }
   
-  subscript(name: String) -> Action {
-    return self.foundedActions.filter { $0.name == name }.first!
+  subscript(name: String) -> Action? {
+    return self.foundedActions.filter { $0.name == name }.first
   }
   
   func getHostNumberOfEntries() -> ActionResultPromise {
-    return TR064.startAction(self["GetHostNumberOfEntries"])
+    return TR064.startAction(self["GetHostNumberOfEntries"]!)
   }
   
   func getHost(index: Int) -> ActionResultPromise  {
-    return TR064.startAction(self["GetGenericHostEntry"], arguments: ["\(index)"])
+    return TR064.startAction(self["GetGenericHostEntry"]!, arguments: ["\(index)"])
   }
   
   func getAllHosts() {
     getHostNumberOfEntries().then { xml in
       var hosts = [ActionResultPromise]()
-      if let number = Int((xml.value.convertResponseWithAction(self["GetHostNumberOfEntries"])?.values.first!)!) {
+      if let number = Int((xml.value.convertResponseWithAction(self["GetHostNumberOfEntries"]!)?.values.first!)!) {
         for n in 0..<number {
           hosts.append(self.getHost(n))
         }
       }
       whenAll(hosts).then { hosts in
         self.entries = hosts.map {
-          $0.value.convertResponseWithAction(self["GetGenericHostEntry"])
+          $0.value.convertResponseWithAction(self["GetGenericHostEntry"]!)
           }.flatMap {$0}
       }
     }
+  }
+  
+  func wakeHost(MAC: String) {
+   // TR064.startAction(self["WakeOnLANByMACAddress"]!, arguments: [MAC])
   }
   
 }

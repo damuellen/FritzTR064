@@ -41,6 +41,7 @@
 		65DB0B231BC3191900D88E40 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65DB0B221BC3191900D88E40 /* NetworkExtension.framework */; };
 		65DB0B2B1BC3334400D88E40 /* keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 65DB0B2A1BC3334400D88E40 /* keychain.m */; };
 		65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E9F9521BBC4AE600DDA8E7 /* Call.swift */; };
+		65EA37DC1BCCFF6B00754DD4 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -97,6 +98,7 @@
 		65DB0B291BC3334400D88E40 /* keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keychain.h; sourceTree = "<group>"; };
 		65DB0B2A1BC3334400D88E40 /* keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keychain.m; sourceTree = "<group>"; };
 		65E9F9521BBC4AE600DDA8E7 /* Call.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
+		65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				65C8256C1BB75E02005DF551 /* MasterViewController.swift */,
 				65C8256E1BB75E02005DF551 /* ActionArgumentsVC.swift */,
 				65D5A1381BC708C900D691DB /* HostsVC.swift */,
+				65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */,
 				65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */,
 				65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */,
 				65C825701BB75E02005DF551 /* Main.storyboard */,
@@ -259,6 +262,7 @@
 				655F61FE1BC12C9000D723EE /* Contact.swift in Sources */,
 				65C8257F1BB75E86005DF551 /* AEXML.swift in Sources */,
 				656BDA301BC9C9520083D0DE /* Delay+Promise.swift in Sources */,
+				65EA37DC1BCCFF6B00754DD4 /* MenuViewController.swift in Sources */,
 				655F62001BC139A900D723EE /* WebViewController.swift in Sources */,
 				65C825811BB76010005DF551 /* TR064.swift in Sources */,
 				65DB0B2B1BC3334400D88E40 /* keychain.m in Sources */,

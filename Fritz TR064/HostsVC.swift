@@ -9,7 +9,7 @@
 import UIKit
 
 
-class HostsVC: UITableViewController, UITextFieldDelegate {
+class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver {
     
   var tableData = [[String:String]]() {
     didSet {
@@ -19,8 +19,13 @@ class HostsVC: UITableViewController, UITextFieldDelegate {
 
   var action: Action!
 
+  func refresh() {
+    
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    TR064Manager.sharedManager.observer = self
     Hosts.sharedHosts.observer = self
     Hosts.sharedHosts.getAllHosts()
     tableView.estimatedRowHeight = 44.0
@@ -48,7 +53,7 @@ class HostsVC: UITableViewController, UITextFieldDelegate {
   }
   
   override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 10
+    return 20
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -58,9 +63,11 @@ class HostsVC: UITableViewController, UITextFieldDelegate {
     return cell
   }
 
-  override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    return false
+  override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let hostMAC = Hosts.sharedHosts.entries[indexPath.section].first!.1
+    Hosts.sharedHosts.wakeHost(hostMAC)
   }
+  
 
 }
 
