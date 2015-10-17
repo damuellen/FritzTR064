@@ -14,9 +14,17 @@ class Hosts {
   
   var observer: HostsVC!
   
-  static let hostsActions = TR064Manager.sharedManager.actions.filter { $0.service.serviceType == "urn:dslforum-org:service:Hosts:1" }
-  static var expectedActionNames = ["GetHostNumberOfEntries","GetSpecificHostEntry","GetGenericHostEntry","SetHostNameByMACAdress","WakeOnLANByMACAddress"]
-  var foundedActions = { hostsActions.filter { expectedActionNames.contains($0.name) } }()
+  static let actions = TR064Manager.sharedManager.actions
+    .filter { $0.service.serviceType == "urn:dslforum-org:service:Hosts:1" }
+    .filter { Hosts.expectedActionNames(rawValue: $0.name) != nil }
+  
+  enum expectedActionNames: String {
+    case getHostNumberOfEntries = "GetHostNumberOfEntries"
+    case getSpecificHostEntry = "GetSpecificHostEntry"
+    case getGenericHostEntry = "GetGenericHostEntry"
+    case setHostNameByMACAdress = "SetHostNameByMACAdress"
+    case wakeOnLANByMACAddress = "X_AVM-DE_WakeOnLANByMACAddress"
+  }
   
   var entries = [[String:String]]() {
     didSet {
@@ -24,40 +32,38 @@ class Hosts {
     }
   }
   
-  var expectedActionsFound: Bool {
-    return Hosts.expectedActionNames.count == self.foundedActions.count
-  }
-  
-  subscript(name: String) -> Action? {
-    return self.foundedActions.filter { $0.name == name }.first
+  subscript(name: expectedActionNames) -> Action {
+    return Hosts.actions.filter { $0.name == name.rawValue }.first!
   }
   
   func getHostNumberOfEntries() -> ActionResultPromise {
-    return TR064.startAction(self["GetHostNumberOfEntries"]!)
+    let action = self[.getHostNumberOfEntries]
+    return TR064.startAction(action)
   }
   
-  func getHost(index: Int) -> ActionResultPromise  {
-    return TR064.startAction(self["GetGenericHostEntry"]!, arguments: ["\(index)"])
+  func getHost(index: Int) -> ActionResultPromise {
+    let action = self[.getGenericHostEntry]
+    return TR064.startAction(action, arguments: ["\(index)"])
   }
   
   func getAllHosts() {
     getHostNumberOfEntries().then { xml in
       var hosts = [ActionResultPromise]()
-      if let number = Int((xml.value.convertResponseWithAction(self["GetHostNumberOfEntries"]!)?.values.first!)!) {
+      if let number = Int((xml.value.convertResponseWithAction(self[.getHostNumberOfEntries])?.values.first!)!) {
         for n in 0..<number {
           hosts.append(self.getHost(n))
         }
       }
       whenAll(hosts).then { hosts in
         self.entries = hosts.map {
-          $0.value.convertResponseWithAction(self["GetGenericHostEntry"]!)
+          $0.value.convertResponseWithAction(self[.getGenericHostEntry])
           }.flatMap {$0}
       }
     }
   }
   
   func wakeHost(MAC: String) {
-   // TR064.startAction(self["WakeOnLANByMACAddress"]!, arguments: [MAC])
+    TR064.startAction(self[.wakeOnLANByMACAddress], arguments: [MAC])
   }
   
 }
