@@ -46,4 +46,9 @@ class CallCell: UITableViewCell {
     }
   }
   
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.layer.sublayers?.filter { $0 is CAGradientLayer }.forEach { $0.frame = self.bounds }
+  }
+  
 }

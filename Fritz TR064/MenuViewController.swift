@@ -8,6 +8,14 @@
 
 import UIKit
 
+class BackgroundGradientView: UIView {
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.layer.sublayers?.filter { $0 is CAGradientLayer }.forEach { $0.frame = self.bounds }
+  }
+}
+
 class MenuViewController: UIViewController, TR064ServiceObserver {
   
   @IBOutlet weak var Hosts: UIButton!
@@ -26,10 +34,10 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
     self.Hosts.layer.cornerRadius = cornerRadius
     self.Actions.layer.cornerRadius = cornerRadius
     self.CallList.layer.cornerRadius = cornerRadius
-    
-    self.view.changeGradientLayerWithColors(UIColor.fieryOrange())
+    let c = [UIColor.randomNiceColor(), UIColor.randomNiceColor()]
+    self.view.changeGradientLayerWithColors(c)
     self.Hosts.changeGradientLayerWithColors(UIColor.mojitoBlast())
-    self.Actions.changeGradientLayerWithColors(UIColor.mojitoBlast())
+    self.Actions.changeGradientLayerWithColors(UIColor.deepBlue())
     self.CallList.changeGradientLayerWithColors(UIColor.mojitoBlast())
     self.Button1.changeGradientLayerWithColors(UIColor.haze())
     self.Button2.changeGradientLayerWithColors(UIColor.haze())
@@ -52,7 +60,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "showCallList" {
-      OnTel.sharedService.getCallList()
+      OnTel.sharedService.getCallListMaxCalls(10)
     }
   }
   
