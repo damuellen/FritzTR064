@@ -30,19 +30,19 @@ class CallCell: UITableViewCell {
     duration.text = "\(call.duration)"
     switch call.type {
     case .activeIncoming:
-      backgroundColor = UIColor.redColor()
+      self.changeGradientLayerWithColors(UIColor.deepBlue())
     case .activeOutgoing:
-      backgroundColor = UIColor.blueColor()
+      self.changeGradientLayerWithColors(UIColor.maceWindu())
     case .incoming:
-      backgroundColor = UIColor.greenColor()
+      self.changeGradientLayerWithColors(UIColor.mojitoBlast())
     case .missed:
-      backgroundColor = UIColor.grayColor()
+      self.changeGradientLayerWithColors(UIColor.haze())
     case .outgoing:
-      backgroundColor = UIColor.orangeColor()
+      self.changeGradientLayerWithColors(UIColor.orangeMango())
     case .rejectedIncoming:
-      backgroundColor = UIColor.brownColor()
+      self.changeGradientLayerWithColors(UIColor.blueOcean())
     case .error:
-      backgroundColor = UIColor.blackColor()
+      self.changeGradientLayerWithColors(UIColor.lovelyPink())
     }
   }
   
