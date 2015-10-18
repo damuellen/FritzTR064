@@ -8,6 +8,8 @@
 
 import UIKit
 
+let colors = UIColor.fieryOrange() + UIColor.blueOcean() + UIColor.mojitoBlast() + UIColor.beach()
+
 extension UIColor {
   
   convenience init(r: UInt, g: UInt, b: UInt, alpha: CGFloat = 1) {
@@ -26,6 +28,11 @@ extension UIColor {
       blue: CGFloat(rgb & 0x0000FF) / 255.0,
       alpha: alpha
     )
+  }
+  
+  class func randomNiceColor() -> UIColor {
+    let randomIndex = Int(arc4random_uniform(UInt32(colors.count)))
+    return colors[randomIndex]
   }
   
   class func fieryOrange() -> [UIColor] {
@@ -80,6 +87,7 @@ extension UIView {
     self.layer.sublayers?.filter { $0 is CAGradientLayer }
       .forEach { $0.removeFromSuperlayer() }
     self.layer.insertSublayer(gradientLayer, atIndex: 0)
+    
   }
   
 }
