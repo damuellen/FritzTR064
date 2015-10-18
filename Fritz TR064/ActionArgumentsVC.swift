@@ -8,12 +8,7 @@
 
 import UIKit
 
-
 typealias Argument = (name: String, value: String)
-
-protocol SOAPDelegate {
-  var action: Action! { get set }
-}
 
 class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   
@@ -59,6 +54,7 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
     guard let action = self.action else { return }
     self.tableData.output = action.output.keys.map { ($0.stringByReplacingOccurrencesOfString("New", withString: ""),"") }
     self.navigationItem.title = action.name
+    self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
   }
   
   func showInputArguments() {
@@ -68,6 +64,7 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
     self.tableData.output = action.output.keys.map { ($0.stringByReplacingOccurrencesOfString("New", withString: ""),"") }
     self.navigationItem.rightBarButtonItem?.enabled = false
     self.navigationItem.title = action.name
+    self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
   }
   
   func checkInputArguments() {

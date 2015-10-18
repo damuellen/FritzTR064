@@ -49,6 +49,7 @@ public enum AlamofireDecodeError : ErrorType {
 }
 
 extension Request {
+  
   public func responseDecodePromise<T>(decoder: AnyObject -> T?) -> Promise<T, AlamofireDecodeError> {
     return self.responseXMLPromise()
       .mapError { err in
@@ -72,6 +73,7 @@ extension Request {
         return Promise(value: decoded)
     }
   }
+  
 }
 
 // MARK: - XML
@@ -111,7 +113,7 @@ extension Request {
       }
       do {
         let XML = try AEXMLDocument(xmlData: validData)
-        if let validXML = XML.checkResponseOfAction(action) {
+        if let validXML = XML.checkWithAction(action) {
           return .Success(validXML)
         }else {
           let failureReason = "XML is no valid response for action."
@@ -123,7 +125,6 @@ extension Request {
       }
     }
   }
-  
   
   public func responseXMLDocument(completionHandler: (NSURLRequest?, NSHTTPURLResponse?, Result<AEXMLDocument>) -> Void) -> Self {
     return response(responseSerializer: Request.XMLResponseSerializer(), completionHandler: completionHandler)

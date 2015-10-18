@@ -10,6 +10,12 @@ import Alamofire
 
 typealias ActionResultPromise = Promise<AFPValue<AEXMLElement>, AFPError>
 
+enum TR064Error: ErrorType {
+  case MissingService
+  case MissingAction
+  case NoAnswer
+}
+
 struct TR064 {
   
   static let manager = TR064Manager.sharedManager
@@ -21,7 +27,7 @@ struct TR064 {
   }
   
   /// Request the tr064desc.xml from the router, and give the founded services to the manager.
-  /// Retries until it get an answer from router.
+  /// Retries until it gets an answer from router. The app don't work otherwise.
   static func getAvailableServices() {
     let requestURL = TR064.serviceURL + TR064.descURL
     Alamofire.request(.GET, requestURL)
@@ -29,9 +35,12 @@ struct TR064 {
       .responseXMLDocument { (_, _, XML) -> Void in
           if let xml = XML.value {
             manager.services = TR064.getServicesFromXML(xml)
-          }else {
-            delay(2) { getAvailableServices() }
           }
+      }
+      .response { (_, _, _, HTTPError) -> Void in
+        if HTTPError != nil {
+            delay(2) { getAvailableServices() }
+        }
     }
   }
   
@@ -50,16 +59,22 @@ struct TR064 {
   
   /// Creates an envelope with the action and it arguments.
   static func createMessageBody(action: Action, arguments: [String] = []) -> NSData? {
+    
     let soapRequest = AEXMLDocument()
+
     let envelope = soapRequest.addChild(name: "s:Envelope", attributes:
       ["xmlns:s" : "http://schemas.xmlsoap.org/soap/envelope/",
        "s:encodingStyle" : "http://schemas.xmlsoap.org/soap/encoding/"])
+    
     let body = envelope.addChild(name: "s:Body")
+    
     let actionBody = body.addChild(name: "u:\(action.name)", attributes:
       ["xmlns:u": action.service.serviceType])
+    
     for (argument, value) in zip(action.input.keys, arguments) {
       actionBody.addChild(name: argument, value: value)
     }
+    
     return soapRequest.xmlString.dataUsingEncoding(NSUTF8StringEncoding)
   }
   
@@ -72,12 +87,13 @@ struct TR064 {
     return request
   }
   
+  /// Sends an request for an action with arguments.
   static func sendRequest(action: Action, arguments: [String] = []) -> Request {
     let request = createRequest(action)
     request.HTTPBody = createMessageBody(action, arguments: arguments)
     return Alamofire.request(request).authenticate(user: account, password: pass).validate()
   }
-  
+  /// Sends an request for an action with arguments, and returns a future response.
   static func startAction(action: Action, arguments: [String] = []) -> ActionResultPromise {
     return sendRequest(action, arguments: arguments).responsePromiseFor(Action: action)
   }
@@ -88,9 +104,11 @@ struct TR064 {
   
   /// Helper function to get known services from tr064desc.xml.
   static func getServicesFromXML(discription: AEXMLDocument) -> [Service] {
+    
     let internetGatewayDevice = discription.root["device"],
     LANDevice = discription.root["device"]["deviceList"].children[0],
     WANDevice = discription.root["device"]["deviceList"].children[1]
+    
     let serviceList = internetGatewayDevice["serviceList"].children
      + LANDevice["serviceList"].children
      + WANDevice["serviceList"].children

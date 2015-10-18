@@ -58,9 +58,9 @@ struct Call {
       
       self.date = { date -> NSDate in
         let dateFormatter = NSDateFormatter.sharedInstance
-        dateFormatter.dateFormat = "dd:mm:yy hh:mm"
-        if let dataObject = dateFormatter.dateFromString(dateString) {
-          return dataObject
+        dateFormatter.dateFormat = "dd.MM.yy HH:mm"
+        if let dateObject = dateFormatter.dateFromString(dateString) {
+          return dateObject
         } else {
           return NSDate()
         }

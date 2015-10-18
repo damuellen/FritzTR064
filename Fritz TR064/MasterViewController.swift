@@ -15,9 +15,13 @@ extension MasterViewController: UISearchResultsUpdating {
     guard let searchText = searchController.searchBar.text else { return }
     switch searchController.searchBar.selectedScopeButtonIndex {
     case 1:
-      filteredData = self.tableData.map { service in (service: service.service, actions: filterActionByService(service.actions, filter: searchText)) }
+      filteredData = self.tableData.map { service in
+        (service: service.service, actions: filterActionByService(service.actions, filter: searchText))
+      }
     default:
-      filteredData = self.tableData.map { service in (service: service.service, actions: filterActionByName(service.actions, filter: searchText)) }
+      filteredData = self.tableData.map { service in
+        (service: service.service, actions: filterActionByName(service.actions, filter: searchText))
+      }
     }
     tableView.reloadData()
   }
@@ -120,12 +124,12 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
     let action = self.tableData[indexPath.section].actions[indexPath.row]
     if action.needsInput {
       let cell = tableView.dequeueReusableCellWithIdentifier("Input", forIndexPath: indexPath)
-      cell.textLabel!.text = action.name.stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
+      cell.textLabel!.text = action.name  // .stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
       cell.detailTextLabel?.text = action.url
       return cell
     } else {
       let cell = tableView.dequeueReusableCellWithIdentifier("Output", forIndexPath: indexPath)
-      cell.textLabel!.text = action.name.stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
+      cell.textLabel!.text = action.name  // .stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
       cell.detailTextLabel?.text = action.url
       return cell
     }

@@ -17,7 +17,8 @@ class CallListTableViewController: UITableViewController, UITextFieldDelegate, T
   }
   
   func refresh() {
-    self.tableData = TR064Manager.sharedManager.lastResponse!.transformXMLtoCalls().sort(<)
+    self.tableData = OnTel.sharedService.entries
+    // self.tableData = TR064Manager.sharedManager.lastResponse!.transformXMLtoCalls().sort(<)
   }
   
   override func viewDidLoad() {
@@ -29,11 +30,10 @@ class CallListTableViewController: UITableViewController, UITextFieldDelegate, T
   
   override func viewWillAppear(animated: Bool) {
     TR064Manager.sharedManager.observer = self
-    self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
+    OnTel.sharedService.observer = self
     super.viewWillAppear(animated)
   }
-  
-  @IBOutlet weak var text: UITextField!
+
   // MARK: - Table View
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

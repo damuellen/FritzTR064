@@ -30,7 +30,6 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
     Hosts.sharedHosts.getAllHosts()
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableViewAutomaticDimension
-    self
   }
   
   @IBOutlet weak var text: UITextField!

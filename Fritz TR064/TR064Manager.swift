@@ -13,11 +13,13 @@ class TR064Manager {
   var observer: TR064ServiceObserver?
 
   var services = [Service]()  {
-    didSet { services.forEach { service in TR064.getActionsFor(service) } }
+    didSet { services.forEach { service in
+      TR064.getActionsFor(service) } }
   }
   
   var actions = [Action]() {
-    didSet { observer?.refresh() }
+    didSet {
+      observer?.refresh() }
   }
   
   var lastResponse: AEXMLDocument? {
@@ -36,6 +38,19 @@ class TR064Manager {
 
 protocol TR064ServiceObserver {
   func refresh()
+}
+
+protocol TR064Service {
+  var manager: TR064Manager { get }
+  var serviceType: String { get }
+}
+
+extension TR064Service {
+  var manager: TR064Manager { return TR064Manager.sharedManager }
+  var actions: [Action] {
+    return manager.actions.filter { $0.service.serviceType == self.serviceType }
+  }
+  
 }
 
 extension MasterViewController: TR064ServiceObserver {

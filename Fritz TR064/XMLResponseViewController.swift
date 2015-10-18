@@ -18,8 +18,8 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   var action: Action!
   
   func refresh() {
-    if let actionResponse = TR064Manager.sharedManager.lastResponse?.checkResponseOfAction(self.action),
-      validResponse = actionResponse.convertResponseWithAction(self.action) {
+    if let actionResponse = TR064Manager.sharedManager.lastResponse?.checkWithAction(self.action),
+      validResponse = actionResponse.convertWithAction(self.action) {
         self.tableData = validResponse
     }
   }
@@ -36,21 +36,15 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
   }
-  
-  // MARK: - Segues
-  
-  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    if segue.identifier == "showCallList" {
-    }
-  }
-  
+    
   @IBOutlet weak var text: UITextField!
   // MARK: - Table View
   
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     if let text = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text {
-      UIPasteboard.generalPasteboard().string = text }
-    guard let XML = TR064Manager.sharedManager.lastResponse, URL = XML.checkResponseForURL(self.action) else { return }
+      UIPasteboard.generalPasteboard().string = text
+    }
+    guard let XML = TR064Manager.sharedManager.lastResponse, URL = XML.checkForURLWithAction(self.action) else { return }
     TR064.getXMLFromURL(URL)?.responseXMLDocument(TR064.completionHandler)
     if URL.containsString("calllist") { self.performSegueWithIdentifier("showCallList", sender: self) }
   }
@@ -60,7 +54,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   }
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return self.tableData.count
+    return self.tableData.count
   }
 
   override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
