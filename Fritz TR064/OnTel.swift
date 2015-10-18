@@ -27,16 +27,23 @@ class OnTel: TR064Service {
     return self.actions.filter { $0.name == name.rawValue }.first
   }
   
-  func getCallList() {
+  func getCallList(argument: String = "") {
     guard let action = self[.getCallList] else { return }
     TR064.startAction(action).then { xml in
       guard let url = xml.value.checkForURL() else { return }
-      let callList = TR064.getXMLFromURL(url)?.responseXMLPromise()
+      let callList = TR064.getXMLFromURL(url + argument)?.responseXMLPromise()
       callList?.then { callList in
         self.entries = callList.value.transformXMLtoCalls()
       }
     }
   }
   
+  func getCallListForDays(days: Int) {
+    getCallList("&days=\(days)")
+  }
+  
+  func getCallListMaxCalls(calls: Int) {
+    getCallList("&max=\(calls)")
+  }
   
 }
