@@ -6,6 +6,7 @@
 //  Copyright © 2015 Daniel Müllenborn. All rights reserved.
 //
 
+/// Handler for the founded actions, and XML response of the last request.
 class TR064Manager {
   
   static let sharedManager = TR064Manager()
@@ -26,8 +27,8 @@ class TR064Manager {
     didSet { observer?.refresh() }
   }
 
-  init() {
-    TR064.getAvailableServices()
+  func setup() {
+      TR064.getAvailableServices()
   }
   
   subscript(name: String) -> Action? {

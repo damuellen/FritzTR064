@@ -14,11 +14,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
   var vpnConnection: NEVPNConnection?
-  
+
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // Override point for customization after application launch.
     storeCredentials() // private file
     vpnConnection = VPN()
+    
+    var id: AnyObject?
+    id = NSNotificationCenter.defaultCenter().addObserverForName(NEVPNStatusDidChangeNotification, object: nil, queue: NSOperationQueue.mainQueue()) { _ in
+      TR064Manager.sharedManager.setup()
+      NSNotificationCenter.defaultCenter().removeObserver(id!)
+    }
     return true
   }
 
