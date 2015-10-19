@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver {
     
   var tableData = [[String:String]]() {
@@ -32,6 +31,14 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
     tableView.rowHeight = UITableViewAutomaticDimension
   }
   
+  func appearAlertViewController(message: String, block: () -> Void){
+    let alert:UIAlertController = UIAlertController(title: "Wake on LAN", message: ("\n" + message), preferredStyle: .ActionSheet)
+    let action = UIAlertAction(title: "Wake", style: UIAlertActionStyle.Default) { (action:UIAlertAction!) -> Void in block() }
+    alert.addAction(action)
+    alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+    presentViewController(alert, animated: true, completion: nil)
+  }
+
   @IBOutlet weak var text: UITextField!
 
   // MARK: - Table View
@@ -63,10 +70,11 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
   }
 
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let hostMAC = Hosts.sharedHosts.entries[indexPath.section].first!.1
-    Hosts.sharedHosts.wakeHost(hostMAC)
+    let hostMAC = Hosts.sharedHosts.entries[indexPath.section]["NewMACAddress"]!
+    let hostName = Hosts.sharedHosts.entries[indexPath.section]["NewHostName"]!
+    self.appearAlertViewController(hostName) {
+      Hosts.sharedHosts.wakeHost(hostMAC)
+    }
   }
   
-
 }
-
