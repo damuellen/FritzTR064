@@ -38,7 +38,11 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   }
     
   @IBOutlet weak var text: UITextField!
+}
+
   // MARK: - Table View
+
+extension XMLResponseViewController {
   
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     if let text = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text {

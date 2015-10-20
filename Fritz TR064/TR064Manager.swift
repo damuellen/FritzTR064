@@ -51,7 +51,7 @@ extension TR064Service {
   var actions: [Action] {
     return manager.actions.filter { $0.service.serviceType == self.serviceType }
   }
-  
+
 }
 
 extension MasterViewController: TR064ServiceObserver {

@@ -15,6 +15,10 @@ class Time: TR064Service {
   
   enum expectedActions: String {
     case getInfo = "GetInfo"
+    
+    var action: Action? {
+      return Time.sharedService.actions.filter { $0.name == self.rawValue }.first
+    }
   }
   
   var entries = [String:String]() {
@@ -23,8 +27,5 @@ class Time: TR064Service {
     }
   }
   
-  subscript(name: expectedActions) -> Action? {
-    return self.actions.filter { $0.name == name.rawValue }.first
-  }
   
 }

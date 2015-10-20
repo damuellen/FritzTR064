@@ -8,26 +8,20 @@
 
 import UIKit
 
-extension MasterViewController: UISearchResultsUpdating {
+extension MasterViewController: UISearchResultsUpdating, UISearchBarDelegate {
   
   func updateSearchResultsForSearchController(searchController: UISearchController) {
-    filteredData.removeAll(keepCapacity: false)
-    guard let searchText = searchController.searchBar.text else { return }
-    switch searchController.searchBar.selectedScopeButtonIndex {
-    case 1:
+    if let searchText = searchController.searchBar.text where !searchText.isEmpty {
       filteredData = self.tableData.map { service in
-        (service: service.service, actions: filterActionByService(service.actions, filter: searchText))
-      }
-    default:
-      filteredData = self.tableData.map { service in
-        (service: service.service, actions: filterActionByName(service.actions, filter: searchText))
-      }
+        (service: service.service, actions: filterActionByName(service.actions, filter: searchText)) }
+    } else {
+      filteredData = tableData
     }
     tableView.reloadData()
   }
   
   func filterActionByName(actions: [Action], filter: String)-> [Action] {
-    return actions.filter { $0.name.lowercaseString.containsString(filter.lowercaseString) || filter == "" }
+    return actions.filter { $0.name.lowercaseString.containsString(filter.lowercaseString) }
   }
   
   func filterActionByService(actions: [Action], filter: String)-> [Action] {
@@ -36,12 +30,17 @@ extension MasterViewController: UISearchResultsUpdating {
   
 }
 
-class MasterViewController: UITableViewController, UISearchBarDelegate, UISearchDisplayDelegate   {
+class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
   
-  var tableData = [(service: Service, actions: [Action])]()
+  var tableData = [(service: Service, actions: [Action])]() {
+    didSet {
+      filteredData = tableData
+    }
+  }
   var filteredData = [(service: Service, actions: [Action])]()
-  var resultSearchController = UISearchController()
-  var detailViewController: ActionArgumentsVC? = nil
+  
+  var resultSearchController: UISearchController!
+  var detailViewController: ActionArgumentsVC?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -55,7 +54,6 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
       controller.hidesNavigationBarDuringPresentation = false
       controller.dimsBackgroundDuringPresentation = false
       controller.searchBar.searchBarStyle = UISearchBarStyle.Prominent
-      controller.searchBar.scopeButtonTitles = ["Name", "Service"]
       controller.searchBar.sizeToFit()
       controller.searchBar.delegate = self
       self.tableView.tableHeaderView = controller.searchBar
@@ -74,12 +72,7 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
-    let action: Action
-    if !resultSearchController.active {
-      action = self.filteredData[indexPath.section].actions[indexPath.row]
-    }else {
-      action = self.tableData[indexPath.section].actions[indexPath.row]
-    }
+    let action = self.tableData[indexPath.section].actions[indexPath.row]
     let controller = (segue.destinationViewController as! UINavigationController).topViewController as! ActionArgumentsVC
     controller.action = action
     controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
@@ -90,28 +83,24 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
     if segue.identifier == "showInput" {
       controller.showInputArguments()
     }
-    self.resultSearchController.dismissViewControllerAnimated(true, completion: {})
+    self.resultSearchController?.dismissViewControllerAnimated(true, completion: {})
   }
   
   // MARK: - Table View
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return self.tableData.count
+    return self.filteredData.count
   }
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if !resultSearchController.active {
-      return self.tableData[section].actions.count
-    } else {
-      return self.filteredData[section].actions.count
-    }
+    return self.filteredData[section].actions.count
   }
   
   override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let cell = tableView.dequeueReusableCellWithIdentifier("Section")
     cell?.backgroundColor = UIColor.blackColor()
     cell?.textLabel?.textColor = UIColor.whiteColor()
-    let object = TR064Manager.sharedManager.services[section]
+    let object = TR064Manager.sharedManager.services.map {$0}[section]
     cell?.textLabel!.text = object.serviceType.stringByReplacingOccurrencesOfString("urn:dslforum-org:service:", withString: "")
     return cell
   }
@@ -121,7 +110,7 @@ class MasterViewController: UITableViewController, UISearchBarDelegate, UISearch
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let action = self.tableData[indexPath.section].actions[indexPath.row]
+    let action = self.filteredData[indexPath.section].actions[indexPath.row]
     if action.needsInput {
       let cell = tableView.dequeueReusableCellWithIdentifier("Input", forIndexPath: indexPath)
       cell.textLabel!.text = action.name  // .stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")

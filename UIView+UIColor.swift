@@ -8,7 +8,11 @@
 
 import UIKit
 
-let colors = UIColor.fieryOrange() + UIColor.blueOcean() + UIColor.mojitoBlast() + UIColor.beach()
+let colors = [UIColor(rgb: 0xFF9500), UIColor(rgb: 0xFF5E3A),
+  UIColor(rgb: 0x2BC0E4), UIColor(rgb: 0xEAECC6),
+  UIColor(rgb: 0x614385), UIColor(rgb: 0x516395),
+  UIColor(rgb: 0x70e1f5), UIColor(rgb: 0xffd194),
+  UIColor(rgb: 0xF09819), UIColor(rgb: 0xEDDE5D)]
 
 extension UIColor {
   
@@ -31,10 +35,24 @@ extension UIColor {
   }
   
   class func randomNiceColor() -> UIColor {
-    let randomIndex = Int(arc4random_uniform(UInt32(colors.count)))
-    return colors[randomIndex]
+    return colors[random(colors.count)]
   }
   
+  class func randomNiceColors(number: Int) -> [UIColor] {
+    var result = [UIColor]()
+    for _ in 0..<number {
+      var color: UIColor
+      
+      repeat {
+        color = self.randomNiceColor()
+      }
+      while result.contains(color) && result.count < colors.count
+      
+      result.append(color)
+    }
+    return result
+  }
+
   class func fieryOrange() -> [UIColor] {
     return [UIColor(rgb: 0xFF9500), UIColor(rgb: 0xFF5E3A)]
     
@@ -84,11 +102,16 @@ extension UIView {
     gradientLayer.frame = self.bounds
     gradientLayer.cornerRadius = self.layer.cornerRadius
     gradientLayer.colors = colors.map { $0.CGColor }
-    self.layer.sublayers?.filter { $0 is CAGradientLayer }
-      .forEach { $0.removeFromSuperlayer() }
     self.layer.insertSublayer(gradientLayer, atIndex: 0)
-    
   }
   
+}
+
+func isGradientLayer(layer: CALayer) -> Bool {
+  return layer is CAGradientLayer
+}
+
+func random(number: Int) -> Int {
+  return Int(arc4random_uniform(UInt32(number)))
 }
 

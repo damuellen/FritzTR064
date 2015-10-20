@@ -12,7 +12,7 @@ class BackgroundGradientView: UIView {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    self.layer.sublayers?.filter { $0 is CAGradientLayer }.forEach { $0.frame = self.bounds }
+    self.layer.sublayers?.filter(isGradientLayer).forEach { $0.frame = self.bounds }
   }
 }
 
@@ -28,21 +28,28 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   
   override func viewDidLoad() {
     
-    if TR064Manager.sharedManager.actions.count == 0 {
-    }
     let cornerRadius: CGFloat = 8
     self.Hosts.layer.cornerRadius = cornerRadius
     self.Actions.layer.cornerRadius = cornerRadius
     self.CallList.layer.cornerRadius = cornerRadius
-    let c = [UIColor.randomNiceColor(), UIColor.randomNiceColor()]
-    self.view.changeGradientLayerWithColors(c)
-    self.Hosts.changeGradientLayerWithColors(UIColor.mojitoBlast())
-    self.Actions.changeGradientLayerWithColors(UIColor.deepBlue())
-    self.CallList.changeGradientLayerWithColors(UIColor.mojitoBlast())
-    self.Button1.changeGradientLayerWithColors(UIColor.haze())
-    self.Button2.changeGradientLayerWithColors(UIColor.haze())
+    self.view.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
+    self.Hosts.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
+    self.Actions.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
+    self.CallList.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
+    self.Button1.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
+    self.Button2.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
 
     TR064Manager.sharedManager.observer = self
+  }
+  override func viewWillAppear(animated: Bool) {
+    self.Hosts.alpha = 0.1
+    self.Actions.alpha = 0.1
+    self.CallList.alpha = 0.1
+    self.Button1.alpha = 0.1
+    self.Button2.alpha = 0.1
+    if TR064Manager.sharedManager.actions.count != 0 {
+      self.refresh()
+    }
   }
   
   @IBAction func touchedButton(button: UIButton) {
@@ -54,13 +61,25 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   }
   
   func refresh() {
+    self.Hosts.enabled = true
+    self.Actions.enabled = true
+    self.CallList.enabled = true
+    self.Button1.enabled = true
+    self.Button2.enabled = true
+    UIView.animateWithDuration(1) {
+      self.Hosts.alpha = 1
+      self.Actions.alpha = 1
+      self.CallList.alpha = 1
+      self.Button1.alpha = 0.5
+      self.Button2.alpha = 0.5
+    }
   }
   
   // MARK: - Segues
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "showCallList" {
-      OnTel.sharedService.getCallListMaxCalls(10)
+      OnTel.sharedService.getCallListMaxCalls(20)
     }
   }
   

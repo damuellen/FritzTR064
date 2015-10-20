@@ -33,11 +33,27 @@ class CallListTableViewController: UITableViewController, UITextFieldDelegate, T
     OnTel.sharedService.observer = self
     super.viewWillAppear(animated)
   }
+}
 
-  // MARK: - Table View
+// MARK: - Table View
+
+extension CallListTableViewController {
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return 1
+  }
+  
+  override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let call = self.tableData![indexPath.row]
+    var phone = "tel://"
+    switch call.type {
+    case .outgoing, .activeOutgoing:
+      phone += call.called
+    default:
+      phone += call.caller
+    }
+    let url = NSURL(string: phone)!
+    UIApplication.sharedApplication().openURL(url)
   }
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -57,9 +73,8 @@ class CallListTableViewController: UITableViewController, UITextFieldDelegate, T
   }
   
   override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-      return 100
+      return 64
   }
   
 }
-
 

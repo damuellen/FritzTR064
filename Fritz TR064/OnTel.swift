@@ -14,7 +14,11 @@ class OnTel: TR064Service {
   let serviceType = "urn:dslforum-org:service:X_AVM-DE_OnTel:1"
   
   enum expectedActions: String {
-    case getCallList = "GetCallList"
+    case GetCallList
+    
+    var action: Action? {
+      return OnTel.sharedService.actions.filter { $0.name == self.rawValue }.first
+    }
   }
   
   var entries = [Call]() {
@@ -23,12 +27,8 @@ class OnTel: TR064Service {
     }
   }
   
-  subscript(name: expectedActions) -> Action? {
-    return self.actions.filter { $0.name == name.rawValue }.first
-  }
-  
   func getCallList(argument: String = "") {
-    guard let action = self[.getCallList] else { return }
+    guard let action = expectedActions.GetCallList.action else { return }
     TR064.startAction(action).then { xml in
       guard let url = xml.value.checkForURL() else { return }
       let callList = TR064.getXMLFromURL(url + argument)?.responseXMLPromise()

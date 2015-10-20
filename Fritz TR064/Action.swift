@@ -75,9 +75,11 @@ struct StateVariable {
   }
 }
 
-extension Action: Equatable { }
+extension Action: Hashable, Equatable {
+  var hashValue: Int { return url.hashValue ^ name.hashValue}
+}
 
 func ==(lhs: Action, rhs: Action) -> Bool {
-  return lhs.name == rhs.name
+  return lhs.hashValue == rhs.hashValue
 }
 

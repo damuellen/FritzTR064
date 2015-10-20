@@ -75,7 +75,7 @@ extension AEXMLElement {
   func checkForURL() -> String? {
     var URL: String?
     for possibleURL in self.children where possibleURL.value != nil {
-      if possibleURL.value!.containsString("http") {
+      if NSURL(string: possibleURL.value!) != nil {
         URL = possibleURL.value!
       }
     }

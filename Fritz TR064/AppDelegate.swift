@@ -18,11 +18,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // Override point for customization after application launch.
     storeCredentials() // private file
-    vpnConnection = VPN()
     
+    if isRunningSimulator() {
+      TR064Manager.sharedManager.setup()
+    } else {
+      vpnConnection = VPN()
+    }
+    
+    let vc = window!.rootViewController as! MenuViewController
     var id: AnyObject?
     id = NSNotificationCenter.defaultCenter().addObserverForName(NEVPNStatusDidChangeNotification, object: nil, queue: NSOperationQueue.mainQueue()) { _ in
       TR064Manager.sharedManager.setup()
+      vc.refresh()
       NSNotificationCenter.defaultCenter().removeObserver(id!)
     }
     return true
@@ -55,3 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+func isRunningSimulator() -> Bool {
+  return TARGET_OS_SIMULATOR != 0
+}

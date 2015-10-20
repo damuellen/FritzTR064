@@ -39,7 +39,7 @@ struct TR064 {
       }
       .response { (_, _, _, HTTPError) -> Void in
         if HTTPError != nil {
-            delay(2) { getAvailableServices() }
+            delay(1) { getAvailableServices() }
         }
     }
   }
@@ -58,7 +58,7 @@ struct TR064 {
   }
   
   /// Creates an envelope with the action and it arguments.
-  static func createMessageBody(action: Action, arguments: [String] = []) -> NSData? {
+  static func createMessage(action: Action, arguments: [String] = []) -> NSData? {
     
     let soapRequest = AEXMLDocument()
 
@@ -90,12 +90,16 @@ struct TR064 {
   /// Sends an request for an action with arguments.
   static func sendRequest(action: Action, arguments: [String] = []) -> Request {
     let request = createRequest(action)
-    request.HTTPBody = createMessageBody(action, arguments: arguments)
+    request.HTTPBody = createMessage(action, arguments: arguments)
     return Alamofire.request(request).authenticate(user: account, password: pass).validate()
   }
   /// Sends an request for an action with arguments, and returns a future response.
   static func startAction(action: Action, arguments: [String] = []) -> ActionResultPromise {
-    return sendRequest(action, arguments: arguments).responsePromiseFor(Action: action)
+    return sendRequest(action, arguments: arguments).response { (_,_,_,error) in
+      if error != nil {
+        startAction(action, arguments: arguments) }
+      }
+      .responsePromiseFor(Action: action)
   }
   
   static func getXMLFromURL(requestURL: String) -> Request? {

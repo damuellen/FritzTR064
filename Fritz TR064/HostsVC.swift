@@ -25,8 +25,8 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
   override func viewDidLoad() {
     super.viewDidLoad()
     TR064Manager.sharedManager.observer = self
-    Hosts.sharedHosts.observer = self
-    Hosts.sharedHosts.getAllHosts()
+    Hosts.sharedService.observer = self
+    Hosts.sharedService.getAllHosts()
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableViewAutomaticDimension
   }
@@ -70,10 +70,10 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
   }
 
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let hostMAC = Hosts.sharedHosts.entries[indexPath.section]["NewMACAddress"]!
-    let hostName = Hosts.sharedHosts.entries[indexPath.section]["NewHostName"]!
+    let hostMAC = Hosts.sharedService.entries[indexPath.section]["NewMACAddress"]!
+    let hostName = Hosts.sharedService.entries[indexPath.section]["NewHostName"]!
     self.appearAlertViewController(hostName) {
-      Hosts.sharedHosts.wakeHost(hostMAC)
+      Hosts.sharedService.wakeHost(hostMAC)
     }
   }
   

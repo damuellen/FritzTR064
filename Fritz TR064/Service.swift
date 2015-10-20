@@ -27,8 +27,11 @@ struct Service {
 
 }
 
-extension Service: Equatable { }
+extension Service: Hashable, Equatable {
+  var hashValue: Int { return serviceType.hashValue ^ controlURL.hashValue ^ SCPDURL.hashValue}
+}
 
 func ==(lhs: Service, rhs: Service) -> Bool {
-  return lhs.serviceType == rhs.serviceType
+  return lhs.hashValue == rhs.hashValue
 }
+

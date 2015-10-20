@@ -15,16 +15,16 @@ class DeviceInfo: TR064Service {
   
   enum expectedActions: String {
     case getInfo = "GetInfo"
+    
+    var action: Action? {
+      return DeviceInfo.sharedService.actions.filter { $0.name == self.rawValue }.first
+    }
   }
   
   var entries = [String:String]() {
     didSet {
       observer?.tableData = entries
     }
-  }
-  
-  subscript(name: expectedActions) -> Action? {
-    return self.actions.filter { $0.name == name.rawValue }.first
   }
   
 }
