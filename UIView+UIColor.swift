@@ -16,6 +16,16 @@ let colors = [UIColor(rgb: 0xFF9500), UIColor(rgb: 0xFF5E3A),
 
 extension UIColor {
   
+  static var rainbowColors: [UIColor] {
+    var colors = [UIColor]()
+    for i in 0..<9 { colors.append(UIColor(hue: CGFloat(i)/CGFloat(9), saturation: 1.0, brightness: 1.0, alpha: 1.0)) }
+    return colors
+  }
+  
+}
+
+extension UIColor {
+  
   convenience init(r: UInt, g: UInt, b: UInt, alpha: CGFloat = 1) {
     self.init(
       red: CGFloat(r) / 255.0,
@@ -36,6 +46,10 @@ extension UIColor {
   
   class func randomNiceColor() -> UIColor {
     return colors[random(colors.count)]
+  }
+  
+  class func randomRainbowColor() -> UIColor {
+    return UIColor.rainbowColors[random(UIColor.rainbowColors.count)]
   }
   
   class func randomNiceColors(number: Int) -> [UIColor] {
@@ -97,12 +111,17 @@ extension UIColor {
 
 extension UIView {
   
-  func changeGradientLayerWithColors(colors: [UIColor]) {
-    let gradientLayer = CAGradientLayer()
+  func addOrChangeGradientLayerWithColors(colors: [UIColor]) {
+    let gradientLayer: CAGradientLayer
+    let presentGradientLayer = self.layer.sublayers?.first as? CAGradientLayer
+    gradientLayer = presentGradientLayer ?? CAGradientLayer()
     gradientLayer.frame = self.bounds
     gradientLayer.cornerRadius = self.layer.cornerRadius
     gradientLayer.colors = colors.map { $0.CGColor }
-    self.layer.insertSublayer(gradientLayer, atIndex: 0)
+    gradientLayer.shouldRasterize = true
+    if presentGradientLayer == nil {
+      self.layer.insertSublayer(gradientLayer, atIndex: 0)
+    }
   }
   
 }

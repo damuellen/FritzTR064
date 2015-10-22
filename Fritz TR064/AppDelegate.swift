@@ -9,28 +9,35 @@
 import UIKit
 import NetworkExtension
 
+let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate! as! AppDelegate
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
   var vpnConnection: NEVPNConnection?
+  var vpnStayConnected = false
 
-  func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    // Override point for customization after application launch.
-    storeCredentials() // private file
-    
+  func setup() {
     if isRunningSimulator() {
-      TR064Manager.sharedManager.setup()
+      TR064.getAvailableServices()
     } else {
       vpnConnection = VPN()
     }
+  }
+  
+  var id: AnyObject?
+  
+  func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    // Override point for customization after application launch.
+    storeCredentials() // private file
+    setup()
     
-    let vc = window!.rootViewController as! MenuViewController
-    var id: AnyObject?
-    id = NSNotificationCenter.defaultCenter().addObserverForName(NEVPNStatusDidChangeNotification, object: nil, queue: NSOperationQueue.mainQueue()) { _ in
-      TR064Manager.sharedManager.setup()
-      vc.refresh()
-      NSNotificationCenter.defaultCenter().removeObserver(id!)
+    id = NSNotificationCenter.defaultCenter().addObserverForName(
+      NEVPNStatusDidChangeNotification, object: nil, queue: nil) { _ in
+      TR064.getAvailableServices()
+      NSNotificationCenter.defaultCenter().removeObserver(self.id!)
+      self.id = nil
     }
     return true
   }
@@ -41,13 +48,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func applicationDidEnterBackground(application: UIApplication) {
-    vpnConnection?.stopVPNTunnel()
+    if !vpnStayConnected {
+      vpnConnection?.stopVPNTunnel()
+    }
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
   }
 
   func applicationWillEnterForeground(application: UIApplication) {
     do { try vpnConnection?.startVPNTunnel() } catch { debugPrint("Did not reconnect") }
+    vpnStayConnected = false
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
   }
 
@@ -56,6 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func applicationWillTerminate(application: UIApplication) {
+    vpnConnection?.stopVPNTunnel()
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
 

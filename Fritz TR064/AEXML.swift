@@ -52,7 +52,6 @@ extension AEXMLDocument {
     return URL
   }
   
-  
   func checkWithAction(action: Action) -> AEXMLElement? {
     let soapResponse = self.root["s:Body"]["u:\(action.name)Response"]
     if soapResponse.name == "AEXMLError" { return nil }
@@ -75,9 +74,7 @@ extension AEXMLElement {
   func checkForURL() -> String? {
     var URL: String?
     for possibleURL in self.children where possibleURL.value != nil {
-      if NSURL(string: possibleURL.value!) != nil {
-        URL = possibleURL.value!
-      }
+      URL = possibleURL.value!.getLink()
     }
     return URL
   }

@@ -17,7 +17,6 @@ extension MasterViewController: UISearchResultsUpdating, UISearchBarDelegate {
     } else {
       filteredData = tableData
     }
-    tableView.reloadData()
   }
   
   func filterActionByName(actions: [Action], filter: String)-> [Action] {
@@ -37,8 +36,12 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
       filteredData = tableData
     }
   }
-  var filteredData = [(service: Service, actions: [Action])]()
-  
+  var filteredData = [(service: Service, actions: [Action])]() {
+    didSet {
+      tableView.reloadData()
+    }
+  }
+
   var resultSearchController: UISearchController!
   var detailViewController: ActionArgumentsVC?
 
@@ -62,17 +65,21 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
   }
   
   override func viewWillAppear(animated: Bool) {
-    TR064Manager.sharedManager.observer = self
-    self.refresh()
+    manager.observer = self
+    self.refreshUI()
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
+  }
+  
+  func alert() {
+    
   }
   
   // MARK: - Segues
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
-    let action = self.tableData[indexPath.section].actions[indexPath.row]
+    let action = self.filteredData[indexPath.section].actions[indexPath.row]
     let controller = (segue.destinationViewController as! UINavigationController).topViewController as! ActionArgumentsVC
     controller.action = action
     controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()

@@ -8,10 +8,7 @@
 
 class Hosts: TR064Service {
   
-  static let sharedService = Hosts()
-  weak var observer: HostsVC?
-  
-  let serviceType = "urn:dslforum-org:service:Hosts:1"
+  static let serviceType = "urn:dslforum-org:service:Hosts:1"
   
   enum expectedActions: String {
     case GetHostNumberOfEntries
@@ -21,19 +18,19 @@ class Hosts: TR064Service {
     case WakeOnLANByMACAddress = "X_AVM-DE_WakeOnLANByMACAddress"
     
     var action: Action? {
-      return Hosts.sharedService.actions.filter { $0.name == self.rawValue }.first
+      return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType }.filter { $0.name == self.rawValue }.first
     }
   }
-  
-  var entries = [[String:String]]() {
-    didSet {
-      observer?.tableData = entries
-    }
+
+  var entries: [[String:String]] {
+    get { return ((manager.observer as? HostsVC)?.tableData)! }
+    set { (manager.observer as? HostsVC)?.tableData = newValue }
   }
   
   func setHostName(name: String, ByMACAdress mac: String) {
-    guard let action = expectedActions.SetHostNameByMACAdress.action else { return }
-    TR064.startAction(action, arguments: [name, mac])
+    if let action = expectedActions.SetHostNameByMACAdress.action {
+      TR064.startAction(action, arguments: [name, mac])
+    }
   }
   
   func getHostNumberOfEntries() -> ActionResultPromise? {
@@ -47,11 +44,12 @@ class Hosts: TR064Service {
     guard let action = expectedActions.GetGenericHostEntry.action else {
       return nil
     }
-    return TR064.startAction(action, arguments: ["\(index)"])
+     return TR064.startAction(action, arguments: ["\(index)"])
   }
 
   func getAllHosts() {
-    getHostNumberOfEntries()?.then { xml in
+    guard let HostNumberOfEntries = getHostNumberOfEntries() else { return }
+    HostNumberOfEntries.then { xml in
       var hosts = [ActionResultPromise]()
       if let action = expectedActions.GetHostNumberOfEntries.action,
         response = xml.value.convertWithAction(action),

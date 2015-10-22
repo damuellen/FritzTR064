@@ -13,57 +13,68 @@ class TR064Manager {
   
   var observer: TR064ServiceObserver?
 
+  var activeService: TR064Service?
+  
   var services = [Service]()  {
     didSet { services.forEach { service in
-      TR064.getActionsFor(service) } }
+      TR064.getActionsFor(service) }
+    }
   }
   
   var actions = [Action]() {
     didSet {
-      observer?.refresh() }
+      observer?.refreshUI() }
+  }
+  
+  var isReady: Bool {
+    return actions.count > 0
   }
   
   var lastResponse: AEXMLDocument? {
-    didSet { observer?.refresh() }
-  }
-
-  func setup() {
-      TR064.getAvailableServices()
+    didSet { observer?.refreshUI() }
   }
   
   subscript(name: String) -> Action? {
     return self.actions.filter { $0.name == name }.first
   }
+
+  init() {
+    delay(5) {
+      if !self.isReady {
+        self.observer?.alert()
+      }
+    }
+  }
   
 }
 
 protocol TR064ServiceObserver {
-  func refresh()
+  var manager: TR064Manager { get }
+  func refreshUI()
+  func alert()
+}
+
+extension TR064ServiceObserver {
+  var manager: TR064Manager { return TR064Manager.sharedManager }
 }
 
 protocol TR064Service {
   var manager: TR064Manager { get }
-  var serviceType: String { get }
+  static var serviceType: String { get }
 }
 
 extension TR064Service {
   var manager: TR064Manager { return TR064Manager.sharedManager }
-  var actions: [Action] {
-    return manager.actions.filter { $0.service.serviceType == self.serviceType }
-  }
-
 }
 
 extension MasterViewController: TR064ServiceObserver {
   
-  func refresh() {
+  func refreshUI() {
     var result = [(service: Service, actions: [Action])]()
     result = TR064Manager.sharedManager.services.map { service in
       (service: service, actions: TR064Manager.sharedManager.actions.filter { $0.service == service })
     }
     self.tableData = result
-    self.filteredData = result
-    self.tableView.reloadData()
   }
   
 }

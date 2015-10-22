@@ -17,8 +17,8 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   }
   var action: Action!
   
-  func refresh() {
-    if let actionResponse = TR064Manager.sharedManager.lastResponse?.checkWithAction(self.action),
+  func refreshUI() {
+    if let actionResponse = manager.lastResponse?.checkWithAction(self.action),
       validResponse = actionResponse.convertWithAction(self.action) {
         self.tableData = validResponse
     }
@@ -26,21 +26,24 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    manager.observer = self
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableViewAutomaticDimension
-    
   }
   
   override func viewWillAppear(animated: Bool) {
-    TR064Manager.sharedManager.observer = self
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
   }
-    
+  
+  func alert() {
+    fatalError()
+  }
+  
   @IBOutlet weak var text: UITextField!
 }
 
-  // MARK: - Table View
+// MARK: - Table View
 
 extension XMLResponseViewController {
   

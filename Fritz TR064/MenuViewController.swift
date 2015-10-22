@@ -24,62 +24,59 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   @IBOutlet weak var Button1: UIButton!
   @IBOutlet weak var Button2: UIButton!
   
-  @IBOutlet weak var Activity: UIActivityIndicatorView!
   
   override func viewDidLoad() {
-    
-    let cornerRadius: CGFloat = 8
-    self.Hosts.layer.cornerRadius = cornerRadius
-    self.Actions.layer.cornerRadius = cornerRadius
-    self.CallList.layer.cornerRadius = cornerRadius
-    self.view.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
-    self.Hosts.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
-    self.Actions.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
-    self.CallList.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
-    self.Button1.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
-    self.Button2.changeGradientLayerWithColors(UIColor.randomNiceColors(3))
-
-    TR064Manager.sharedManager.observer = self
+    manager.observer = self
+    configureUI()
   }
-  override func viewWillAppear(animated: Bool) {
-    self.Hosts.alpha = 0.1
-    self.Actions.alpha = 0.1
-    self.CallList.alpha = 0.1
-    self.Button1.alpha = 0.1
-    self.Button2.alpha = 0.1
-    if TR064Manager.sharedManager.actions.count != 0 {
-      self.refresh()
+  
+  override func viewDidAppear(animated: Bool) {
+    if manager.isReady {
+      refreshUI()
     }
   }
   
+  func alert() {
+      self.appearAlertViewWithTitle("Error", message: "No Services found",
+        actionTitle: ["Retry"],
+        actionBlock: [{ TR064.getAvailableServices() }])
+  }
+    
+  
   @IBAction func touchedButton(button: UIButton) {
-    button.changeGradientLayerWithColors(UIColor.orangeMango())
+    button.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
   }
   
   @IBAction func failButton(button: UIButton) {
-    button.changeGradientLayerWithColors(UIColor.mojitoBlast())
+    button.addOrChangeGradientLayerWithColors(UIColor.mojitoBlast())
   }
   
-  func refresh() {
-    self.Hosts.enabled = true
-    self.Actions.enabled = true
-    self.CallList.enabled = true
-    self.Button1.enabled = true
-    self.Button2.enabled = true
-    UIView.animateWithDuration(1) {
-      self.Hosts.alpha = 1
-      self.Actions.alpha = 1
-      self.CallList.alpha = 1
-      self.Button1.alpha = 0.5
-      self.Button2.alpha = 0.5
+  func configureUI() {
+    self.view.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(3))
+    for button in self.view.subviews where button is UIButton {
+      button.layer.cornerRadius = 8
+      button.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(3))
+      button.alpha = 0.0
+      
     }
+  }
+  
+  func refreshUI() {
+    for element in self.view.subviews where element is UIButton {
+      (element as! UIButton).enabled = true
+    }
+    UIView.animateWithDuration(0.5, delay: 0, options: [.CurveEaseIn], animations:  {
+      for element in self.view.subviews where element is UIButton {
+        element.alpha = 1
+      }
+    }, completion: nil)
   }
   
   // MARK: - Segues
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "showCallList" {
-      OnTel.sharedService.getCallListMaxCalls(20)
+
     }
   }
   
@@ -100,4 +97,16 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate 
   }
   
 }
+extension UIViewController {
 
+  func appearAlertViewWithTitle(title: String, message: String, actionTitle: [String], actionBlock: [() -> Void]) {
+    let controller = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+    for (actionTitle, actionBlock) in zip(actionTitle, actionBlock) {
+      controller.addAction(UIAlertAction(title: actionTitle, style: UIAlertActionStyle.Default)
+        { (action:UIAlertAction!) -> Void in actionBlock() })
+    }
+    controller.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+    self.presentViewController(controller, animated: true, completion: nil)
+  }
+  
+}

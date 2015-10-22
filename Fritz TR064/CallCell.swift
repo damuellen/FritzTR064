@@ -50,24 +50,24 @@ class CallCell: UITableViewCell {
     switch call.type {
     case .activeIncoming:
       calledClosure()
-      self.changeGradientLayerWithColors(UIColor.deepBlue())
+      self.addOrChangeGradientLayerWithColors(UIColor.deepBlue())
     case .activeOutgoing:
       calledClosure()
-      self.changeGradientLayerWithColors(UIColor.maceWindu())
+      self.addOrChangeGradientLayerWithColors(UIColor.maceWindu())
     case .incoming:
       callerClosure()
-      self.changeGradientLayerWithColors(UIColor.mojitoBlast())
+      self.addOrChangeGradientLayerWithColors(UIColor.mojitoBlast())
     case .missed:
       callerClosure()
-      self.changeGradientLayerWithColors(UIColor.haze())
+      self.addOrChangeGradientLayerWithColors(UIColor.haze())
     case .outgoing:
       calledClosure()
-      self.changeGradientLayerWithColors(UIColor.maceWindu())
+      self.addOrChangeGradientLayerWithColors(UIColor.maceWindu())
     case .rejectedIncoming:
       callerClosure()
-      self.changeGradientLayerWithColors(UIColor.blueOcean())
+      self.addOrChangeGradientLayerWithColors(UIColor.blueOcean())
     case .error:
-      self.changeGradientLayerWithColors(UIColor.lovelyPink())
+      self.addOrChangeGradientLayerWithColors(UIColor.lovelyPink())
     }
   }
   

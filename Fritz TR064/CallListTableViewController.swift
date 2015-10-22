@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CallListTableViewController: UITableViewController, UITextFieldDelegate, TR064ServiceObserver {
+class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   
   var tableData: [Call]? {
     didSet {
@@ -16,22 +16,31 @@ class CallListTableViewController: UITableViewController, UITextFieldDelegate, T
     }
   }
   
-  func refresh() {
-    self.tableData = OnTel.sharedService.entries
+  func refreshUI() {
     // self.tableData = TR064Manager.sharedManager.lastResponse!.transformXMLtoCalls().sort(<)
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    manager.observer = self
+    manager.activeService = OnTel()
+    (manager.activeService as! OnTel).getCallListMaxCalls(20)
     tableView.estimatedRowHeight = 100.0
     tableView.rowHeight = UITableViewAutomaticDimension
-    self
   }
   
-  override func viewWillAppear(animated: Bool) {
-    TR064Manager.sharedManager.observer = self
-    OnTel.sharedService.observer = self
-    super.viewWillAppear(animated)
+  override func viewDidAppear(animated: Bool) {
+    delay(5) {
+      if self.tableData == nil {
+        self.alert()
+      }
+    }
+  }
+
+  func alert() {
+    self.appearAlertViewWithTitle("Error", message: "No calls found",
+      actionTitle: ["Retry"],
+      actionBlock: [{(self.manager.activeService as! OnTel).getCallListMaxCalls(20)}])
   }
 }
 
@@ -48,12 +57,19 @@ extension CallListTableViewController {
     var phone = "tel://"
     switch call.type {
     case .outgoing, .activeOutgoing:
-      phone += call.called
+      if call.called.isPhoneNumber {
+        phone += call.called
+        let url = NSURL(string: phone)!
+        UIApplication.sharedApplication().openURL(url)
+      }
     default:
+      if call.caller.isPhoneNumber {
       phone += call.caller
+      let url = NSURL(string: phone)!
+      UIApplication.sharedApplication().openURL(url)
+      }
     }
-    let url = NSURL(string: phone)!
-    UIApplication.sharedApplication().openURL(url)
+
   }
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

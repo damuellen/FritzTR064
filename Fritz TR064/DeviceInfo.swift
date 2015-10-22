@@ -8,16 +8,15 @@
 
 class DeviceInfo: TR064Service {
   
-  static let sharedService = DeviceInfo()
   weak var observer: XMLResponseViewController!
   
-  let serviceType = "urn:dslforum-org:service:DeviceInfo:1"
+  static let serviceType = "urn:dslforum-org:service:DeviceInfo:1"
   
   enum expectedActions: String {
     case getInfo = "GetInfo"
     
     var action: Action? {
-      return DeviceInfo.sharedService.actions.filter { $0.name == self.rawValue }.first
+      return TR064Manager.sharedManager.actions.filter { $0.name == self.rawValue }.first
     }
   }
   

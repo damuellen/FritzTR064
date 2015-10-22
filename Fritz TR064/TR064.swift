@@ -27,33 +27,41 @@ struct TR064 {
   }
   
   /// Request the tr064desc.xml from the router, and give the founded services to the manager.
-  /// Retries until it gets an answer from router. The app don't work otherwise.
   static func getAvailableServices() {
     let requestURL = TR064.serviceURL + TR064.descURL
     Alamofire.request(.GET, requestURL)
       .validate()
-      .responseXMLDocument { (_, _, XML) -> Void in
-          if let xml = XML.value {
-            manager.services = TR064.getServicesFromXML(xml)
-          }
-      }
-      .response { (_, _, _, HTTPError) -> Void in
-        if HTTPError != nil {
-            delay(1) { getAvailableServices() }
-        }
+      .responseXMLDocument { (_, _, xml) in
+        manager.services = getServicesFromDescription(xml)
     }
   }
   
   /// Use the URL from the given service to request his actions, and give them to the manager.
+  static func getActionsFor(services: [Service]) {
+    let requestURL = TR064.serviceURL
+    services.forEach { service in
+      Alamofire.request(.GET, requestURL + service.SCPDURL )
+        .validate()
+        .responseXMLPromise()
+        .then { xml in
+          let stateVariables = xml.value.root["serviceStateTable"].children.map {
+            StateVariable(element: $0) }.flatMap {$0}
+          let actions = xml.value.root["actionList"].children.map {
+            Action(element: $0, stateVariables: stateVariables, service: service) }.flatMap {$0}
+          manager.actions += actions
+      }
+    }
+  }
+  
   static func getActionsFor(service: Service) {
     let requestURL = TR064.serviceURL + service.SCPDURL
     Alamofire.request(.GET, requestURL)
       .validate()
       .responseXMLDocument { (_, _, XML) -> Void in
-      guard let xml = XML.value else { return }
-      let stateVariables = xml.root["serviceStateTable"].children.map {StateVariable(element: $0)}.flatMap {$0}
-      let actions = xml.root["actionList"].children.map { Action(element: $0, stateVariables: stateVariables, service: service) }.flatMap {$0}
-      manager.actions += actions
+        guard let xml = XML.value else { return }
+        let stateVariables = xml.root["serviceStateTable"].children.map {StateVariable(element: $0)}.flatMap {$0}
+        let actions = xml.root["actionList"].children.map { Action(element: $0, stateVariables: stateVariables, service: service) }.flatMap {$0}
+        manager.actions += actions
     }
   }
   
@@ -95,11 +103,7 @@ struct TR064 {
   }
   /// Sends an request for an action with arguments, and returns a future response.
   static func startAction(action: Action, arguments: [String] = []) -> ActionResultPromise {
-    return sendRequest(action, arguments: arguments).response { (_,_,_,error) in
-      if error != nil {
-        startAction(action, arguments: arguments) }
-      }
-      .responsePromiseFor(Action: action)
+    return sendRequest(action, arguments: arguments).responsePromiseFor(Action: action)
   }
   
   static func getXMLFromURL(requestURL: String) -> Request? {
@@ -107,8 +111,8 @@ struct TR064 {
   }
   
   /// Helper function to get known services from tr064desc.xml.
-  static func getServicesFromXML(discription: AEXMLDocument) -> [Service] {
-    
+  static func getServicesFromDescription(discription: Result<AEXMLDocument>) -> [Service] {
+    guard let discription = discription.value else { return [] }
     let internetGatewayDevice = discription.root["device"],
     LANDevice = discription.root["device"]["deviceList"].children[0],
     WANDevice = discription.root["device"]["deviceList"].children[1]

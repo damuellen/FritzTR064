@@ -8,28 +8,24 @@
 
 class OnTel: TR064Service {
   
-  static let sharedService = OnTel()
-  weak var observer: CallListTableViewController!
-  
-  let serviceType = "urn:dslforum-org:service:X_AVM-DE_OnTel:1"
+  static let serviceType = "urn:dslforum-org:service:X_AVM-DE_OnTel:1"
   
   enum expectedActions: String {
     case GetCallList
     
     var action: Action? {
-      return OnTel.sharedService.actions.filter { $0.name == self.rawValue }.first
+      return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType }.filter { $0.name == self.rawValue }.first
     }
   }
   
-  var entries = [Call]() {
-    didSet {
-      observer.tableData = entries
-    }
+  var entries: [Call]? {
+    get { return (manager.observer as? CallListTableViewController)?.tableData }
+    set { (manager.observer as? CallListTableViewController)?.tableData = newValue }
   }
   
   func getCallList(argument: String = "") {
     guard let action = expectedActions.GetCallList.action else { return }
-    TR064.startAction(action).then { xml in
+    TR064.startAction(action).trap{_ in self.getCallList()}.then { xml in
       guard let url = xml.value.checkForURL() else { return }
       let callList = TR064.getXMLFromURL(url + argument)?.responseXMLPromise()
       callList?.then { callList in

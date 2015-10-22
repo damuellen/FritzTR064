@@ -18,27 +18,33 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
 
   var action: Action!
 
-  func refresh() {
+  func refreshUI() {
     
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    TR064Manager.sharedManager.observer = self
-    Hosts.sharedService.observer = self
-    Hosts.sharedService.getAllHosts()
+    manager.observer = self
+    manager.activeService = Hosts()
+    (manager.activeService as! Hosts).getAllHosts()
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableViewAutomaticDimension
   }
-  
-  func appearAlertViewController(message: String, block: () -> Void){
-    let alert:UIAlertController = UIAlertController(title: "Wake on LAN", message: ("\n" + message), preferredStyle: .ActionSheet)
-    let action = UIAlertAction(title: "Wake", style: UIAlertActionStyle.Default) { (action:UIAlertAction!) -> Void in block() }
-    alert.addAction(action)
-    alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-    presentViewController(alert, animated: true, completion: nil)
-  }
 
+  override func viewDidAppear(animated: Bool) {
+    delay(5) {
+      if self.tableData.count == 0 {
+        self.alert()
+      }
+    }
+  }
+  
+  func alert() {
+    self.appearAlertViewWithTitle("Error", message: "No hosts found",
+      actionTitle: ["Retry"],
+      actionBlock: [{(self.manager.activeService as! Hosts).getAllHosts()}])
+  }
+  
   @IBOutlet weak var text: UITextField!
 
   // MARK: - Table View
@@ -70,11 +76,15 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
   }
 
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let hostMAC = Hosts.sharedService.entries[indexPath.section]["NewMACAddress"]!
-    let hostName = Hosts.sharedService.entries[indexPath.section]["NewHostName"]!
-    self.appearAlertViewController(hostName) {
-      Hosts.sharedService.wakeHost(hostMAC)
-    }
+    let entry = indexPath.section
+    let hostMAC = tableData[entry]["NewMACAddress"]!
+    let hostName = tableData[entry]["NewHostName"]!
+    let hostIP = tableData[entry]["NewIPAddress"]!
+    
+    appearAlertViewWithTitle(hostName, message: hostMAC,
+      actionTitle: ["Wake up", "VNC"],
+      actionBlock: [{ (self.manager.activeService as! Hosts).wakeHost(hostMAC) },
+        { appDelegate.vpnStayConnected = true
+          UIApplication.sharedApplication().openURL(NSURL(string: "vnc://" + hostIP)!) }])
   }
-  
 }
