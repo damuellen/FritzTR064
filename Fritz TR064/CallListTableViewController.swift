@@ -30,9 +30,9 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   }
   
   override func viewDidAppear(animated: Bool) {
-    delay(5) {
-      if self.tableData == nil {
-        self.alert()
+    delay(5) { [weak self] in
+      if self?.tableData == nil {
+        self?.alert()
       }
     }
   }

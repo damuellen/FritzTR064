@@ -32,9 +32,9 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
   }
 
   override func viewDidAppear(animated: Bool) {
-    delay(5) {
-      if self.tableData.count == 0 {
-        self.alert()
+    delay(5) { [weak self] in
+      if self?.tableData.count == 0 {
+        self?.alert()
       }
     }
   }
@@ -42,7 +42,7 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
   func alert() {
     self.appearAlertViewWithTitle("Error", message: "No hosts found",
       actionTitle: ["Retry"],
-      actionBlock: [{(self.manager.activeService as! Hosts).getAllHosts()}])
+      actionBlock: [{(self.manager.activeService as? Hosts)?.getAllHosts()}])
   }
   
   @IBOutlet weak var text: UITextField!

@@ -16,7 +16,7 @@ class DeviceInfo: TR064Service {
     case getInfo = "GetInfo"
     
     var action: Action? {
-      return TR064Manager.sharedManager.actions.filter { $0.name == self.rawValue }.first
+      return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }
   }
   

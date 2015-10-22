@@ -24,10 +24,19 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   @IBOutlet weak var Button1: UIButton!
   @IBOutlet weak var Button2: UIButton!
   
+  @IBOutlet weak var Connecting: UIActivityIndicatorView!
+  
   
   override func viewDidLoad() {
     manager.observer = self
+    manager.activeService = nil
     configureUI()
+  }
+  
+  override func viewWillAppear(animated: Bool) {
+    if manager.isReady {
+      Connecting.hidden = true
+    }
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -52,10 +61,10 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   }
   
   func configureUI() {
-    self.view.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(3))
+    self.view.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(4))
     for button in self.view.subviews where button is UIButton {
       button.layer.cornerRadius = 8
-      button.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(3))
+   //   button.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(3))
       button.alpha = 0.0
       
     }
@@ -65,6 +74,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
     for element in self.view.subviews where element is UIButton {
       (element as! UIButton).enabled = true
     }
+    Connecting.hidden = true
     UIView.animateWithDuration(0.5, delay: 0, options: [.CurveEaseIn], animations:  {
       for element in self.view.subviews where element is UIButton {
         element.alpha = 1

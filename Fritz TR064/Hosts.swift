@@ -18,7 +18,7 @@ class Hosts: TR064Service {
     case WakeOnLANByMACAddress = "X_AVM-DE_WakeOnLANByMACAddress"
     
     var action: Action? {
-      return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType }.filter { $0.name == self.rawValue }.first
+      return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }
   }
 

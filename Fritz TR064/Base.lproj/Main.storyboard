@@ -578,10 +578,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i3Z-Jv-9iC">
-                                <rect key="frame" x="85" y="112" width="150" height="80"/>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="85" y="127" width="150" height="70"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="0.35000000000000003" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="ZM6-za-XRm"/>
+                                    <constraint firstAttribute="height" constant="70" id="ZM6-za-XRm"/>
                                     <constraint firstAttribute="width" constant="150" id="rff-Fg-GXB"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
@@ -596,11 +596,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ib-4h-aAe">
-                                <rect key="frame" x="85" y="288" width="150" height="80"/>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="85" y="283" width="150" height="70"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="0.35000000000000003" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="Gsp-nH-Nqm"/>
-                                    <constraint firstAttribute="height" constant="80" id="W7P-i1-wiD"/>
+                                    <constraint firstAttribute="height" constant="70" id="W7P-i1-wiD"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                 <size key="titleShadowOffset" width="2" height="2"/>
@@ -610,10 +610,10 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fFf-kk-MvW">
-                                <rect key="frame" x="85" y="376" width="150" height="80"/>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="85" y="361" width="150" height="70"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="0.35000000000000003" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="Eqo-jp-9F4"/>
+                                    <constraint firstAttribute="height" constant="70" id="Eqo-jp-9F4"/>
                                     <constraint firstAttribute="width" constant="150" id="i1i-T7-eDa"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
@@ -624,11 +624,11 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOP-yl-BCx">
-                                <rect key="frame" x="85" y="200" width="150" height="80"/>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="85" y="205" width="150" height="70"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="0.35000000000000003" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="82n-xd-Jud"/>
-                                    <constraint firstAttribute="height" constant="80" id="bsp-fj-YP6"/>
+                                    <constraint firstAttribute="height" constant="70" id="bsp-fj-YP6"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                 <size key="titleShadowOffset" width="2" height="2"/>
@@ -642,11 +642,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i7Z-kO-fRP">
-                                <rect key="frame" x="85" y="24" width="150" height="80"/>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="85" y="49" width="150" height="70"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="0.35000000000000003" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="Pvr-fM-KUT"/>
-                                    <constraint firstAttribute="height" constant="80" id="RGG-Th-RtU"/>
+                                    <constraint firstAttribute="height" constant="70" id="RGG-Th-RtU"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                 <size key="titleShadowOffset" width="2" height="2"/>
@@ -660,14 +660,19 @@
                                     <segue destination="xqs-T5-pQM" kind="show" id="xkm-PR-yQ7"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="5Eu-Ir-qEf">
+                                <rect key="frame" x="142" y="221" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="8Ib-4h-aAe" firstAttribute="centerX" secondItem="i7Z-kO-fRP" secondAttribute="centerX" id="1Tt-gu-6Ni"/>
                             <constraint firstItem="8Ib-4h-aAe" firstAttribute="centerX" secondItem="6BS-ii-EQ8" secondAttribute="centerX" id="2d6-Am-Xaw"/>
                             <constraint firstItem="DOP-yl-BCx" firstAttribute="centerX" secondItem="6BS-ii-EQ8" secondAttribute="centerX" id="4M5-xc-55Z"/>
+                            <constraint firstItem="5Eu-Ir-qEf" firstAttribute="centerX" secondItem="6BS-ii-EQ8" secondAttribute="centerX" id="AZD-xg-q8G"/>
                             <constraint firstItem="DOP-yl-BCx" firstAttribute="centerX" secondItem="i7Z-kO-fRP" secondAttribute="centerX" id="CTN-UF-G7v"/>
                             <constraint firstItem="8Ib-4h-aAe" firstAttribute="height" secondItem="i7Z-kO-fRP" secondAttribute="height" id="Fh3-k4-5xM"/>
+                            <constraint firstItem="5Eu-Ir-qEf" firstAttribute="centerY" secondItem="6BS-ii-EQ8" secondAttribute="centerY" id="P3p-Q1-KlZ"/>
                             <constraint firstItem="fFf-kk-MvW" firstAttribute="centerX" secondItem="6BS-ii-EQ8" secondAttribute="centerX" id="RmM-1Z-HD7"/>
                             <constraint firstItem="fFf-kk-MvW" firstAttribute="height" secondItem="i7Z-kO-fRP" secondAttribute="height" id="Rmb-46-JyM"/>
                             <constraint firstItem="i3Z-Jv-9iC" firstAttribute="centerX" secondItem="6BS-ii-EQ8" secondAttribute="centerX" id="UDe-AT-PuK"/>
@@ -694,6 +699,7 @@
                         <outlet property="Button1" destination="8Ib-4h-aAe" id="soD-Cb-vNA"/>
                         <outlet property="Button2" destination="fFf-kk-MvW" id="jQ4-c8-9q7"/>
                         <outlet property="CallList" destination="DOP-yl-BCx" id="mRs-NW-u0o"/>
+                        <outlet property="Connecting" destination="5Eu-Ir-qEf" id="BoM-W6-S7n"/>
                         <outlet property="Hosts" destination="i7Z-kO-fRP" id="TRW-Uq-CGT"/>
                     </connections>
                 </viewController>

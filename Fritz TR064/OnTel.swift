@@ -14,7 +14,7 @@ class OnTel: TR064Service {
     case GetCallList
     
     var action: Action? {
-      return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType }.filter { $0.name == self.rawValue }.first
+      return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }
   }
   
