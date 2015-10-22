@@ -8,16 +8,15 @@
 
 class Time: TR064Service {
   
-  static let sharedService = Time()
   weak var observer: XMLResponseViewController!
   
-  let serviceType = "urn:dslforum-org:service:Time:1"
+  static let serviceType = "urn:dslforum-org:service:Time:1"
   
   enum expectedActions: String {
     case getInfo = "GetInfo"
     
     var action: Action? {
-      return Time.sharedService.actions.filter { $0.name == self.rawValue }.first
+      return TR064Manager.sharedManager.actions.filter { $0.name == self.rawValue }.first
     }
   }
   
@@ -26,6 +25,5 @@ class Time: TR064Service {
       observer?.tableData = entries
     }
   }
-  
   
 }
