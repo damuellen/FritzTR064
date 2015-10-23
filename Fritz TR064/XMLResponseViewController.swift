@@ -15,6 +15,8 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
       self.tableView.reloadData()
     }
   }
+  
+    let bgView = GradientView(frame: CGRectZero)
   var action: Action!
   
   func refreshUI() {
@@ -29,9 +31,11 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
     manager.observer = self
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableViewAutomaticDimension
+    tableView.backgroundView = bgView
   }
   
   override func viewWillAppear(animated: Bool) {
+    bgView.frame = tableView.bounds
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
   }

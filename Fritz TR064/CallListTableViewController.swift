@@ -24,9 +24,13 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
     super.viewDidLoad()
     manager.observer = self
     manager.activeService = OnTel()
-    (manager.activeService as! OnTel).getCallListMaxCalls(20)
+    OnTel.getCallListMaxCalls(20)
     tableView.estimatedRowHeight = 100.0
     tableView.rowHeight = UITableViewAutomaticDimension
+    let view = UIView()
+    view.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(4))
+    tableView.backgroundView = view
+   // tableView.backgroundColor = UIColor.clearColor()
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -40,7 +44,7 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   func alert() {
     self.appearAlertViewWithTitle("Error", message: "No calls found",
       actionTitle: ["Retry"],
-      actionBlock: [{(self.manager.activeService as! OnTel).getCallListMaxCalls(20)}])
+      actionBlock: [{OnTel.getCallListMaxCalls(20)}])
   }
 }
 

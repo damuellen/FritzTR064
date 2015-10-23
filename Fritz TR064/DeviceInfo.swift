@@ -12,7 +12,7 @@ class DeviceInfo: TR064Service {
   
   static let serviceType = "urn:dslforum-org:service:DeviceInfo:1"
   
-  enum expectedActions: String {
+  enum knownActions: String {
     case getInfo = "GetInfo"
     
     var action: Action? {

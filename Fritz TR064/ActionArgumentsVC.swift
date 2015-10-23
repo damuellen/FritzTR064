@@ -17,7 +17,8 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
       self.tableView.reloadData()
     }
   }
-
+  
+  let bgView = GradientView(frame: CGRectZero)
   var action: Action!
 
   var needsInput = false {
@@ -73,11 +74,16 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    tableView.backgroundView = bgView
     let addButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "sendCurrentAction")
     self.navigationItem.rightBarButtonItem = addButton
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableViewAutomaticDimension
     self
+  }
+  
+  override func viewWillAppear(animated: Bool) {
+    bgView.frame = tableView.bounds
   }
   
   // MARK: - Segues

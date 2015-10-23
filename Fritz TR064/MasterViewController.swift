@@ -42,6 +42,8 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
     }
   }
 
+  let bgView = GradientView(frame: CGRectZero)
+  
   var resultSearchController: UISearchController!
   var detailViewController: ActionArgumentsVC?
 
@@ -51,6 +53,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
       let controllers = split.viewControllers
       self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ActionArgumentsVC
     }
+    tableView.backgroundView = bgView
     resultSearchController = {
       let controller = UISearchController(searchResultsController: nil)
       controller.searchResultsUpdater = self
@@ -67,6 +70,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
   override func viewWillAppear(animated: Bool) {
     manager.observer = self
     self.refreshUI()
+    bgView.frame = tableView.bounds
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
   }

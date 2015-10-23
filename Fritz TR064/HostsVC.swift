@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver {
+class HostsVC: UITableViewController, TR064ServiceObserver {
     
   var tableData = [[String:String]]() {
     didSet {
@@ -22,15 +22,22 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
     
   }
   
+  let bgView = GradientView(frame: CGRectZero)
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     manager.observer = self
     manager.activeService = Hosts()
-    (manager.activeService as! Hosts).getAllHosts()
+    Hosts.getAllHosts()
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableViewAutomaticDimension
+    tableView.backgroundView = bgView
   }
 
+  override func viewWillAppear(animated: Bool) {
+    bgView.frame = view.bounds
+  }
+  
   override func viewDidAppear(animated: Bool) {
     delay(5) { [weak self] in
       if self?.tableData.count == 0 {
@@ -42,7 +49,7 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
   func alert() {
     self.appearAlertViewWithTitle("Error", message: "No hosts found",
       actionTitle: ["Retry"],
-      actionBlock: [{(self.manager.activeService as? Hosts)?.getAllHosts()}])
+      actionBlock: [{Hosts.getAllHosts()}])
   }
   
   @IBOutlet weak var text: UITextField!
@@ -65,7 +72,7 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
   }
   
   override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 20
+    return 10
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -83,7 +90,7 @@ class HostsVC: UITableViewController, UITextFieldDelegate, TR064ServiceObserver 
     
     appearAlertViewWithTitle(hostName, message: hostMAC,
       actionTitle: ["Wake up", "VNC"],
-      actionBlock: [{ (self.manager.activeService as! Hosts).wakeHost(hostMAC) },
+      actionBlock: [{ Hosts.wakeHost(hostMAC) },
         { appDelegate.vpnStayConnected = true
           UIApplication.sharedApplication().openURL(NSURL(string: "vnc://" + hostIP)!) }])
   }

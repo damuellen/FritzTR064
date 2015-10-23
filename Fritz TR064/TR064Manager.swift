@@ -59,12 +59,7 @@ extension TR064ServiceObserver {
 }
 
 protocol TR064Service {
-  var manager: TR064Manager { get }
   static var serviceType: String { get }
-}
-
-extension TR064Service {
-  var manager: TR064Manager { return TR064Manager.sharedManager }
 }
 
 extension MasterViewController: TR064ServiceObserver {

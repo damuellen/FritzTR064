@@ -24,9 +24,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   @IBOutlet weak var Button1: UIButton!
   @IBOutlet weak var Button2: UIButton!
   
-  @IBOutlet weak var Connecting: UIActivityIndicatorView!
-  
-  
+
   override func viewDidLoad() {
     manager.observer = self
     manager.activeService = nil
@@ -35,23 +33,26 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   
   override func viewWillAppear(animated: Bool) {
     if manager.isReady {
-      Connecting.hidden = true
     }
   }
   
   override func viewDidAppear(animated: Bool) {
+    SwiftSpinner.showWithDelay(1, title: "It's taking longer than expected", animated: true)
     if manager.isReady {
       refreshUI()
     }
   }
   
   func alert() {
-      self.appearAlertViewWithTitle("Error", message: "No Services found",
-        actionTitle: ["Retry"],
-        actionBlock: [{ TR064.getAvailableServices() }])
+    SwiftSpinner.show("No Services found").addTapHandler({
+      TR064.getAvailableServices()
+      SwiftSpinner.show("May be this time")
+    })
+    //  self.appearAlertViewWithTitle("Error", message: "No Services found",
+    //    actionTitle: ["Retry"],
+    //    actionBlock: [{ TR064.getAvailableServices() }])
   }
-    
-  
+      
   @IBAction func touchedButton(button: UIButton) {
     button.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
   }
@@ -74,7 +75,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
     for element in self.view.subviews where element is UIButton {
       (element as! UIButton).enabled = true
     }
-    Connecting.hidden = true
+    SwiftSpinner.hide()
     UIView.animateWithDuration(0.5, delay: 0, options: [.CurveEaseIn], animations:  {
       for element in self.view.subviews where element is UIButton {
         element.alpha = 1

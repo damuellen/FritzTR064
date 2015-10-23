@@ -12,7 +12,7 @@ class Time: TR064Service {
   
   static let serviceType = "urn:dslforum-org:service:Time:1"
   
-  enum expectedActions: String {
+  enum knownActions: String {
     case getInfo = "GetInfo"
     
     var action: Action? {

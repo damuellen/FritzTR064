@@ -10,7 +10,7 @@ class Hosts: TR064Service {
   
   static let serviceType = "urn:dslforum-org:service:Hosts:1"
   
-  enum expectedActions: String {
+  enum knownActions: String {
     case GetHostNumberOfEntries
     case GetSpecificHostEntry
     case GetGenericHostEntry
@@ -22,36 +22,36 @@ class Hosts: TR064Service {
     }
   }
 
-  var entries: [[String:String]] {
-    get { return ((manager.observer as? HostsVC)?.tableData)! }
-    set { (manager.observer as? HostsVC)?.tableData = newValue }
+  static var dataSource: [[String:String]] {
+    get { return ((TR064Manager.sharedManager.observer as! HostsVC).tableData) }
+    set { (TR064Manager.sharedManager.observer as? HostsVC)?.tableData = newValue }
   }
   
-  func setHostName(name: String, ByMACAdress mac: String) {
-    if let action = expectedActions.SetHostNameByMACAdress.action {
+  class func setHostName(name: String, ByMACAdress mac: String) {
+    if let action = knownActions.SetHostNameByMACAdress.action {
       TR064.startAction(action, arguments: [name, mac])
     }
   }
   
-  func getHostNumberOfEntries() -> ActionResultPromise? {
-    guard let action = expectedActions.GetHostNumberOfEntries.action else {
+  class func getHostNumberOfEntries() -> ActionResultPromise? {
+    guard let action = knownActions.GetHostNumberOfEntries.action else {
       return nil
     }
     return TR064.startAction(action)
   }
   
-  func getHost(index: Int) -> ActionResultPromise? {
-    guard let action = expectedActions.GetGenericHostEntry.action else {
+  class func getHost(index: Int) -> ActionResultPromise? {
+    guard let action = knownActions.GetGenericHostEntry.action else {
       return nil
     }
      return TR064.startAction(action, arguments: ["\(index)"])
   }
 
-  func getAllHosts() {
+  class func getAllHosts() {
     guard let HostNumberOfEntries = getHostNumberOfEntries() else { return }
     HostNumberOfEntries.then { xml in
       var hosts = [ActionResultPromise]()
-      if let action = expectedActions.GetHostNumberOfEntries.action,
+      if let action = knownActions.GetHostNumberOfEntries.action,
         response = xml.value.convertWithAction(action),
         result = response.values.first,
         number = Int(result) {
@@ -61,17 +61,17 @@ class Hosts: TR064Service {
           }
         }
       }
-      guard let action = expectedActions.GetGenericHostEntry.action else { return }
+      guard let action = knownActions.GetGenericHostEntry.action else { return }
       whenAll(hosts).then { hosts in
-        self.entries = hosts.map {
+        self.dataSource = hosts.map {
           $0.value.convertWithAction(action)
           }.flatMap {$0}
       }
     }
   }
   
-  func wakeHost(MAC: String) {
-    guard let action = expectedActions.WakeOnLANByMACAddress.action else { return }
+  class func wakeHost(MAC: String) {
+    guard let action = knownActions.WakeOnLANByMACAddress.action else { return }
     TR064.startAction(action, arguments: [MAC])
   }
   

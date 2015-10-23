@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		650296001BD315B5008CC54A /* UIView+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650295FF1BD315B5008CC54A /* UIView+UIColor.swift */; };
+		6508C5C81BD96A5A0088AB55 /* SwiftSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6508C5C71BD96A5A0088AB55 /* SwiftSpinner.swift */; };
+		6508C5CA1BDA3A340088AB55 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6508C5C91BDA3A340088AB55 /* GradientView.swift */; };
 		651BAD671BC5317100DBB9EC /* TableViewInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651BAD661BC5317100DBB9EC /* TableViewInputCell.swift */; };
 		65287C0B1BC30E8000103231 /* VPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65287C0A1BC30E8000103231 /* VPN.swift */; };
 		65337A3E1BC16526009925E5 /* CallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3D1BC16526009925E5 /* CallCell.swift */; };
@@ -90,6 +92,8 @@
 
 /* Begin PBXFileReference section */
 		650295FF1BD315B5008CC54A /* UIView+UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+UIColor.swift"; path = "../UIView+UIColor.swift"; sourceTree = "<group>"; };
+		6508C5C71BD96A5A0088AB55 /* SwiftSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSpinner.swift; sourceTree = "<group>"; };
+		6508C5C91BDA3A340088AB55 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		651BAD661BC5317100DBB9EC /* TableViewInputCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewInputCell.swift; sourceTree = "<group>"; };
 		65287C0A1BC30E8000103231 /* VPN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPN.swift; sourceTree = "<group>"; };
 		65287C0E1BC3175D00103231 /* Fritz TR064.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Fritz TR064.entitlements"; sourceTree = "<group>"; };
@@ -212,6 +216,7 @@
 				65B2BC271BD6D2F300C244B1 /* Extensions.swift */,
 				65C8256E1BB75E02005DF551 /* ActionArgumentsVC.swift */,
 				65D5A1381BC708C900D691DB /* HostsVC.swift */,
+				6508C5C91BDA3A340088AB55 /* GradientView.swift */,
 				65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */,
 				65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */,
 				65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */,
@@ -230,6 +235,7 @@
 				656BDA2E1BC9C9520083D0DE /* State.swift */,
 				65C825801BB76010005DF551 /* TR064.swift */,
 				65D5A1361BC6E98200D691DB /* Hosts.swift */,
+				6508C5C71BD96A5A0088AB55 /* SwiftSpinner.swift */,
 				658D412F1BD2A0B400CB5868 /* OnTel.swift */,
 				65BA6B871BD3D7A1001D8420 /* DeviceInfo.swift */,
 				65BA6B891BD3D7B9001D8420 /* Time.swift */,
@@ -376,6 +382,7 @@
 				65BA6B881BD3D7A1001D8420 /* DeviceInfo.swift in Sources */,
 				655F61FE1BC12C9000D723EE /* Contact.swift in Sources */,
 				65C8257F1BB75E86005DF551 /* AEXML.swift in Sources */,
+				6508C5C81BD96A5A0088AB55 /* SwiftSpinner.swift in Sources */,
 				650296001BD315B5008CC54A /* UIView+UIColor.swift in Sources */,
 				656BDA301BC9C9520083D0DE /* Delay+Promise.swift in Sources */,
 				65EA37DC1BCCFF6B00754DD4 /* MenuViewController.swift in Sources */,
@@ -391,6 +398,7 @@
 				656BDA321BC9C9520083D0DE /* FutureSource.swift in Sources */,
 				65337A3E1BC16526009925E5 /* CallCell.swift in Sources */,
 				65BA6B8A1BD3D7B9001D8420 /* Time.swift in Sources */,
+				6508C5CA1BDA3A340088AB55 /* GradientView.swift in Sources */,
 				656BDA341BC9C9520083D0DE /* State.swift in Sources */,
 				656BDA311BC9C9520083D0DE /* Future.swift in Sources */,
 				65D5A1391BC708C900D691DB /* HostsVC.swift in Sources */,

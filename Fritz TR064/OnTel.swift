@@ -10,7 +10,7 @@ class OnTel: TR064Service {
   
   static let serviceType = "urn:dslforum-org:service:X_AVM-DE_OnTel:1"
   
-  enum expectedActions: String {
+  enum knownActions: String {
     case GetCallList
     
     var action: Action? {
@@ -18,27 +18,27 @@ class OnTel: TR064Service {
     }
   }
   
-  var entries: [Call]? {
-    get { return (manager.observer as? CallListTableViewController)?.tableData }
-    set { (manager.observer as? CallListTableViewController)?.tableData = newValue }
+  static var dataSource: [Call]? {
+    get { return (TR064Manager.sharedManager.observer as! CallListTableViewController).tableData }
+    set { (TR064Manager.sharedManager.observer as? CallListTableViewController)?.tableData = newValue }
   }
   
-  func getCallList(argument: String = "") {
-    guard let action = expectedActions.GetCallList.action else { return }
+  class func getCallList(argument: String = "") {
+    guard let action = knownActions.GetCallList.action else { return }
     TR064.startAction(action).trap{_ in self.getCallList()}.then { xml in
       guard let url = xml.value.checkForURL() else { return }
       let callList = TR064.getXMLFromURL(url + argument)?.responseXMLPromise()
       callList?.then { callList in
-        self.entries = callList.value.transformXMLtoCalls()
+        self.dataSource = callList.value.transformXMLtoCalls()
       }
     }
   }
   
-  func getCallListForDays(days: Int) {
+  class func getCallListForDays(days: Int) {
     getCallList("&days=\(days)")
   }
   
-  func getCallListMaxCalls(calls: Int) {
+  class func getCallListMaxCalls(calls: Int) {
     getCallList("&max=\(calls)")
   }
   
