@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     id = NSNotificationCenter.defaultCenter().addObserverForName(
       NEVPNStatusDidChangeNotification, object: nil, queue: nil) { _ in
-      TR064.getAvailableServices()
+				delay(0.5) { TR064.getAvailableServices() }
       NSNotificationCenter.defaultCenter().removeObserver(self.id!)
       self.id = nil
     }
