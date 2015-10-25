@@ -62,6 +62,15 @@ protocol TR064Service {
   static var serviceType: String { get }
 }
 
+extension TR064Service {
+  static var manager: TR064Manager { return TR064Manager.sharedManager }
+  static var observer: TR064ServiceObserver? { return TR064Manager.sharedManager.observer }
+  
+  static func alert() {
+    manager.observer?.alert()
+  }
+}
+
 extension MasterViewController: TR064ServiceObserver {
   
   func refreshUI() {

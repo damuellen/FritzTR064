@@ -88,6 +88,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
     controller.action = action
     controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
     controller.navigationItem.leftItemsSupplementBackButton = true
+    bgView.removeFromSuperview()
     if segue.identifier == "showOutput" {
       controller.showOutputArguments()
     }

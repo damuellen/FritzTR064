@@ -89,6 +89,7 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   // MARK: - Segues
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    bgView.removeFromSuperview()
     if segue.identifier == "showResponse" {
       let controller = ((segue.destinationViewController as! UINavigationController).topViewController as! XMLResponseViewController)
       controller.action = self.action

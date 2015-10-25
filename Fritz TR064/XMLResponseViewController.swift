@@ -36,7 +36,6 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   
   override func viewWillAppear(animated: Bool) {
     bgView.frame = tableView.bounds
-    self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
   }
   

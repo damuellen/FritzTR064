@@ -76,7 +76,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
       (element as! UIButton).enabled = true
     }
     SwiftSpinner.hide()
-    UIView.animateWithDuration(0.5, delay: 0, options: [.CurveEaseIn], animations:  {
+    UIView.animateWithDuration(0.4, delay: 0, options: [.CurveEaseIn], animations:  {
       for element in self.view.subviews where element is UIButton {
         element.alpha = 1
       }

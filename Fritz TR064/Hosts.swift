@@ -18,13 +18,13 @@ class Hosts: TR064Service {
     case WakeOnLANByMACAddress = "X_AVM-DE_WakeOnLANByMACAddress"
     
     var action: Action? {
-      return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
+      return manager.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }
   }
 
   static var dataSource: [[String:String]] {
-    get { return ((TR064Manager.sharedManager.observer as! HostsVC).tableData) }
-    set { (TR064Manager.sharedManager.observer as? HostsVC)?.tableData = newValue }
+    get { return ((manager.observer as! HostsVC).tableData) }
+    set { (observer as? HostsVC)?.tableData = newValue }
   }
   
   class func setHostName(name: String, ByMACAdress mac: String) {
@@ -71,7 +71,7 @@ class Hosts: TR064Service {
   }
   
   class func wakeHost(MAC: String) {
-    guard let action = knownActions.WakeOnLANByMACAddress.action else { return }
+    guard let action = knownActions.WakeOnLANByMACAddress.action else { alert(); return }
     TR064.startAction(action, arguments: [MAC])
   }
   
