@@ -4,10 +4,20 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Fritz TR064.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
 		<key>Fritz TR064.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+		<key>TodayList.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
 		</dict>
 		<key>TodayList.xcscheme_^#shared#^_</key>
 		<dict>
@@ -18,6 +28,16 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>658D41351BD2DAA500CB5868</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6590083D1BDCE6CB00F4CBAE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6590084B1BDCE6EA00F4CBAE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
