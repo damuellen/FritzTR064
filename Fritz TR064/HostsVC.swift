@@ -10,7 +10,7 @@ import UIKit
 
 class HostsVC: UITableViewController, TR064ServiceObserver {
     
-  var tableData = [[String:String]]() {
+  var tableData = [Host]() {
     didSet {
       self.tableView.reloadData()
     }
@@ -57,41 +57,36 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   // MARK: - Table View
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return tableData.count
+    return 1
   }
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return tableData[section].count
-  }
-  
-  override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let cell = tableView.dequeueReusableCellWithIdentifier("Section")
-    cell?.backgroundColor = UIColor.blackColor()
-    cell?.textLabel?.textColor = UIColor.whiteColor()
-    return cell
+    return tableData.count
   }
   
   override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 10
+    return 0
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-		cell.textLabel?.text = Array(self.tableData[indexPath.section].values)[indexPath.row]
-		cell.detailTextLabel?.text = Array(self.tableData[indexPath.section].keys)[indexPath.row]
+    let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! HostCell
+		let host = tableData[indexPath.row]
+		cell.configure(host)
     return cell
   }
 
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let entry = indexPath.section
-    let hostMAC = tableData[entry]["NewMACAddress"]!
-    let hostName = tableData[entry]["NewHostName"]!
-    let hostIP = tableData[entry]["NewIPAddress"]!
+ 
+		let host = tableData[indexPath.row]
     
-    appearAlertViewWithTitle(hostName, message: hostMAC,
+    appearAlertViewWithTitle(host.hostName, message: host.macAddress,
       actionTitle: ["Wake up", "VNC"],
-      actionBlock: [{ Hosts.wakeHost(hostMAC) },
+      actionBlock: [{ Hosts.wakeHost(host.macAddress) },
         { appDelegate.vpnStayConnected = true
-          UIApplication.sharedApplication().openURL(NSURL(string: "vnc://" + hostIP)!) }])
+          UIApplication.sharedApplication().openURL(NSURL(string: "vnc://" + host.ip)!) }])
   }
+	
+	override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+		return 52
+	}
 }

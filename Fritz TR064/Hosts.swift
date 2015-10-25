@@ -22,7 +22,7 @@ class Hosts: TR064Service {
     }
   }
 
-  static var dataSource: [[String:String]] {
+  static var dataSource: [Host] {
     get { return ((manager.observer as! HostsVC).tableData) }
     set { (observer as? HostsVC)?.tableData = newValue }
   }
@@ -65,7 +65,7 @@ class Hosts: TR064Service {
       whenAll(hosts).then { hosts in
         self.dataSource = hosts.map {
           $0.value.convertWithAction(action)
-          }.flatMap {$0}
+          }.flatMap {$0}.map { Host(host: $0)}
       }
     }
   }
