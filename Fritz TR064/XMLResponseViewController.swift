@@ -16,7 +16,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
     }
   }
   
-    let bgView = GradientView(frame: CGRectZero)
+	let bgView = GradientView(frame: CGRectZero)
   var action: Action!
   
   func refreshUI() {
@@ -36,7 +36,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   
   override func viewWillAppear(animated: Bool) {
     bgView.frame = tableView.bounds
-    self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
+  //  self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
     super.viewWillAppear(animated)
   }
   
@@ -57,7 +57,9 @@ extension XMLResponseViewController {
     }
     guard let XML = TR064Manager.sharedManager.lastResponse, URL = XML.checkForURLWithAction(self.action) else { return }
     TR064.getXMLFromURL(URL)?.responseXMLDocument(TR064.completionHandler)
-    if URL.containsString("calllist") { self.performSegueWithIdentifier("showCallList", sender: self) }
+    if URL.containsString("calllist") {
+			self.performSegueWithIdentifier("showCallList", sender: self)
+		}
   }
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

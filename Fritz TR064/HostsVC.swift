@@ -77,8 +77,8 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-    cell.textLabel?.text = self.tableData[indexPath.section].values.map{$0}[indexPath.row]
-    cell.detailTextLabel?.text = self.tableData[indexPath.section].keys.map{$0}[indexPath.row]
+		cell.textLabel?.text = Array(self.tableData[indexPath.section].values)[indexPath.row]
+		cell.detailTextLabel?.text = Array(self.tableData[indexPath.section].keys)[indexPath.row]
     return cell
   }
 

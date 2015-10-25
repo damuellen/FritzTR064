@@ -82,18 +82,24 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
   // MARK: - Segues
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+		
+		if segue.identifier != "showMenu" {
     guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
     let action = self.filteredData[indexPath.section].actions[indexPath.row]
+			if segue.destinationViewController is UINavigationController {
     let controller = (segue.destinationViewController as! UINavigationController).topViewController as! ActionArgumentsVC
     controller.action = action
     controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
     controller.navigationItem.leftItemsSupplementBackButton = true
-    if segue.identifier == "showOutput" {
-      controller.showOutputArguments()
-    }
-    if segue.identifier == "showInput" {
-      controller.showInputArguments()
-    }
+		
+			if segue.identifier == "showOutput" {
+				controller.showOutputArguments()
+			}
+			if segue.identifier == "showInput" {
+				controller.showInputArguments()
+				}
+			}
+		}
     self.resultSearchController?.dismissViewControllerAnimated(true, completion: {})
   }
   
