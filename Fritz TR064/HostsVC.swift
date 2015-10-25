@@ -46,10 +46,6 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
     }
   }
   
-  @IBAction func returnFromSegueActions(sender: UIStoryboardSegue){
-    
-  }
-  
   func alert() {
     self.appearAlertViewWithTitle("Error", message: "No hosts found",
       actionTitle: ["Retry"],
