@@ -53,7 +53,10 @@ struct TR064 {
       return (Alamofire.request(.GET, requestURL + $0.SCPDURL ).validate().responseXMLPromise())
     }
     whenAll(actions).then { xml in
-      defer { manager.isReady = true }
+      defer {
+        application.networkActivityIndicatorVisible = false
+        manager.isReady = true
+      }
       for (index,xml) in xml.enumerate() {
         
         let serviceStateTable = xml.value.root["serviceStateTable"].children
