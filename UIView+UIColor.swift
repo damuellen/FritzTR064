@@ -111,16 +111,21 @@ extension UIColor {
 
 extension UIView {
   
+  private func createGradientLayer() -> CAGradientLayer {
+    let layer = CAGradientLayer()
+    layer.frame = self.frame
+    layer.cornerRadius = self.layer.cornerRadius
+    layer.shouldRasterize = true
+    return layer
+  }
+  
   func addOrChangeGradientLayerWithColors(colors: [UIColor]) {
-    let gradientLayer: CAGradientLayer
-    let presentGradientLayer = self.layer.sublayers?.first as? CAGradientLayer
-    gradientLayer = presentGradientLayer ?? CAGradientLayer()
-    gradientLayer.frame = self.bounds
-    gradientLayer.cornerRadius = self.layer.cornerRadius
-    gradientLayer.colors = colors.map { $0.CGColor }
-    gradientLayer.shouldRasterize = true
-    if presentGradientLayer == nil {
-      self.layer.insertSublayer(gradientLayer, atIndex: 0)
+    let layer = self.layer.sublayers?.first as? CAGradientLayer
+      ?? createGradientLayer()
+    layer.colors = colors.map { $0.CGColor }
+    guard self.layer.sublayers?.first is CAGradientLayer else {
+      self.layer.insertSublayer(layer, atIndex: 0)
+      return
     }
   }
   
