@@ -28,23 +28,27 @@ struct TR064 {
     manager.pendingAction = nil
   }
   
-  /// Request the tr064desc.xml from the router, and give the founded services to the manager.
+  /// Request the tr064desc.xml from the router.
   static func requestServices() -> Request {
     application.networkActivityIndicatorVisible = true
     let requestURL = TR064.serviceURL + TR064.descURL
-    return Alamofire.request(.GET, requestURL).validate()
+    return Alamofire.request(.GET, requestURL)
   }
   
   static func checkServices(request: Request) {
     request.responseXMLPromise().then {
+      if request.response?.statusCode == 404 {
+        delay(1) { getAvailableServices }
+        return
+      }
       manager.services = getServicesFromDescription($0)
       getActionsFor(manager.services)
     }
   }
   
-  static func getAvailableServices() {
-    checkServices(requestServices())
-  }
+  static let getAvailableServices:() = {
+    TR064.requestServices => TR064.checkServices
+  }()
   
   /// Use the URL from the given service to request his actions, and add them to the manager.
   static func getActionsFor(services: [Service]) {

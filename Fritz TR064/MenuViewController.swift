@@ -43,11 +43,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   }
   
   func alert() {
-    SwiftSpinner.show("No Services found").addTapHandler({
-      TR064.getAvailableServices()
-      SwiftSpinner.show("May be this time")
-      }, subtitle: "Press to retry")
-    
+    SwiftSpinner.show("Waiting for server")    
     //  self.appearAlertViewWithTitle("Error", message: "No Services found",
     //    actionTitle: ["Retry"],
     //    actionBlock: [{ TR064.getAvailableServices() }])

@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func setup() {
     if isRunningSimulator() {
-      TR064.getAvailableServices()
+      TR064.getAvailableServices
     } else {
       vpnConnection = VPN()
     }
@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     id = NSNotificationCenter.defaultCenter().addObserverForName(
       NEVPNStatusDidChangeNotification, object: nil, queue: nil) { _ in
-				delay(0.5) { TR064.getAvailableServices() }
+				delay(0.5) { TR064.getAvailableServices }
       NSNotificationCenter.defaultCenter().removeObserver(self.id!)
       self.id = nil
     }

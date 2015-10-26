@@ -8,6 +8,12 @@
 
 import Foundation
 
+infix operator => { associativity left precedence 130 }
+
+func =><T>(left: ()->T, right: T->()) {
+  right( left() )
+}
+
 extension String {
   
   var isEmpty: Bool  {
