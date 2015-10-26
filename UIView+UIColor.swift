@@ -113,22 +113,39 @@ extension UIView {
   
   private func createGradientLayer() -> CAGradientLayer {
     let layer = CAGradientLayer()
-    layer.frame = self.frame
+    layer.frame = self.bounds
     layer.cornerRadius = self.layer.cornerRadius
     layer.shouldRasterize = true
     return layer
   }
   
+  private var getGradientLayer: CAGradientLayer? {
+    return self.layer.sublayers?.first as? CAGradientLayer
+  }
+  
+  private var containsGradientLayer: Bool {
+    return self.layer.sublayers?.first is CAGradientLayer
+  }
+  
   func addOrChangeGradientLayerWithColors(colors: [UIColor]) {
-    let layer = self.layer.sublayers?.first as? CAGradientLayer
-      ?? createGradientLayer()
+    let layer = getGradientLayer ?? createGradientLayer()
     layer.colors = colors.map { $0.CGColor }
-    guard self.layer.sublayers?.first is CAGradientLayer else {
+    if !containsGradientLayer {
       self.layer.insertSublayer(layer, atIndex: 0)
-      return
     }
   }
   
+  func addOrChangeGradientLayerWithColors2(colors: [UIColor]) {
+    let layer: CAGradientLayer
+    if self.containsGradientLayer {
+      layer = getGradientLayer!
+    }else {
+      layer = createGradientLayer()
+      self.layer.insertSublayer(layer, atIndex: 0)
+    }
+    layer.colors = colors.map { $0.CGColor }
+  }
+
 }
 
 func isGradientLayer(layer: CALayer) -> Bool {

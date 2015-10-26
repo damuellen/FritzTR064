@@ -18,12 +18,11 @@ class BackgroundGradientView: UIView {
 
 class MenuViewController: UIViewController, TR064ServiceObserver {
   
-  @IBOutlet weak var Hosts: UIButton!
-  @IBOutlet weak var Actions: UIButton!
-  @IBOutlet weak var CallList: UIButton!
-  @IBOutlet weak var Button1: UIButton!
-  @IBOutlet weak var Button2: UIButton!
-  
+  @IBOutlet weak var Hosts: NiceButton!
+  @IBOutlet weak var Actions: NiceButton!
+  @IBOutlet weak var CallList: NiceButton!
+  @IBOutlet weak var Button1: NiceButton!
+  @IBOutlet weak var Button2: NiceButton!
 
   override func viewDidLoad() {
     manager.observer = self
@@ -47,36 +46,32 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
     SwiftSpinner.show("No Services found").addTapHandler({
       TR064.getAvailableServices()
       SwiftSpinner.show("May be this time")
-    })
+      }, subtitle: "Press to retry")
+    
     //  self.appearAlertViewWithTitle("Error", message: "No Services found",
     //    actionTitle: ["Retry"],
     //    actionBlock: [{ TR064.getAvailableServices() }])
   }
-      
-  @IBAction func touchedButton(button: UIButton) {
-    button.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
-  }
-  
-  @IBAction func failButton(button: UIButton) {
-    button.addOrChangeGradientLayerWithColors(UIColor.mojitoBlast())
-  }
   
   func configureUI() {
-    self.view.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(4))
+    
+    let subview = UIView(frame: self.view.frame)
+    subview.backgroundColor = UIColor.whiteColor()
+    subview.alpha = 0.5
+    self.view.addOrChangeGradientLayerWithColors(UIColor.beach())
     for button in self.view.subviews where button is UIButton {
-      button.layer.cornerRadius = 8
-   //   button.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(3))
+      button.hidden = true
       button.alpha = 0.0
-      
     }
   }
   
   func refreshUI() {
     for element in self.view.subviews where element is UIButton {
       (element as! UIButton).enabled = true
+      (element as! UIButton).hidden = false
     }
     SwiftSpinner.hide()
-    UIView.animateWithDuration(0.4, delay: 0, options: [.CurveEaseIn], animations:  {
+    UIView.animateWithDuration(0.5, delay: 0, options: [.CurveEaseIn], animations:  {
       for element in self.view.subviews where element is UIButton {
         element.alpha = 1
       }
@@ -86,8 +81,9 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   // MARK: - Segues
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    if segue.identifier == "showCallList" {
-
+    if segue.identifier == "DeviceInfo" {
+      manager.observer = segue.destinationViewController as? TR064ServiceObserver
+      DeviceInfo.getDeviceLog()
     }
   }
   

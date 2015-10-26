@@ -21,47 +21,47 @@ struct TR064 {
   static let manager = TR064Manager.sharedManager
   static let serviceURL = "http://192.168.178.1:49000"
   static let descURL = "/tr64desc.xml"
+  
   static let completionHandler = { (_:NSURLRequest?, _:NSHTTPURLResponse?, XML:Result<AEXMLDocument>) -> Void in
     guard let xml = XML.value else { return }
     manager.lastResponse = xml
+    manager.pendingAction = nil
   }
   
   /// Request the tr064desc.xml from the router, and give the founded services to the manager.
-  static func getAvailableServices() {
+  static func requestServices() -> Request {
+    application.networkActivityIndicatorVisible = true
     let requestURL = TR064.serviceURL + TR064.descURL
-    Alamofire.request(.GET, requestURL)
-      .validate()
-      .responseXMLDocument { (_, _, xml) in
-        manager.services = getServicesFromDescription(xml)
+    return Alamofire.request(.GET, requestURL).validate()
+  }
+  
+  static func checkServices(request: Request) {
+    request.responseXMLPromise().then {
+      manager.services = getServicesFromDescription($0)
+      getActionsFor(manager.services)
     }
   }
   
-  /// Use the URL from the given service to request his actions, and give them to the manager.
+  static func getAvailableServices() {
+    checkServices(requestServices())
+  }
+  
+  /// Use the URL from the given service to request his actions, and add them to the manager.
   static func getActionsFor(services: [Service]) {
     let requestURL = TR064.serviceURL
-    services.forEach { service in
-      Alamofire.request(.GET, requestURL + service.SCPDURL )
-        .validate()
-        .responseXMLPromise()
-        .then { xml in
-          let stateVariables = xml.value.root["serviceStateTable"].children.map {
-            StateVariable(element: $0) }.flatMap {$0}
-          let actions = xml.value.root["actionList"].children.map {
-            Action(element: $0, stateVariables: stateVariables, service: service) }.flatMap {$0}
-          manager.actions += actions
-      }
+    let actions = services.map {
+      return (Alamofire.request(.GET, requestURL + $0.SCPDURL ).validate().responseXMLPromise())
     }
-  }
-  
-  static func getActionsFor(service: Service) {
-    let requestURL = TR064.serviceURL + service.SCPDURL
-    Alamofire.request(.GET, requestURL)
-      .validate()
-      .responseXMLDocument { (_, _, XML) -> Void in
-        guard let xml = XML.value else { return }
-        let stateVariables = xml.root["serviceStateTable"].children.map {StateVariable(element: $0)}.flatMap {$0}
-        let actions = xml.root["actionList"].children.map { Action(element: $0, stateVariables: stateVariables, service: service) }.flatMap {$0}
-        manager.actions += actions
+    whenAll(actions).then { xml in
+      defer { manager.isReady = true }
+      for (index,xml) in xml.enumerate() {
+        
+        let serviceStateTable = xml.value.root["serviceStateTable"].children
+        let stateVariables = serviceStateTable.map { StateVariable(element: $0) }.flatMap {$0}
+        
+        let actionList = xml.value.root["actionList"].children
+        manager.actions += actionList.map { Action(element: $0, stateVariables: stateVariables, service:services[index]) }.flatMap {$0}
+      }
     }
   }
   
@@ -97,13 +97,18 @@ struct TR064 {
   
   /// Sends an request for an action with arguments.
   static func sendRequest(action: Action, arguments: [String] = []) -> Request {
+    manager.pendingAction = (action, arguments)
     let request = createRequest(action)
     request.HTTPBody = createMessage(action, arguments: arguments)
     return Alamofire.request(request).authenticate(user: account, password: pass).validate()
   }
+  
   /// Sends an request for an action with arguments, and returns a future response.
   static func startAction(action: Action, arguments: [String] = []) -> ActionResultPromise {
-    return sendRequest(action, arguments: arguments).responsePromiseFor(Action: action)
+    manager.pendingAction = (action, arguments)
+    return sendRequest(action, arguments: arguments).responsePromiseFor(Action: action).then { _ in
+    manager.pendingAction = nil
+    }
   }
   
   static func getXMLFromURL(requestURL: String) -> Request? {
@@ -111,8 +116,8 @@ struct TR064 {
   }
   
   /// Helper function to get known services from tr064desc.xml.
-  static func getServicesFromDescription(discription: Result<AEXMLDocument>) -> [Service] {
-    guard let discription = discription.value else { return [] }
+  static func getServicesFromDescription(discription: AFPValue<AEXMLDocument>) -> [Service] {
+    let discription = discription.value
     let internetGatewayDevice = discription.root["device"],
     LANDevice = discription.root["device"]["deviceList"].children[0],
     WANDevice = discription.root["device"]["deviceList"].children[1]

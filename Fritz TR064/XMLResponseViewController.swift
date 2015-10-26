@@ -40,8 +40,18 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
     super.viewWillAppear(animated)
   }
   
+  override func viewDidAppear(animated: Bool) {
+    delay(10) { [weak self] in
+      if self?.tableData.count == 0 {
+        self?.alert()
+      }
+    }
+  }
+  
   func alert() {
-    fatalError()
+    self.appearAlertViewWithTitle("Error", message: "No response",
+      actionTitle: ["Retry"],
+      actionBlock: [{TR064.startAction(self.action)}])
   }
   
   @IBOutlet weak var text: UITextField!
@@ -75,7 +85,7 @@ extension XMLResponseViewController {
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let argument = self.tableData.lazy.map {$0}[indexPath.row]
+    let argument = Array(self.tableData)[indexPath.row]
     let cell = tableView.dequeueReusableCellWithIdentifier("Output", forIndexPath: indexPath)
     cell.textLabel?.numberOfLines = 0
     cell.textLabel?.lineBreakMode = .ByWordWrapping

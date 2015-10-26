@@ -35,7 +35,7 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   }
 
   override func viewWillAppear(animated: Bool) {
-    bgView.frame = view.bounds
+    bgView.frame = view.frame
   }
   
   override func viewDidAppear(animated: Bool) {

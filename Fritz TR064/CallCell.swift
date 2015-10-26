@@ -45,7 +45,7 @@ class CallCell: UITableViewCell {
       } else {
         self.caller.text = call.called
       }
-      self.subviews.filter { $0 is UILabel}.forEach { ($0 as! UILabel).textColor = UIColor.whiteColor() }
+      self.subviews.forEach { ($0 as? UILabel)?.textColor = UIColor.whiteColor() }
     }
     
     switch call.type {
@@ -63,7 +63,7 @@ class CallCell: UITableViewCell {
       self.addOrChangeGradientLayerWithColors(UIColor.haze())
     case .outgoing:
       calledClosure()
-      self.addOrChangeGradientLayerWithColors(UIColor.lovelyPink())
+      self.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
     case .rejectedIncoming:
       callerClosure()
       self.addOrChangeGradientLayerWithColors(UIColor.blueOcean())

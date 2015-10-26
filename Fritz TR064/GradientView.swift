@@ -18,6 +18,10 @@ class GradientView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     self.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(3))
+    let subview = UIView(frame: self.frame)
+    subview.backgroundColor = UIColor.whiteColor()
+    subview.alpha = 0.5
+    self.addSubview(subview)
   }
 
   func changeColors() {

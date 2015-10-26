@@ -21,7 +21,7 @@ class HostCell: UITableViewCell {
 	func configure(host: Host) {
 		hostName.text = host.hostName
 		ipAddress.text = host.ip
-		addressSource.text = host.addressSource
+		addressSource.text = host.addressSource + " " + host.interfaceType
 		macAddress.text = host.macAddress
 	
 	}

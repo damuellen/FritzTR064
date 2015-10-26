@@ -85,17 +85,15 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
 		
 		if segue.identifier != "showMenu" {
     guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
-    let action = self.filteredData[indexPath.section].actions[indexPath.row]
-    let controller = (segue.destinationViewController as! UINavigationController).topViewController as! ActionArgumentsVC
-    controller.action = action
-    controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-    controller.navigationItem.leftItemsSupplementBackButton = true
-		
+    let vc = (segue.destinationViewController as! UINavigationController).topViewController as! ActionArgumentsVC
+    vc.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+    vc.navigationItem.leftItemsSupplementBackButton = true
+		vc.action = self.filteredData[indexPath.section].actions[indexPath.row]
 			if segue.identifier == "showOutput" {
-				controller.showOutputArguments()
+				vc.showOutputArguments()
 			}
 			if segue.identifier == "showInput" {
-				controller.showInputArguments()
+				vc.showInputArguments()
       }
 
 		}

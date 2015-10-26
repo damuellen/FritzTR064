@@ -10,7 +10,7 @@ import UIKit
 
 class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   
-  let bgView = GradientView(frame: CGRectZero)
+  //let bgView = GradientView(frame: CGRectZero)
   
   var tableData: [Call]? {
     didSet {
@@ -29,11 +29,11 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
     OnTel.getCallListMaxCalls(20)
     tableView.estimatedRowHeight = 100.0
     tableView.rowHeight = UITableViewAutomaticDimension
-    tableView.backgroundView = bgView
+   // tableView.backgroundView = bgView
   }
   
   override func viewWillAppear(animated: Bool) {
-    bgView.frame = tableView.bounds
+   // bgView.frame = tableView.bounds
   }
   override func viewDidAppear(animated: Bool) {
     delay(5) { [weak self] in

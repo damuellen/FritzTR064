@@ -21,10 +21,24 @@ class Hosts: TR064Service {
       return manager.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }
   }
-
+  
   static var dataSource: [Host] {
-    get { return ((manager.observer as! HostsVC).tableData) }
-    set { (observer as? HostsVC)?.tableData = newValue }
+    get {
+      switch manager.observer {
+      case is HostsVC:
+        return ((manager.observer as! HostsVC).tableData)
+      default:
+        return []
+      }
+    }
+    set {
+      switch manager.observer {
+      case is HostsVC:
+        (observer as? HostsVC)?.tableData = newValue
+      default:
+        break
+      }
+    }
   }
   
   class func setHostName(name: String, ByMACAdress mac: String) {

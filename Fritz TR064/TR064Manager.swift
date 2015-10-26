@@ -15,29 +15,45 @@ class TR064Manager {
 
   var activeService: TR064Service?
   
-  var services = [Service]()  {
-    didSet { services.forEach { service in
-      TR064.getActionsFor(service) }
+  var services = [Service]()
+  
+  var actions = [Action]()
+  
+  var pendingAction: (Action, [String])? {
+    didSet {
+      if pendingAction != nil {
+        application.networkActivityIndicatorVisible = true
+        delay(5) {
+          if let _ = self.pendingAction {
+          self.observer?.alert()
+          }
+        }
+      }else {
+        delay(0.5) { application.networkActivityIndicatorVisible = false }
+      }
+    }
+  }
+
+  var isReady: Bool = false {
+    didSet {
+      observer?.refreshUI()
+    }
+  }
+
+  var lastResponse: AEXMLDocument? {
+    didSet {
+      observer?.refreshUI()
     }
   }
   
-  var actions = [Action]() {
-    didSet {
-      observer?.refreshUI() }
-  }
-  
-  var isReady: Bool {
-    return actions.count > 0
-  }
-  
-  var lastResponse: AEXMLDocument? {
-    didSet { observer?.refreshUI() }
-  }
-  
-  subscript(name: String) -> Action? {
+  subscript(Action name: String) -> Action? {
     return self.actions.filter { $0.name == name }.first
   }
-
+  
+  subscript(Service name: Service) -> [Action] {
+    return self.actions.filter { $0.service == name }
+  }
+  
   init() {
     delay(5) {
       if !self.isReady {
@@ -48,6 +64,8 @@ class TR064Manager {
   
 }
 
+let Manager = TR064Manager.sharedManager
+
 protocol TR064ServiceObserver {
   var manager: TR064Manager { get }
   func refreshUI()
@@ -55,7 +73,7 @@ protocol TR064ServiceObserver {
 }
 
 extension TR064ServiceObserver {
-  var manager: TR064Manager { return TR064Manager.sharedManager }
+  var manager: TR064Manager { return Manager }
 }
 
 protocol TR064Service {
@@ -63,8 +81,8 @@ protocol TR064Service {
 }
 
 extension TR064Service {
-  static var manager: TR064Manager { return TR064Manager.sharedManager }
-  static var observer: TR064ServiceObserver? { return TR064Manager.sharedManager.observer }
+  static var manager: TR064Manager { return Manager }
+  static var observer: TR064ServiceObserver? { return Manager.observer }
   
   static func alert() {
     manager.observer?.alert()
@@ -75,8 +93,8 @@ extension MasterViewController: TR064ServiceObserver {
   
   func refreshUI() {
     var result = [(service: Service, actions: [Action])]()
-    result = TR064Manager.sharedManager.services.map { service in
-      (service: service, actions: TR064Manager.sharedManager.actions.filter { $0.service == service })
+    result = Manager.services.map { service in
+      (service: service, actions: Manager[Service: service] )
     }
     self.tableData = result
   }
