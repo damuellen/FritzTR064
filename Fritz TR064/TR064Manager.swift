@@ -7,6 +7,7 @@
 //
 
 /// Handler for the founded actions, and XML response of the last request.
+
 class TR064Manager {
   
   static let sharedManager = TR064Manager()
@@ -19,21 +20,8 @@ class TR064Manager {
   
   var actions = [Action]()
   
-  var pendingAction: (Action, [String])? {
-    didSet {
-      if pendingAction != nil {
-        application.networkActivityIndicatorVisible = true
-        delay(5) {
-          if let _ = self.pendingAction {
-          self.observer?.alert()
-          }
-        }
-      }else {
-        delay(0.5) { application.networkActivityIndicatorVisible = false }
-      }
-    }
-  }
-
+  var timeout: Timeout?
+  
   var isReady: Bool = false {
     didSet {
       observer?.refreshUI()
@@ -45,23 +33,15 @@ class TR064Manager {
       observer?.refreshUI()
     }
   }
-  
-  subscript(Action name: String) -> Action? {
-    return self.actions.filter { $0.name == name }.first
+
+  subscript(Action name: String) -> [Action] {
+    return self.actions.filter { $0.name == name }
   }
   
   subscript(Service name: Service) -> [Action] {
     return self.actions.filter { $0.service == name }
   }
-  
-  init() {
-    delay(5) {
-      if !self.isReady {
-        self.observer?.alert()
-      }
-    }
-  }
-  
+    
 }
 
 let Manager = TR064Manager.sharedManager

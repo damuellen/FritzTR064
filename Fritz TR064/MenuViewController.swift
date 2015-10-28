@@ -32,18 +32,20 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   
   override func viewWillAppear(animated: Bool) {
     if manager.isReady {
-    }
-  }
-  
-  override func viewDidAppear(animated: Bool) {
-    SwiftSpinner.showWithDelay(1, title: "It's taking longer than expected", animated: true)
-    if manager.isReady {
       refreshUI()
     }
   }
+
+  override func viewDidAppear(animated: Bool) {
+    if !manager.isReady {
+      SwiftSpinner.showWithDelay(1.5, title: "It's taking longer than expected", animated: true)
+      SwiftSpinner.showWithDelay(5, title: "Still trying to connect", animated: true)
+    }
+    
+  }
   
   func alert() {
-    SwiftSpinner.show("Waiting for server")    
+    TR064.getAvailableServices()
     //  self.appearAlertViewWithTitle("Error", message: "No Services found",
     //    actionTitle: ["Retry"],
     //    actionBlock: [{ TR064.getAvailableServices() }])
@@ -67,11 +69,15 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
       (element as! UIButton).hidden = false
     }
     SwiftSpinner.hide()
-    UIView.animateWithDuration(0.5, delay: 0, options: [.CurveEaseIn], animations:  {
+    UIView.animateWithDuration(0.5, delay: 0.2, options: [.CurveEaseIn], animations:  {
       for element in self.view.subviews where element is UIButton {
         element.alpha = 1
       }
     }, completion: nil)
+  }
+  
+  override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
+    self.view.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
   }
   
   // MARK: - Segues
@@ -79,6 +85,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "DeviceInfo" {
       manager.observer = segue.destinationViewController as? TR064ServiceObserver
+      manager.activeService = DeviceInfo()
       DeviceInfo.getDeviceLog()
     }
   }
@@ -103,13 +110,16 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate 
 extension UIViewController {
 
   func appearAlertViewWithTitle(title: String, message: String, actionTitle: [String], actionBlock: [() -> Void]) {
-    let controller = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+    appDelegate.alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
     for (actionTitle, actionBlock) in zip(actionTitle, actionBlock) {
-      controller.addAction(UIAlertAction(title: actionTitle, style: UIAlertActionStyle.Default)
+      appDelegate.alert!.addAction(UIAlertAction(title: actionTitle, style: UIAlertActionStyle.Default)
         { (action:UIAlertAction!) -> Void in actionBlock() })
     }
-    controller.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-    self.presentViewController(controller, animated: true, completion: nil)
+    appDelegate.alert!.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+    self.presentViewController(appDelegate.alert!, animated: true, completion: { appDelegate.alert = nil} )
   }
   
 }
+
+  
+

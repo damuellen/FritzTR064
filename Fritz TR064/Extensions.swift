@@ -10,8 +10,12 @@ import Foundation
 
 infix operator => { associativity left precedence 130 }
 
-func =><T>(left: ()->T, right: T->()) {
+func =><T>(left: Void->T, right: T->Void) {
   right( left() )
+}
+
+func =><T>(left: [T], right: [T]->Void) {
+  right( left )
 }
 
 extension String {

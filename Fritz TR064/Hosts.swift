@@ -10,7 +10,7 @@ class Hosts: TR064Service {
   
   static let serviceType = "urn:dslforum-org:service:Hosts:1"
   
-  enum knownActions: String {
+  private enum knownActions: String {
     case GetHostNumberOfEntries
     case GetSpecificHostEntry
     case GetGenericHostEntry
@@ -22,7 +22,7 @@ class Hosts: TR064Service {
     }
   }
   
-  static var dataSource: [Host] {
+  private static var dataSource: [Host] {
     get {
       switch manager.observer {
       case is HostsVC:

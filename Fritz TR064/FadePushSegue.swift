@@ -13,12 +13,10 @@ class FadePushSegue: UIStoryboardSegue {
 	override func perform() {
 		let source = sourceViewController.navigationController!
 		let destination = ((destinationViewController as! UINavigationController).topViewController as! XMLResponseViewController)
-		(destination.bgView.layer.sublayers?.first as? CAGradientLayer)?.colors =
-      ((sourceViewController as! ActionArgumentsVC).bgView.layer.sublayers?.first as? CAGradientLayer)?.colors
+		destination.bgView.colors = (sourceViewController as! ActionArgumentsVC).bgView.colors
 		let transition = CATransition()
-		transition.duration = 1.5
-    transition.timingFunction = CAMediaTimingFunction(name:
-      kCAMediaTimingFunctionEaseIn)
+		transition.duration = 1.0
+    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
 		transition.type = kCATransitionFade
 		source.navigationController?.view.layer.addAnimation(transition, forKey:kCATransition)
 		source.pushViewController(destination, animated: false)

@@ -12,7 +12,7 @@ class Time: TR064Service {
   
   static let serviceType = "urn:dslforum-org:service:Time:1"
   
-  enum knownActions: String {
+  private enum knownActions: String {
     case getInfo = "GetInfo"
     
     var action: Action? {
@@ -20,7 +20,7 @@ class Time: TR064Service {
     }
   }
   
-  var entries = [String:String]() {
+  private var entries = [String:String]() {
     didSet {
       observer?.tableData = entries
     }

@@ -11,6 +11,7 @@ import NetworkExtension
 
 let application = UIApplication.sharedApplication()
 let appDelegate = application.delegate! as! AppDelegate
+let reachability = try? Reachability.reachabilityForInternetConnection()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,12 +19,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   var vpnConnection: NEVPNConnection?
   var vpnStayConnected = false
+  var alert: UIAlertController?
 
   func setup() {
-    if isRunningSimulator() {
-      TR064.getAvailableServices
-    } else {
-      vpnConnection = VPN()
+    if isRunningSimulator {
+      TR064.getAvailableServices()
+    }else {
+      switch reachability!.currentReachabilityStatus {
+      case .ReachableViaWWAN:
+        vpnConnection = VPN()
+      default:
+        TR064.getAvailableServices()
+      }
     }
   }
   
@@ -36,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     id = NSNotificationCenter.defaultCenter().addObserverForName(
       NEVPNStatusDidChangeNotification, object: nil, queue: nil) { _ in
-				delay(0.5) { TR064.getAvailableServices }
+				delay(0.2) { TR064.getAvailableServices() }
       NSNotificationCenter.defaultCenter().removeObserver(self.id!)
       self.id = nil
     }
@@ -71,9 +78,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
 
-
 }
 
-func isRunningSimulator() -> Bool {
+var isRunningSimulator: Bool = {
   return TARGET_OS_SIMULATOR != 0
-}
+}()

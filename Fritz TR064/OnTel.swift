@@ -10,7 +10,7 @@ class OnTel: TR064Service {
   
   static let serviceType = "urn:dslforum-org:service:X_AVM-DE_OnTel:1"
   
-  enum knownActions: String {
+  private enum knownActions: String {
     case GetCallList
     
     var action: Action? {
@@ -18,7 +18,7 @@ class OnTel: TR064Service {
     }
   }
   
-  static var dataSource: [Call]? {
+  private static var dataSource: [Call]? {
     get { return (TR064Manager.sharedManager.observer as! CallListTableViewController).tableData }
     set { (TR064Manager.sharedManager.observer as? CallListTableViewController)?.tableData = newValue }
   }

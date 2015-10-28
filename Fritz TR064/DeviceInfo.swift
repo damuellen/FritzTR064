@@ -12,7 +12,7 @@ class DeviceInfo: TR064Service {
   
   static let serviceType = "urn:dslforum-org:service:DeviceInfo:1"
   
-  enum knownActions: String {
+  private enum knownActions: String {
     case GetInfo
     case GetDeviceLog
     var action: Action? {
@@ -20,7 +20,7 @@ class DeviceInfo: TR064Service {
     }
   }
   
-  static var dataSource: [String: String] {
+  private static var dataSource: [String: String] {
     get { return ((manager.observer as! XMLResponseViewController).tableData) }
     set { (observer as? XMLResponseViewController)?.tableData = newValue }
   }

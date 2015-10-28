@@ -17,13 +17,14 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   }
 
   var action: Action!
-
+  var timeout: Timeout!
+  
   func refreshUI() {
     
   }
   
   let bgView = GradientView(frame: CGRectZero)
-  
+    
   override func viewDidLoad() {
     super.viewDidLoad()
     manager.observer = self
@@ -39,11 +40,7 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   }
   
   override func viewDidAppear(animated: Bool) {
-    delay(5) { [weak self] in
-      if self?.tableData.count == 0 {
-        self?.alert()
-      }
-    }
+
   }
   
   func alert() {

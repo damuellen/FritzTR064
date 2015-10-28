@@ -19,8 +19,9 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   }
   
   let bgView = GradientView(frame: CGRectZero)
+  
   var action: Action!
-
+  
   var needsInput = false {
     didSet {
       self.tableView.reloadData()
@@ -30,13 +31,6 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   
   func sendCurrentAction() {
     self.navigationItem.rightBarButtonItem?.enabled = false
-    guard let action = self.action else { return }
-    var arguments = [String]()
-    if self.needsInput == true {
-      guard self.tableData.input.count == self.arguments.count else { return }
-      arguments = self.arguments
-    }
-    TR064.sendRequest(action, arguments: arguments).responseXMLDocument(TR064.completionHandler)
     self.performSegueWithIdentifier("showResponse", sender: self)
   }
   
@@ -93,6 +87,11 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
     if segue.identifier == "showResponse" {
       let controller = ((segue.destinationViewController as! UINavigationController).topViewController as! XMLResponseViewController)
       controller.action = self.action
+      TR064.startAction(action, arguments: arguments).then { xml in
+        if let result = xml.value.convertWithAction(self.action) {
+          controller.tableData = result
+        }
+      }
     }
   }
   

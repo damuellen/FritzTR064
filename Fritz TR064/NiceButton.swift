@@ -12,6 +12,7 @@ class NiceButton: UIButton {
   
   override func awakeFromNib() {
     self.layer.cornerRadius = 10
+    self.layer.masksToBounds = true
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -20,7 +21,7 @@ class NiceButton: UIButton {
   }
   
   override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    self.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(2))
+    self.superview?.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(2))
     super.touchesMoved(touches, withEvent: event)
   }
   

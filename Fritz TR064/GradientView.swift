@@ -17,14 +17,24 @@ class GradientView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
+    addNiceBackground()
+  }
+
+  var colors: [CGColor] {
+    get { return (self.layer.sublayers!.first as! CAGradientLayer).colors as! [CGColor] }
+    set { (self.layer.sublayers!.first as! CAGradientLayer).colors = newValue }
+  }
+  
+  func addNiceBackground() {
     self.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(3))
+    // without this subview the segue animation looks ugly
     let subview = UIView(frame: self.frame)
     subview.backgroundColor = UIColor.whiteColor()
     subview.alpha = 0.5
     self.addSubview(subview)
   }
-
-  func changeColors() {
+  
+  func changeNiceBackgroundColors() {
     self.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(3))
   }
   

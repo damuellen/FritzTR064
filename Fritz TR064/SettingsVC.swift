@@ -18,8 +18,9 @@ class SettingsVC: UITableViewController {
 	@IBOutlet weak var vpnPassword: UITextField!
 	@IBOutlet weak var sharedSecret: UITextField!
 	@IBOutlet var allTextFields: [UITextField]!
+  
   let bgView = GradientView(frame: CGRectZero)
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     tableView.backgroundView = bgView

@@ -1196,9 +1196,9 @@
         <image name="icon-hamburger" width="22" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="d1s-tR-mdi"/>
-        <segue reference="QQ4-o9-h9Z"/>
+        <segue reference="1ey-wb-epy"/>
         <segue reference="q3B-oB-KHy"/>
-        <segue reference="ddy-rG-U8h"/>
+        <segue reference="QQ4-o9-h9Z"/>
+        <segue reference="6S0-TO-JiA"/>
     </inferredMetricsTieBreakers>
 </document>

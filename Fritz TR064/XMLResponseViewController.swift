@@ -20,10 +20,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   var action: Action!
   
   func refreshUI() {
-    if let actionResponse = manager.lastResponse?.checkWithAction(self.action),
-      validResponse = actionResponse.convertWithAction(self.action) {
-        self.tableData = validResponse
-    }
+    
   }
   
   override func viewDidLoad() {
@@ -41,11 +38,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   }
   
   override func viewDidAppear(animated: Bool) {
-    delay(10) { [weak self] in
-      if self?.tableData.count == 0 {
-        self?.alert()
-      }
-    }
+
   }
   
   func alert() {

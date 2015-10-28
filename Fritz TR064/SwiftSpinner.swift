@@ -264,7 +264,7 @@ public class SwiftSpinner: UIView {
   //
   // Tap handler
   //
-  public func addTapHandler(tap: (()->()), subtitle subtitleText: String? = nil) {
+  public func addTapHandler(tap: (()), subtitle subtitleText: String? = nil) {
     clearTapHandler()
     
     //vibrancyView.contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("didTapSpinner")))
@@ -290,7 +290,7 @@ public class SwiftSpinner: UIView {
     super.touchesBegan(touches, withEvent: event)
     
     if tapHandler != nil {
-      tapHandler?()
+      let _ = tapHandler
       tapHandler = nil
     }
   }
@@ -340,11 +340,11 @@ public class SwiftSpinner: UIView {
     let randomRotation = Double(Float(arc4random()) /  Float(UInt32.max)) * M_PI_4 + M_PI_4
     
     //outer circle
-    UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.0, options: [], animations: {
+    UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.0, options: [], animations: {
       self.currentOuterRotation -= CGFloat(randomRotation)
       self.outerCircleView.transform = CGAffineTransformMakeRotation(self.currentOuterRotation)
       }, completion: {_ in
-        let waitDuration = Double(Float(arc4random()) /  Float(UInt32.max)) * 1.0 + 1.0
+        let waitDuration = Double(Float(arc4random()) /  Float(UInt32.max)) * 0.5
         self.delay(seconds: waitDuration, completion: {
           if self.animating {
             self.spinOuter()
@@ -359,7 +359,7 @@ public class SwiftSpinner: UIView {
     }
     
     //inner circle
-    UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: [], animations: {
+    UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.0, options: [], animations: {
       self.currentInnerRotation += CGFloat(M_PI_4)
       self.innerCircleView.transform = CGAffineTransformMakeRotation(self.currentInnerRotation)
       }, completion: {_ in
@@ -392,8 +392,8 @@ public class SwiftSpinner: UIView {
   }
   
   // MARK: - Tap handler
-  private var tapHandler: (()->())?
+  private var tapHandler: (())?
   func didTapSpinner() {
-    tapHandler?()
+    let _ = tapHandler
   }
 }
