@@ -12,7 +12,7 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
     
   var tableData = [Host]() {
     didSet {
-      self.tableView.reloadData()
+      self.reloadDataShowAnimated()
     }
   }
 

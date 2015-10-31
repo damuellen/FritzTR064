@@ -15,6 +15,7 @@
 		65337A3E1BC16526009925E5 /* CallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3D1BC16526009925E5 /* CallCell.swift */; };
 		65337A401BC166BB009925E5 /* CallListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */; };
 		65337A421BC2E3C4009925E5 /* TR064Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A411BC2E3C4009925E5 /* TR064Manager.swift */; };
+		6541C6D61BE2A74600044DCA /* Textfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6541C6D51BE2A74600044DCA /* Textfield.swift */; };
 		655F61FE1BC12C9000D723EE /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FD1BC12C9000D723EE /* Contact.swift */; };
 		655F62001BC139A900D723EE /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FF1BC139A900D723EE /* WebViewController.swift */; };
 		656BDA2F1BC9C9520083D0DE /* Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA291BC9C9520083D0DE /* Combinators.swift */; };
@@ -28,6 +29,7 @@
 		658D41391BD2DAA500CB5868 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658D41381BD2DAA500CB5868 /* NotificationCenter.framework */; };
 		659008591BDCF55B00F4CBAE /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659008581BDCF55B00F4CBAE /* SettingsVC.swift */; };
 		6594CB481BE151EA004A361A /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6594CB471BE151EA004A361A /* Reachability.swift */; };
+		6594CB4A1BE17780004A361A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6594CB491BE17780004A361A /* Settings.swift */; };
 		659D59231BC9B72D006382A4 /* AlamofireXMLPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659D59221BC9B72D006382A4 /* AlamofireXMLPromise.swift */; };
 		65B2BC281BD6D2F300C244B1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B2BC271BD6D2F300C244B1 /* Extensions.swift */; };
 		65B6AD321BD4474D0070D0DA /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65B6AD311BD4474D0070D0DA /* Alamofire.framework */; };
@@ -93,6 +95,7 @@
 		65337A3D1BC16526009925E5 /* CallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallCell.swift; sourceTree = "<group>"; };
 		65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallListTableViewController.swift; sourceTree = "<group>"; };
 		65337A411BC2E3C4009925E5 /* TR064Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TR064Manager.swift; sourceTree = "<group>"; };
+		6541C6D51BE2A74600044DCA /* Textfield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Textfield.swift; sourceTree = "<group>"; };
 		655F61FD1BC12C9000D723EE /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		655F61FF1BC139A900D723EE /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		656BDA291BC9C9520083D0DE /* Combinators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Combinators.swift; sourceTree = "<group>"; };
@@ -107,6 +110,7 @@
 		658D41381BD2DAA500CB5868 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		659008581BDCF55B00F4CBAE /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		6594CB471BE151EA004A361A /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		6594CB491BE17780004A361A /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		659D59221BC9B72D006382A4 /* AlamofireXMLPromise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireXMLPromise.swift; sourceTree = "<group>"; };
 		65B2BC271BD6D2F300C244B1 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		65B6AD311BD4474D0070D0DA /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 				65D5A1361BC6E98200D691DB /* Hosts.swift */,
 				65F359C31BDD5A3A002B1F6D /* Host.swift */,
 				658D412F1BD2A0B400CB5868 /* OnTel.swift */,
+				6594CB491BE17780004A361A /* Settings.swift */,
 				65EF43701BDFF9F700FBAE69 /* Timeout.swift */,
 				65BA6B871BD3D7A1001D8420 /* DeviceInfo.swift */,
 				65BA6B891BD3D7B9001D8420 /* Time.swift */,
@@ -249,6 +254,7 @@
 				65C8256E1BB75E02005DF551 /* ActionArgumentsVC.swift */,
 				65D5A1381BC708C900D691DB /* HostsVC.swift */,
 				659008581BDCF55B00F4CBAE /* SettingsVC.swift */,
+				6541C6D51BE2A74600044DCA /* Textfield.swift */,
 				65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */,
 				65F4692C1BDDB557009B82A7 /* NiceButton.swift */,
 				65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */,
@@ -462,6 +468,7 @@
 				65C8256F1BB75E02005DF551 /* ActionArgumentsVC.swift in Sources */,
 				656BDA2F1BC9C9520083D0DE /* Combinators.swift in Sources */,
 				65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */,
+				6594CB4A1BE17780004A361A /* Settings.swift in Sources */,
 				656BDA361BC9C9790083D0DE /* Credentials.swift in Sources */,
 				65F4692D1BDDB557009B82A7 /* NiceButton.swift in Sources */,
 				65EF43711BDFF9F700FBAE69 /* Timeout.swift in Sources */,
@@ -472,6 +479,7 @@
 				65C8257F1BB75E86005DF551 /* AEXML.swift in Sources */,
 				6508C5C81BD96A5A0088AB55 /* SwiftSpinner.swift in Sources */,
 				65F359C51BDD5A3A002B1F6D /* Host.swift in Sources */,
+				6541C6D61BE2A74600044DCA /* Textfield.swift in Sources */,
 				6594CB481BE151EA004A361A /* Reachability.swift in Sources */,
 				650296001BD315B5008CC54A /* UIView+UIColor.swift in Sources */,
 				656BDA301BC9C9520083D0DE /* Delay+Promise.swift in Sources */,

@@ -20,26 +20,24 @@ class TR064Manager {
   
   var actions = [Action]()
   
-  var timeout: Timeout?
-  
   var isReady: Bool = false {
     didSet {
       observer?.refreshUI()
     }
   }
 
-  var lastResponse: AEXMLDocument? {
-    didSet {
-      observer?.refreshUI()
-    }
-  }
+ // var lastResponse: AEXMLDocument? {
+ //   didSet {
+ //     observer?.refreshUI()
+ //  }
+ // }
 
-  subscript(Action name: String) -> [Action] {
-    return self.actions.filter { $0.name == name }
+  subscript(ServiceName: String) -> [Action] {
+    return self.actions.filter { $0.name == ServiceName }
   }
   
-  subscript(Service name: Service) -> [Action] {
-    return self.actions.filter { $0.service == name }
+  subscript(ActionsFrom service: Service) -> [Action] {
+    return self.actions.filter { $0.service == service }
   }
     
 }
@@ -74,7 +72,7 @@ extension MasterViewController: TR064ServiceObserver {
   func refreshUI() {
     var result = [(service: Service, actions: [Action])]()
     result = Manager.services.map { service in
-      (service: service, actions: Manager[Service: service] )
+      (service: service, actions: Manager[ActionsFrom: service] )
     }
     self.tableData = result
   }

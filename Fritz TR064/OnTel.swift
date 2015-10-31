@@ -18,18 +18,18 @@ class OnTel: TR064Service {
     }
   }
   
-  private static var dataSource: [Call]? {
+  private static var dataSource: [Call] {
     get { return (TR064Manager.sharedManager.observer as! CallListTableViewController).tableData }
     set { (TR064Manager.sharedManager.observer as? CallListTableViewController)?.tableData = newValue }
   }
   
   class func getCallList(argument: String = "") {
     guard let action = knownActions.GetCallList.action else { return }
-    TR064.startAction(action).trap{_ in self.getCallList()}.then { xml in
+    TR064.startAction(action).then { xml in
       guard let url = xml.value.checkForURL() else { return }
       let callList = TR064.getXMLFromURL(url + argument)?.responseXMLPromise()
       callList?.then { callList in
-        self.dataSource = callList.value.transformXMLtoCalls()
+        self.dataSource = Call.extractCalls(callList.value).map { Call($0) }.flatMap {$0}
       }
     }
   }

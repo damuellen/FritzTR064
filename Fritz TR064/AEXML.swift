@@ -25,22 +25,7 @@
 import Foundation
 
 extension AEXMLDocument {
-  
-  func transformXMLtoCalls() -> [Call] {
-    if let callsXML = self.root["Call"].all {
-      return callsXML.map { Call.CallFromXML($0) }
-    }
-    return []
-  }
-  /*
-  func transformXMLtoContacts() -> [Contact] {
-  if let contactsXML = self.root["phonebooks"]["phonebook"]["contact"].all {
-  return contactsXML.map { Contact.ContactFromXML($0) }
-  }
-  return []
-  }
-  */
-  
+    
   func checkForURLWithAction(action: Action) -> String? {
     var URL: String?
     guard let validResponse = self.checkWithAction(action) else { return nil }

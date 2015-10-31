@@ -6,6 +6,7 @@
 //  Copyright © 2015 Daniel Müllenborn. All rights reserved.
 //
 
+import UIKit
 import Foundation
 
 infix operator => { associativity left precedence 130 }
@@ -16,6 +17,27 @@ func =><T>(left: Void->T, right: T->Void) {
 
 func =><T>(left: [T], right: [T]->Void) {
   right( left )
+}
+
+extension UITableViewController {
+  
+  func reloadDataShowAnimated() {
+    self.tableView.reloadData()
+    
+    let cells = tableView.visibleCells
+    let tableHeight: CGFloat = tableView.bounds.size.height
+    
+    cells.forEach { cell in
+      cell.transform = CGAffineTransformMakeTranslation(0, tableHeight)
+    }
+    
+    for (index, cell) in cells.enumerate() {
+      UIView.animateWithDuration(1.2, delay: 0.04 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [],
+        animations: {
+        cell.transform = CGAffineTransformMakeTranslation(0, 0)
+        }, completion: nil)
+    }
+  }
 }
 
 extension String {
@@ -80,6 +102,10 @@ extension String {
       return tagger.tagAtIndex(0, scheme: NSLinguisticTagSchemeLanguage, tokenRange: nil, sentenceRange: nil)
     }
     return nil
+  }
+  
+  func split(at: String) -> [String] {
+    return self.componentsSeparatedByString(at)
   }
   
 }

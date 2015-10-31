@@ -15,6 +15,7 @@ class DeviceInfo: TR064Service {
   private enum knownActions: String {
     case GetInfo
     case GetDeviceLog
+    
     var action: Action? {
       return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }

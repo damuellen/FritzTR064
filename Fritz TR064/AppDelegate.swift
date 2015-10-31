@@ -28,8 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       switch reachability!.currentReachabilityStatus {
       case .ReachableViaWWAN:
         vpnConnection = VPN()
-      default:
+      case .ReachableViaWiFi:
         TR064.getAvailableServices()
+      case .NotReachable: break
       }
     }
   }
@@ -64,7 +65,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func applicationWillEnterForeground(application: UIApplication) {
+    if reachability!.isReachableViaWWAN() {
     do { try vpnConnection?.startVPNTunnel() } catch { debugPrint("Did not reconnect") }
+    }
     vpnStayConnected = false
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
   }

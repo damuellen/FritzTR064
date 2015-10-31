@@ -24,20 +24,28 @@ struct TR064 {
   
   static let completionHandler = { (_:NSURLRequest?, _:NSHTTPURLResponse?, XML:Result<AEXMLDocument>) -> Void in
     guard let xml = XML.value else { return }
-    manager.lastResponse = xml
+    var tableData = [String:String]()
+      xml.root.all!.forEach { element in
+        if let value = element.value {
+          tableData[element.name] = value }
+    }
+    
+    (Manager.observer as? XMLResponseViewController)?.tableData = tableData
   }
   
   /// Request the tr064desc.xml from the router.
   private static func requestServices() -> Request {
+    
     let requestURL = TR064.serviceURL + TR064.descURL
     return Alamofire.request(.GET, requestURL)
   }
   
-  private static func addServicesToManager(request: Request){
+  private static func addServicesToManager(request: Request) {
+    
     request.responseXMLPromise().then {
       manager.services = getServicesFromDescription($0)
       if manager.actions.count == 0 {
-        requestActionsFor(manager.services) => addFutureActionsToManager
+        requestActionsFor(manager.services) => commitActionsToManager
       }
     }
   }
@@ -57,7 +65,7 @@ struct TR064 {
     return services.map { return (Alamofire.request(.GET, requestURL + $0.SCPDURL ).validate().responseXMLPromise()) }
   }
   
-  static func addFutureActionsToManager(actions: [Promise<AFPValue<AEXMLDocument>, AFPError>]) {
+  static func commitActionsToManager(actions: [Promise<AFPValue<AEXMLDocument>, AFPError>]) {
     
     whenAll(actions).then { xml in
       
@@ -100,6 +108,7 @@ struct TR064 {
   
   /// Creates an request for an action.
   private static func createRequest(action: Action) -> NSMutableURLRequest {
+    
     let request = NSMutableURLRequest(URL: NSURL(string: action.url)!)
     request.addValue("text/xml; charset=utf-8", forHTTPHeaderField:"Content-Type")
     request.addValue("\(action.service.serviceType)#\(action.name)", forHTTPHeaderField: "SOAPAction")
@@ -124,8 +133,11 @@ struct TR064 {
     let timer = Timeout.scheduledTimer(4) { _ in manager.observer?.alert() }
     
     request.responseXMLDocument { (_,_,xml) in
-      manager.lastResponse = xml.value
+   //   manager.lastResponse = xml.value
       timer.invalidate()
+      }
+    request.responseXMLPromise().trap { _ in
+      timer.fire()
     }
     return request.responsePromiseFor(Action: action)
   }
@@ -136,7 +148,9 @@ struct TR064 {
   
   /// Helper function to get known services from tr064desc.xml.
   private static func getServicesFromDescription(discription: AFPValue<AEXMLDocument>) -> [Service] {
+    
     let discription = discription.value
+    
     let internetGatewayDevice = discription.root["device"],
     LANDevice = discription.root["device"]["deviceList"].children[0],
     WANDevice = discription.root["device"]["deviceList"].children[1]

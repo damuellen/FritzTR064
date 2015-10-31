@@ -12,12 +12,12 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   
   var tableData = [String:String]() {
     didSet {
-      self.tableView.reloadData()
+      self.reloadDataShowAnimated()
     }
   }
   
 	let bgView = GradientView(frame: CGRectZero)
-  var action: Action!
+  var action: Action?
   
   func refreshUI() {
     
@@ -44,7 +44,11 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   func alert() {
     self.appearAlertViewWithTitle("Error", message: "No response",
       actionTitle: ["Retry"],
-      actionBlock: [{TR064.startAction(self.action)}])
+      actionBlock: [{
+        if let action = self.action {
+        TR064.startAction(action)
+        }
+        }])
   }
   
   @IBOutlet weak var text: UITextField!
@@ -55,14 +59,14 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
 extension XMLResponseViewController {
   
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    if let text = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text {
+    guard let text = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text else { return }
       UIPasteboard.generalPasteboard().string = text
+    if text.containsURL() {
+      TR064.getXMLFromURL(text)?.responseXMLDocument(TR064.completionHandler)
+      if text.containsString("calllist") {
+        self.performSegueWithIdentifier("showCallList", sender: self)
+      }
     }
-    guard let XML = TR064Manager.sharedManager.lastResponse, URL = XML.checkForURLWithAction(self.action) else { return }
-    TR064.getXMLFromURL(URL)?.responseXMLDocument(TR064.completionHandler)
-    if URL.containsString("calllist") {
-			self.performSegueWithIdentifier("showCallList", sender: self)
-		}
   }
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

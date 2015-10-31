@@ -23,6 +23,8 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   @IBOutlet weak var CallList: NiceButton!
   @IBOutlet weak var Button1: NiceButton!
   @IBOutlet weak var Button2: NiceButton!
+  
+  @IBOutlet weak var ButtonCenter: NSLayoutConstraint!
 
   override func viewDidLoad() {
     manager.observer = self
@@ -31,9 +33,8 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   }
   
   override func viewWillAppear(animated: Bool) {
-    if manager.isReady {
-      refreshUI()
-    }
+    ButtonCenter.constant += view.bounds.width
+
   }
 
   override func viewDidAppear(animated: Bool) {
@@ -41,7 +42,9 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
       SwiftSpinner.showWithDelay(1.5, title: "It's taking longer than expected", animated: true)
       SwiftSpinner.showWithDelay(5, title: "Still trying to connect", animated: true)
     }
-    
+    if manager.isReady {
+      refreshUI()
+    }
   }
   
   func alert() {
@@ -57,23 +60,27 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
     subview.backgroundColor = UIColor.whiteColor()
     subview.alpha = 0.5
     self.view.addOrChangeGradientLayerWithColors(UIColor.beach())
+    
     for button in self.view.subviews where button is UIButton {
-      button.hidden = true
       button.alpha = 0.0
     }
   }
   
   func refreshUI() {
-    for element in self.view.subviews where element is UIButton {
-      (element as! UIButton).enabled = true
-      (element as! UIButton).hidden = false
+    for view in self.view.subviews where view is UIButton {
+      (view as! UIButton).enabled = true
+      (view as! UIButton).hidden = false
     }
     SwiftSpinner.hide()
-    UIView.animateWithDuration(0.5, delay: 0.2, options: [.CurveEaseIn], animations:  {
-      for element in self.view.subviews where element is UIButton {
-        element.alpha = 1
-      }
-    }, completion: nil)
+    self.ButtonCenter.constant -= self.view.bounds.width
+    
+    for (index, button) in self.view.subviews.enumerate() where button is UIButton {
+      UIView.animateWithDuration(0.7, delay: 0.1 * Double(index), usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5, options: [],
+        animations: {
+          button.alpha = 1
+          button.layoutIfNeeded()
+        }, completion: nil)
+    }
   }
   
   override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
@@ -84,7 +91,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "DeviceInfo" {
-      manager.observer = segue.destinationViewController as? TR064ServiceObserver
+      manager.observer = segue.destinationViewController as? XMLResponseViewController
       manager.activeService = DeviceInfo()
       DeviceInfo.getDeviceLog()
     }

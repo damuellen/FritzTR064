@@ -12,11 +12,9 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   
   let bgView = GradientView(frame: CGRectZero)
   
-  var timeout: Timeout?
-  
-  var tableData: [Call]? {
+  var tableData = [Call]() {
     didSet {
-      self.tableView.reloadData()
+      self.reloadDataShowAnimated()
     }
   }
   
@@ -28,7 +26,7 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
     super.viewDidLoad()
     manager.observer = self
     manager.activeService = OnTel()
-    OnTel.getCallListMaxCalls(20)
+    OnTel.getCallListMaxCalls(30)
     tableView.estimatedRowHeight = 100.0
     tableView.rowHeight = UITableViewAutomaticDimension
     tableView.backgroundView = bgView
@@ -41,6 +39,8 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
 
   }
 
+
+  
   func alert() {
     self.appearAlertViewWithTitle("Error", message: "No calls found",
       actionTitle: ["Retry"],
@@ -57,7 +57,7 @@ extension CallListTableViewController {
   }
   
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let call = self.tableData![indexPath.row]
+    let call = self.tableData[indexPath.row]
     var phone = "tel://"
     switch call.type {
     case .outgoing, .activeOutgoing:
@@ -77,8 +77,7 @@ extension CallListTableViewController {
   }
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if tableData != nil {
-      return self.tableData!.count } else { return 0 }
+      return self.tableData.count
   }
  
   override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -86,7 +85,7 @@ extension CallListTableViewController {
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let call = self.tableData![indexPath.row]
+    let call = self.tableData[indexPath.row]
     let cell = tableView.dequeueReusableCellWithIdentifier("CallCell", forIndexPath: indexPath) as! CallCell
     cell.configure(call)
     return cell
@@ -97,4 +96,3 @@ extension CallListTableViewController {
   }
   
 }
-

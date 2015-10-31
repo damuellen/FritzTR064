@@ -9,6 +9,7 @@
 import Foundation
 
 private let _DateFormatterSharedInstance = NSDateFormatter()
+typealias CallingDuration = NSTimeInterval
 
 extension NSDateFormatter {
   class var sharedInstance: NSDateFormatter {
@@ -27,24 +28,16 @@ enum CallType: Int {
 }
 
 struct Call {
-  let id: Int
+  var id: Int
   let type: CallType
   let called: String, caller: String, name: String, numbertype: String, device: String, port: String
   let date: NSDate?
-  let duration: NSTimeInterval
+  let duration: CallingDuration
   let pathURL: String?
   
-  init(_ id: Int,
-    _ calltype: Int,
-    _ called: String,
-    _ caller: String,
-    _ name: String,
-    _ numbertype: String,
-    _ device: String,
-    _ port: String,
-    _ dateString: String,
-    _ duration: String,
-    _ pathURL: String?) {
+  init(_ id: Int, _ calltype: Int, _ called: String, _ caller: String,
+    _ name: String, _ numbertype: String, _ device: String, _ port: String,
+    _ dateString: String, _ duration: String, _ pathURL: String?) {
       
       self.id = id
       self.called = called
@@ -78,50 +71,44 @@ struct Call {
       }
   }
   
-  static func CallFromXML(call: AEXMLElement) -> Call {
-    var id = Int()
-    var type = Int()
-    var called = String()
-    var caller = String()
-    var name = String()
-    var numbertype = String()
-    var device = String()
-    var port = String()
-    var date = String()
-    var duration = String()
-    var pathURL: String?
-    
-    let content = call.children
-    for value in content where value.value != nil {
-      
-      switch value.name {
-      case "Id":
-        id = Int(value.value!)!
-      case "Called":
-        called = value.value!
-      case "Caller":
-        caller = value.value!
-      case "Name":
-        name = value.value!
-      case "Numbertype":
-        numbertype = value.value!
-      case "Device":
-        device = value.value!
-      case "Port":
-        port = value.value!
-      case "Type":
-        type = Int(value.value!)!
-      case "Date":
-        date = value.value!
-      case "Duration":
-        duration = value.value!
-      case "Path":
-        pathURL = value.value
-      default:
-        break
-      }
+  static func extractCalls(envelope: AEXMLDocument) -> [AEXMLElement] {
+    if let callsXML = envelope.root["Call"].all {
+      return callsXML
     }
-    return Call(id,type,called,caller,name,numbertype,device,port,date,duration,pathURL)
+    return []
+  }
+  
+  init?(_ call: AEXMLElement) {
+    guard let id = call["Id"].value, idInt = Int(id), duration = call["Duration"].value,
+      caller = call["Caller"].value, name = call["Name"].value, numbertype =  call["Numbertype"].value,
+      called = call["Called"].value, port = call["Port"].value, callType = call["Type"].value,
+      rawType = Int(callType), type = CallType(rawValue: rawType) else { return nil }
+    
+    self.id = idInt
+    self.called = called
+    self.caller = caller
+    self.name = name
+    self.numbertype = numbertype
+    self.port = port
+    self.type = type
+    
+    self.date = { date -> NSDate in
+      let dateFormatter = NSDateFormatter.sharedInstance
+      dateFormatter.dateFormat = "dd.MM.yy HH:mm"
+      if let dateString = call["Date"].value, dateObject = dateFormatter.dateFromString(dateString) {
+        return dateObject
+      } else {
+        return NSDate()
+      }
+      }()
+    
+    self.duration = { callingDuration -> CallingDuration in
+      let time = duration.split(":").map { Int($0) }
+      return CallingDuration((time[0]! * 3600) + (time[1]! * 60))
+      }()
+    
+    self.device = call["Device"].value ?? ""
+    self.pathURL = call["Path"].value
   }
 
 }
@@ -135,4 +122,3 @@ func ==(lhs: Call, rhs: Call) -> Bool {
 func < (lhs: Call, rhs: Call) -> Bool {
   return lhs.id == rhs.id
 }
-
