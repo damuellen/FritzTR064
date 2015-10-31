@@ -89,13 +89,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
     vc.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
     vc.navigationItem.leftItemsSupplementBackButton = true
 		vc.action = self.filteredData[indexPath.section].actions[indexPath.row]
-			if segue.identifier == "showOutput" {
-				vc.showOutputArguments()
-			}
-			if segue.identifier == "showInput" {
-				vc.showInputArguments()
-      }
-
+    vc.showArguments(segue)
 		}
     self.resultSearchController?.dismissViewControllerAnimated(true, completion: {})
   }

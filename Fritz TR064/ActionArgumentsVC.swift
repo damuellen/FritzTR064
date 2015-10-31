@@ -44,24 +44,21 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
     return false
   }
   
-  func showOutputArguments() {
-    needsInput = false
-    guard let action = self.action else { return }
-    self.tableData.output = action.output.keys.map { ($0.stringByReplacingOccurrencesOfString("New", withString: ""),"") }
-    self.navigationItem.title = action.name
-    self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
-  }
-  
-  func showInputArguments() {
-    needsInput = true
+  func showArguments(segue: UIStoryboardSegue) {
+    switch segue.identifier  {
+    case "showInput"?:
+      needsInput = true
+      self.navigationItem.rightBarButtonItem?.enabled = false
+    default:
+      needsInput = false
+    }
     guard let action = self.action else { return }
     self.tableData.input = action.input.map { (name: $0.0, value: $0.1.defaultValue) }
     self.tableData.output = action.output.keys.map { ($0.stringByReplacingOccurrencesOfString("New", withString: ""),"") }
-    self.navigationItem.rightBarButtonItem?.enabled = false
     self.navigationItem.title = action.name
     self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
   }
-  
+
   func checkInputArguments() {
     
   }
