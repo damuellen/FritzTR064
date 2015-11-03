@@ -29,9 +29,9 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   }
   var arguments = [String]()
   
-  func sendCurrentAction() {
+  func sendAction() {
     self.navigationItem.rightBarButtonItem?.enabled = false
-    self.performSegueWithIdentifier("showResponse", sender: self)
+    self.performSegueWithIdentifier("sendAction", sender: self)
   }
   
   func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -66,9 +66,9 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     tableView.backgroundView = bgView
-    let addButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "sendCurrentAction")
+    let addButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "sendAction")
     self.navigationItem.rightBarButtonItem = addButton
-    tableView.estimatedRowHeight = 44.0
+    // tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableViewAutomaticDimension
     self
   }
@@ -81,7 +81,7 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
  //   bgView.removeFromSuperview()
-    if segue.identifier == "showResponse" {
+    if segue.identifier == "sendAction" {
       let controller = ((segue.destinationViewController as! UINavigationController).topViewController as! XMLResponseViewController)
       controller.action = self.action
       TR064.startAction(action, arguments: arguments).then { xml in

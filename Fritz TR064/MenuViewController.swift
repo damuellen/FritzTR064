@@ -33,7 +33,6 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   }
   
   override func viewWillAppear(animated: Bool) {
-    ButtonCenter.constant += view.bounds.width
 
   }
 
@@ -56,14 +55,10 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   
   func configureUI() {
     
-    let subview = UIView(frame: self.view.frame)
-    subview.backgroundColor = UIColor.whiteColor()
-    subview.alpha = 0.5
+   // let subview = UIView(frame: self.view.frame)
+  //  subview.backgroundColor = UIColor.whiteColor()
+  //  subview.alpha = 0.5
     self.view.addOrChangeGradientLayerWithColors(UIColor.beach())
-    
-    for button in self.view.subviews where button is UIButton {
-      button.alpha = 0.0
-    }
   }
   
   func refreshUI() {
@@ -72,19 +67,6 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
       (view as! UIButton).hidden = false
     }
     SwiftSpinner.hide()
-    self.ButtonCenter.constant -= self.view.bounds.width
-    
-    for (index, button) in self.view.subviews.enumerate() where button is UIButton {
-      UIView.animateWithDuration(0.7, delay: 0.1 * Double(index), usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5, options: [],
-        animations: {
-          button.alpha = 1
-          button.layoutIfNeeded()
-        }, completion: nil)
-    }
-  }
-  
-  override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
-    self.view.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
   }
   
   // MARK: - Segues
@@ -99,21 +81,6 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   
 }
 
-class SplitViewController: UISplitViewController, UISplitViewControllerDelegate {
-  
-  override func viewDidLoad() {
-    self.delegate = self
-    let navigationController = self.viewControllers[self.viewControllers.count-1] as! UINavigationController
-    navigationController.topViewController!.navigationItem.leftBarButtonItem = self.displayModeButtonItem()
-  }
-  
-  // MARK: - Split view
-  
-  func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
-    return true
-  }
-  
-}
 extension UIViewController {
 
   func appearAlertViewWithTitle(title: String, message: String, actionTitle: [String], actionBlock: [() -> Void]) {

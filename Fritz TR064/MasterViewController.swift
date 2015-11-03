@@ -54,7 +54,8 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
       self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ActionArgumentsVC
     }
     tableView.backgroundView = bgView
-    resultSearchController = {
+    tableView.rowHeight = 44
+    resultSearchController = { [weak self] in
       let controller = UISearchController(searchResultsController: nil)
       controller.searchResultsUpdater = self
       controller.hidesNavigationBarDuringPresentation = false
@@ -62,7 +63,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
       controller.searchBar.searchBarStyle = UISearchBarStyle.Prominent
       controller.searchBar.sizeToFit()
       controller.searchBar.delegate = self
-      self.tableView.tableHeaderView = controller.searchBar
+      self?.tableView.tableHeaderView = controller.searchBar
       return controller
       }()
   }
@@ -71,8 +72,14 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
     manager.observer = self
     self.refreshUI()
     bgView.frame = tableView.bounds
-    self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
+    self.clearsSelectionOnViewWillAppear ?= self.splitViewController?.collapsed
+    view.bringSubviewToFront(navigationController!.navigationBar)
     super.viewWillAppear(animated)
+    
+  }
+  
+  @IBAction func showMenu(sender: AnyObject) {
+    toggleSideMenuView()
   }
   
   func alert() {
@@ -83,14 +90,12 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		
-		if segue.identifier != "showMenu" {
     guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
     let vc = (segue.destinationViewController as! UINavigationController).topViewController as! ActionArgumentsVC
     vc.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
     vc.navigationItem.leftItemsSupplementBackButton = true
 		vc.action = self.filteredData[indexPath.section].actions[indexPath.row]
     vc.showArguments(segue)
-		}
     self.resultSearchController?.dismissViewControllerAnimated(true, completion: {})
   }
   
@@ -112,11 +117,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
     cell?.textLabel!.text = object.serviceType.stringByReplacingOccurrencesOfString("urn:dslforum-org:service:", withString: "")
     return cell
   }
-  
-  override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 30
-  }
-  
+    
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let action = self.filteredData[indexPath.section].actions[indexPath.row]
     if action.needsInput {
@@ -131,5 +132,5 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
       return cell
     }
   }
-  
+
 }

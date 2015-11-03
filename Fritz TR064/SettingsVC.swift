@@ -24,6 +24,7 @@ class SettingsVC: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     tableView.backgroundView = bgView
+    tableView.scrollsToTop = false
     keyboardResizeObserver()
 
     allTextFields.forEach { textfield in
@@ -31,17 +32,12 @@ class SettingsVC: UITableViewController {
     }
   }
   
+  @IBAction func showMenu(sender: AnyObject) {
+    toggleSideMenuView()
+  }
   
   override func viewWillAppear(animated: Bool) {
     bgView.frame = view.frame
-    allTextFields.forEach { textfield in
-
-      let subview = UIView(frame: textfield.bounds)
-      subview.backgroundColor = UIColor.whiteColor()
-      subview.alpha = 0.5
-      subview.userInteractionEnabled = false
-      textfield.insertSubview(subview, atIndex: 0)
-    }
   }
   
   @IBAction func saveSettings(sender: AnyObject) {

@@ -26,20 +26,23 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
     super.viewDidLoad()
     manager.observer = self
     manager.activeService = OnTel()
-    OnTel.getCallListMaxCalls(30)
-    tableView.estimatedRowHeight = 100.0
-    tableView.rowHeight = UITableViewAutomaticDimension
+
+    tableView.estimatedRowHeight = 64
+    tableView.rowHeight = 64
     tableView.backgroundView = bgView
   }
   
   override func viewWillAppear(animated: Bool) {
     bgView.frame = tableView.bounds
   }
+  
   override func viewDidAppear(animated: Bool) {
-
+    delay(0.1) { OnTel.getCallListMaxCalls(30) }
   }
 
-
+  @IBAction func showMenu(sender: AnyObject) {
+    toggleSideMenuView()
+  }
   
   func alert() {
     self.appearAlertViewWithTitle("Error", message: "No calls found",
@@ -91,8 +94,7 @@ extension CallListTableViewController {
     return cell
   }
   
-  override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-      return 64
+  override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    CellAnimator.animateCell(cell, withTransform: CellAnimator.TransformScale, andDuration: 0.2)
   }
-  
 }

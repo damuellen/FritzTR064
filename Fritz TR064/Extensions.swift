@@ -19,12 +19,21 @@ func =><T>(left: [T], right: [T]->Void) {
   right( left )
 }
 
+infix operator ?= { associativity right precedence 90 }
+
+func ?=<T>(inout left: T, right: T?) {
+  if let value = right {
+    left = value
+  }
+}
+
 extension UITableViewController {
   
   func reloadDataShowAnimated() {
     self.tableView.reloadData()
     
     let cells = tableView.visibleCells
+    
     let tableHeight: CGFloat = tableView.bounds.size.height
     
     cells.forEach { cell in
@@ -32,12 +41,21 @@ extension UITableViewController {
     }
     
     for (index, cell) in cells.enumerate() {
-      UIView.animateWithDuration(1.2, delay: 0.04 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [],
+      UIView.animateWithDuration(1.0, delay: 0.04 * Double(index) + 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [],
         animations: {
         cell.transform = CGAffineTransformMakeTranslation(0, 0)
         }, completion: nil)
     }
   }
+}
+
+extension UIViewController {
+  
+  public func toggleSideMenuView() {
+    (splitViewController as? SideMenuProtocol)?.sideMenu?.toggleMenu()
+    (navigationController as? SideMenuProtocol)?.sideMenu?.toggleMenu()
+  }
+  
 }
 
 extension String {

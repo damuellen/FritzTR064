@@ -119,7 +119,7 @@ extension UIView {
     return layer
   }
   
-  private var getGradientLayer: CAGradientLayer? {
+  var gradientLayer: CAGradientLayer? {
     return self.layer.sublayers?.first as? CAGradientLayer
   }
   
@@ -128,13 +128,54 @@ extension UIView {
   }
   
   func addOrChangeGradientLayerWithColors(colors: [UIColor]) {
-    let layer = getGradientLayer ?? createGradientLayer()
+    let layer = self.gradientLayer ?? createGradientLayer()
     layer.colors = colors.map { $0.CGColor }
     if !containsGradientLayer {
       self.layer.insertSublayer(layer, atIndex: 0)
     }
   }
 
+  func addShadow() {
+    self.layer.shadowRadius = 1.5
+    self.layer.shadowOpacity = 0.2
+    self.layer.shadowPath = UIBezierPath(rect: self.bounds).CGPath
+  }
+  
+  func addBlurEffect(style: UIBlurEffectStyle) {
+    let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: style)) as UIVisualEffectView
+    visualEffectView.frame = self.bounds
+    visualEffectView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    visualEffectView.userInteractionEnabled = false
+    self.addSubview(visualEffectView)
+  }
+
+  func addVibrantStatusBarBackground(effect: UIBlurEffect) {
+    let statusBarBlurView = UIVisualEffectView(effect: effect)
+    statusBarBlurView.frame = UIApplication.sharedApplication().statusBarFrame
+    statusBarBlurView.autoresizingMask = .FlexibleWidth
+    
+    let statusBarVibrancyView = UIView.vibrancyEffectView(forBlurEffectView: statusBarBlurView)
+    statusBarBlurView.contentView.addSubview(statusBarVibrancyView)
+    
+    let statusBar = UIApplication.sharedApplication().valueForKey("statusBar") as! UIView
+    statusBar.superview!.insertSubview(statusBarBlurView, belowSubview: statusBar)
+    self.addSubview(statusBarBlurView)
+    
+    let statusBarBackgroundImage = UIImage(named: "MaskPixel")!.imageWithRenderingMode(.AlwaysTemplate)
+    let statusBarBackgroundView = UIImageView(image: statusBarBackgroundImage)
+    statusBarBackgroundView.frame = statusBarVibrancyView.bounds
+    statusBarBackgroundView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+    statusBarVibrancyView.contentView.addSubview(statusBarBackgroundView)
+  }
+  
+  public static func vibrancyEffectView(forBlurEffectView blurEffectView:UIVisualEffectView) -> UIVisualEffectView {
+    let vibrancy = UIVibrancyEffect(forBlurEffect: blurEffectView.effect as! UIBlurEffect)
+    let vibrancyView = UIVisualEffectView(effect: vibrancy)
+    vibrancyView.userInteractionEnabled = false
+    vibrancyView.frame = blurEffectView.bounds
+    vibrancyView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+    return vibrancyView
+  }
 }
 
 func isGradientLayer(layer: CALayer) -> Bool {

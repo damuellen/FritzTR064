@@ -10,7 +10,7 @@ struct Host {
 	
 	let macAddress: String
 	let active: Bool
-	let ip: String
+	let ip: String?
 	let leaseTime: Int
 	let hostName: String
 	let addressSource: String
@@ -19,7 +19,7 @@ struct Host {
 	init(host: [String: String]) {
 		macAddress = host["NewMACAddress"]!
 		active = host["NewActive"]! == "1"
-		ip = host["NewIPAddress"]!
+		ip = host["NewIPAddress"]
 		leaseTime = Int(host["NewLeaseTimeRemaining"]!)!
 		hostName = host["NewHostName"]!
 		addressSource = host["NewAddressSource"]!

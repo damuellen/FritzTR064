@@ -25,6 +25,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    tableView.delegate = self
     manager.observer = self
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableViewAutomaticDimension
@@ -38,7 +39,11 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   }
   
   override func viewDidAppear(animated: Bool) {
-
+  //  self.reloadDataShowAnimated()
+  }
+  
+  @IBAction func showMenu(sender: AnyObject) {
+    toggleSideMenuView()
   }
   
   func alert() {

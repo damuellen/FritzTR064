@@ -29,8 +29,7 @@ class GradientView: UIView {
     self.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(3))
     // without this subview the segue animation looks ugly
     let subview = UIView(frame: self.frame)
-    subview.backgroundColor = UIColor.whiteColor()
-    subview.alpha = 0.5
+    subview.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
     self.addSubview(subview)
   }
   

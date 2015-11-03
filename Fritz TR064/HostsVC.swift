@@ -12,6 +12,7 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
     
   var tableData = [Host]() {
     didSet {
+      tableView.separatorStyle = .SingleLine
       self.reloadDataShowAnimated()
     }
   }
@@ -30,9 +31,11 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
     manager.observer = self
     manager.activeService = Hosts()
     Hosts.getAllHosts()
-    tableView.estimatedRowHeight = 44.0
-    tableView.rowHeight = UITableViewAutomaticDimension
+    
+    tableView.estimatedRowHeight = 64.0
+    tableView.rowHeight = 64
     tableView.backgroundView = bgView
+    tableView.separatorStyle = .None
   }
 
   override func viewWillAppear(animated: Bool) {
@@ -41,6 +44,10 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   
   override func viewDidAppear(animated: Bool) {
 
+  }
+  
+  @IBAction func showMenu(sender: AnyObject) {
+    toggleSideMenuView()
   }
   
   func alert() {
@@ -64,7 +71,7 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 0
   }
-  
+
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! HostCell
 		let host = tableData[indexPath.row]
@@ -80,10 +87,7 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
       actionTitle: ["Wake up", "VNC"],
       actionBlock: [{ Hosts.wakeHost(host.macAddress) },
         { appDelegate.vpnStayConnected = true
-          UIApplication.sharedApplication().openURL(NSURL(string: "vnc://" + host.ip)!) }])
+          UIApplication.sharedApplication().openURL(NSURL(string: "vnc://" + host.ip!)!) }])
   }
 	
-	override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-		return 52
-	}
 }

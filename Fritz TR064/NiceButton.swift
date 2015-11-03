@@ -10,13 +10,37 @@ import UIKit
 
 class NiceButton: UIButton {
   
+  var blurEffectView: UIVisualEffectView!
+  
   override func awakeFromNib() {
     self.layer.cornerRadius = 10
     self.layer.masksToBounds = true
+    let blurEffect = UIBlurEffect(style: .Light)
+    blurEffectView = UIVisualEffectView(effect: blurEffect)
+    blurEffectView.userInteractionEnabled = false
+    self.addSubview(blurEffectView)
+    let vibrancyEffectView = UIView.vibrancyEffectView(forBlurEffectView: blurEffectView)
+    blurEffectView.contentView.addSubview(vibrancyEffectView)
+    vibrancyEffectView.contentView.addSubview(self.titleLabel!)
+  }
+  
+  private func tintedIconButton(iconNamed iconName: String) -> UIButton {
+    let iconImage = UIImage(named: iconName)!.imageWithRenderingMode(.AlwaysTemplate)
+    let borderImage = UIImage(named: "ButtonRoundRect")!.imageWithRenderingMode(.AlwaysTemplate)
+    
+    let button = UIButton(frame: CGRect(origin: CGPointZero, size: borderImage.size))
+    button.setBackgroundImage(borderImage, forState: .Normal)
+    button.setImage(iconImage, forState: .Normal)
+    return button
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    blurEffectView.frame = self.bounds
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    self.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(2))
+    self.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
     super.touchesBegan(touches, withEvent: event)
   }
   
@@ -31,3 +55,5 @@ class NiceButton: UIButton {
   }
   
 }
+
+

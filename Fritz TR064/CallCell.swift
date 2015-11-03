@@ -51,10 +51,10 @@ class CallCell: UITableViewCell {
     switch call.type {
     case .activeIncoming:
       calledClosure()
-      self.addOrChangeGradientLayerWithColors(UIColor.deepBlue())
+      self.addOrChangeGradientLayerWithColors(UIColor.blueOcean())
     case .activeOutgoing:
       calledClosure()
-      self.addOrChangeGradientLayerWithColors(UIColor.lovelyPink())
+      self.addOrChangeGradientLayerWithColors(UIColor.deepBlue())
     case .incoming:
       callerClosure()
       self.addOrChangeGradientLayerWithColors(UIColor.mojitoBlast())
@@ -63,13 +63,14 @@ class CallCell: UITableViewCell {
       self.addOrChangeGradientLayerWithColors(UIColor.haze())
     case .outgoing:
       calledClosure()
-      self.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
+      self.addOrChangeGradientLayerWithColors(UIColor.lovelyPink())
     case .rejectedIncoming:
       callerClosure()
-      self.addOrChangeGradientLayerWithColors(UIColor.blueOcean())
+      self.addOrChangeGradientLayerWithColors(UIColor.maceWindu())
     case .error:
       break
     }
+    self.gradientLayer?.opacity = 0.6
   }
   
   override func layoutSubviews() {
@@ -77,4 +78,43 @@ class CallCell: UITableViewCell {
     self.layer.sublayers?.filter { $0 is CAGradientLayer }.forEach { $0.frame = self.bounds }
   }
   
+}
+
+class CellAnimator {
+  
+  static let TransformFlip = { (layer: CALayer) -> CATransform3D in
+    var transform = CATransform3DIdentity
+    transform = CATransform3DTranslate(transform, 0.0, layer.bounds.size.height/2.0, 0.0)
+    transform = CATransform3DRotate(transform, CGFloat(M_PI)/2.0, 1.0, 0.0, 0.0)
+    transform = CATransform3DTranslate(transform, 0.0, layer.bounds.size.height/2.0, 0.0)
+    return transform
+  }
+  
+  static let TransformHelix = { (layer: CALayer) -> CATransform3D in
+    var transform = CATransform3DIdentity
+    transform = CATransform3DTranslate(transform, 0.0, layer.bounds.size.height/2.0, 0.0)
+    transform = CATransform3DRotate(transform, CGFloat(M_PI), 0.0, 1.0, 0.0)
+    transform = CATransform3DTranslate(transform, 0.0, -layer.bounds.size.height/2.0, 0.0)
+    return transform
+  }
+  
+  static let TransformScale = { (layer: CALayer) -> CATransform3D in
+    var transform = CATransform3DIdentity
+    transform = CATransform3DScale(transform, 0.5, 0, 0)
+    return transform
+  }
+  
+  static let TransformWave = { (layer: CALayer) -> CATransform3D in
+    var transform = CATransform3DIdentity
+    transform = CATransform3DTranslate(transform, -layer.bounds.size.width , 0.0, 0.0)
+    return transform
+  }
+  
+  class func animateCell(cell: UITableViewCell, withTransform transform: (CALayer) -> CATransform3D, andDuration duration: NSTimeInterval) {
+    
+    cell.layer.transform = transform(cell.layer)
+    UIView.animateWithDuration(duration) {
+      cell.layer.transform = CATransform3DIdentity
+    }
+  }
 }
