@@ -130,6 +130,8 @@ extension UIView {
   func addOrChangeGradientLayerWithColors(colors: [UIColor]) {
     let layer = self.gradientLayer ?? createGradientLayer()
     layer.colors = colors.map { $0.CGColor }
+		layer.startPoint = CGPoint(x: 1, y: 0)
+		layer.endPoint = CGPoint(x: 0, y: 1)
     if !containsGradientLayer {
       self.layer.insertSublayer(layer, atIndex: 0)
     }
@@ -151,7 +153,7 @@ extension UIView {
       UIView.vibrancyEffectView(forBlurEffectView: visualEffectView)
     }
   }
-
+	
   func addVibrantStatusBarBackground(effect: UIBlurEffect) {
     let statusBarBlurView = UIVisualEffectView(effect: effect)
     statusBarBlurView.frame = UIApplication.sharedApplication().statusBarFrame
@@ -162,7 +164,6 @@ extension UIView {
     
     let statusBar = UIApplication.sharedApplication().valueForKey("statusBar") as! UIView
     statusBar.superview!.insertSubview(statusBarBlurView, belowSubview: statusBar)
-    self.addSubview(statusBarBlurView)
     
     let statusBarBackgroundImage = UIImage(named: "MaskPixel")!.imageWithRenderingMode(.AlwaysTemplate)
     let statusBarBackgroundView = UIImageView(image: statusBarBackgroundImage)

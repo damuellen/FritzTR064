@@ -10,7 +10,11 @@ import UIKit
 
 class SideMenuTableViewController: UITableViewController {
   
-  weak var sideMenuNavigationController: SideMenuProtocol?
+	weak var sideMenuNavigationController: SideMenuProtocol? {
+		didSet {
+			hiddenMenuItem = 0
+		}
+	}
   var selectedMenuItem: Int = 0
   var hiddenMenuItem: Int = 0
 
@@ -89,9 +93,9 @@ class SideMenuTableViewController: UITableViewController {
     tableView.scrollsToTop = false
     tableView.showsVerticalScrollIndicator = false
     self.clearsSelectionOnViewWillAppear = false
-    tableView.selectRowAtIndexPath(NSIndexPath(forRow: selectedMenuItem, inSection: 0), animated: false, scrollPosition: .Middle)
+   // tableView.selectRowAtIndexPath(NSIndexPath(forRow: selectedMenuItem, inSection: 0), animated: false, scrollPosition: .Middle)
   }
-  
+	
 // MARK: - Table View
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -125,7 +129,7 @@ class SideMenuTableViewController: UITableViewController {
     }
     selectedMenuItem = indexPath.row
     
-    if let split = SideMenu(rawValue: selectedMenuItem)?.splitViewController where UIDevice().isIpad {
+    if let split = SideMenu(rawValue: selectedMenuItem)?.splitViewController  {
       sideMenuNavigationController?.sideMenu?.toggleMenu()
       (sideMenuNavigationController as! UIViewController).presentViewController(split, animated: true, completion: nil)
       // application.windows.first?.rootViewController = split

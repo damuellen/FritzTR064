@@ -26,7 +26,6 @@ class SettingsVC: UITableViewController {
     tableView.backgroundView = bgView
     tableView.scrollsToTop = false
     keyboardResizeObserver()
-
     allTextFields.forEach { textfield in
       textfield.delegate = self
     }
@@ -38,6 +37,7 @@ class SettingsVC: UITableViewController {
   
   override func viewWillAppear(animated: Bool) {
     bgView.frame = view.frame
+
   }
   
   @IBAction func saveSettings(sender: AnyObject) {
