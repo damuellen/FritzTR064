@@ -42,7 +42,7 @@ class SideMenuTableViewController: UITableViewController {
       case .CallList:
         return mainStoryboard.instantiateViewControllerWithIdentifier("CallListNC") as? SideMenuNavigationController
       case .Actions:
-        return nil
+        return mainStoryboard.instantiateViewControllerWithIdentifier("ActionsNC") as? SideMenuNavigationController
       case .Settings:
         return mainStoryboard.instantiateViewControllerWithIdentifier("SettingsNC") as? SideMenuNavigationController
       case .Info:
@@ -81,7 +81,7 @@ class SideMenuTableViewController: UITableViewController {
       }
     }
   }
-    
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     tableView.separatorStyle = .None
@@ -125,19 +125,20 @@ class SideMenuTableViewController: UITableViewController {
     }
     selectedMenuItem = indexPath.row
     
-    if let split = SideMenu(rawValue: selectedMenuItem)?.splitViewController {
+    if let split = SideMenu(rawValue: selectedMenuItem)?.splitViewController where UIDevice().isIpad {
       sideMenuNavigationController?.sideMenu?.toggleMenu()
-      presentViewController(split, animated: true, completion: nil)
+      (sideMenuNavigationController as! UIViewController).presentViewController(split, animated: true, completion: nil)
       // application.windows.first?.rootViewController = split
+      return
     }
     if sideMenuNavigationController is SplitViewController {
       sideMenuNavigationController?.sideMenu?.toggleMenu()
-      if let navigationController = (SideMenu(rawValue: indexPath.row)?.navigationController) {
-        presentViewController(navigationController, animated: true, completion: nil)
+      if let navigationController = (SideMenu(rawValue: selectedMenuItem)?.navigationController) {
+        (sideMenuNavigationController as! SplitViewController).presentViewController(navigationController, animated: true, completion: nil)
         // application.windows.first?.rootViewController = navigationController
       }
     }else {
-      sideMenuNavigationController?.setContentViewController((SideMenu(rawValue: indexPath.row)?.viewController)!)
+      sideMenuNavigationController?.setContentViewController((SideMenu(rawValue: selectedMenuItem)?.viewController)!)
     }
   }
   

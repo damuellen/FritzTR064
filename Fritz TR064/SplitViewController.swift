@@ -16,8 +16,7 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate,
     
     let tableView = SideMenuTableViewController()
     tableView.sideMenuNavigationController = self
-    sideMenu = SideMenu(navigationController: self, menuViewController: tableView, menuPosition:.Left)
-    sideMenu?.allowLeftSwipe = true
+    sideMenu = SideMenu(navigationController: self, menuViewController: tableView, menuPosition:.Right)
     
     self.delegate = self
     self.preferredPrimaryColumnWidthFraction = 0.5

@@ -32,6 +32,17 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
     configureUI()
   }
   
+  @IBAction func showActions(sender: AnyObject) {
+    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main",bundle: nil)
+   // if UIDevice().isIpad {
+    //  let viewController = mainStoryboard.instantiateViewControllerWithIdentifier("ActionsNC")
+    //  presentViewController(viewController, animated: true, completion: nil)
+   // }else if UIDevice().isIpad {
+      let viewController = mainStoryboard.instantiateViewControllerWithIdentifier("SplitView")
+      presentViewController(viewController, animated: true, completion: nil)
+   // }
+  }
+  
   override func viewWillAppear(animated: Bool) {
 
   }

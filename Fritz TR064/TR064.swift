@@ -44,13 +44,19 @@ struct TR064 {
     
     request.responseXMLPromise().then {
       manager.services = getServicesFromDescription($0)
+      saveValuesToDefaults(manager.services, key: "Services")
       if manager.actions.count == 0 {
-        requestActionsFor(manager.services) => commitActionsToManager
+        TR064.requestActionsFor(manager.services) => TR064.commitActionsToManager
       }
     }
   }
 
   static let getAvailableServices: ()->Void = {
+    if let services = loadValuesFromDefaults("Services") {
+      manager.services = extractValuesFromPropertyListArray(services)
+      TR064.requestActionsFor(manager.services) => TR064.commitActionsToManager
+      return
+    }
     Timeout.scheduledTimer(4, repeats: true) { timer in
       if manager.isReady {
         timer.invalidate()

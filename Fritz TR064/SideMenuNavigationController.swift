@@ -20,7 +20,6 @@ class SideMenuNavigationController: UINavigationController, SideMenuProtocol {
     let tableView = SideMenuTableViewController()
     tableView.sideMenuNavigationController = self
     sideMenu = SideMenu(navigationController: self, menuViewController: tableView, menuPosition:.Left)
-    sideMenu?.allowLeftSwipe = true
     view.bringSubviewToFront(navigationBar)
   }
   

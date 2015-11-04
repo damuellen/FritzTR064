@@ -24,9 +24,11 @@ class OnTel: TR064Service {
   }
   
   class func getCallList(argument: String = "") {
-    guard let action = knownActions.GetCallList.action else { return }
+    guard let action = knownActions.GetCallList.action
+      else { return }
     TR064.startAction(action).then { xml in
-      guard let url = xml.value.checkForURL() else { return }
+      guard let url = xml.value.checkForURL()
+        else { return }
       let callList = TR064.getXMLFromURL(url + argument)?.responseXMLPromise()
       callList?.then { callList in
         self.dataSource = Call.extractCalls(callList.value).map { Call($0) }.flatMap {$0}

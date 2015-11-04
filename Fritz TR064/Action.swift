@@ -25,7 +25,8 @@ struct Action {
   var needsInput = false
   
   init?(element: AEXMLElement, stateVariables: [StateVariable], service: Service) {
-    guard let value = element["name"].value else { return nil }
+    guard let value = element["name"].value
+      else { return nil }
     if let obsoleteActionsOfService = obsoleteActions[service.serviceType] {
       if obsoleteActionsOfService.contains(value) {
         return nil
@@ -55,7 +56,8 @@ struct StateVariable {
   var defaultValue = ""
   init?(element: AEXMLElement) {
     guard let name = element["name"].value,
-      datatype = element["dataType"].value else { return nil }
+      datatype = element["dataType"].value
+      else { return nil }
     if let defaultValue = element["defaultValue"].value {
       self.defaultValue = defaultValue
     }

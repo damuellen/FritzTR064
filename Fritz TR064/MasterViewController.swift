@@ -55,6 +55,11 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
     }
     tableView.backgroundView = bgView
     tableView.rowHeight = 44
+  }
+  
+  override func viewWillAppear(animated: Bool) {
+    manager.observer = self
+    self.refreshUI()
     resultSearchController = { [weak self] in
       let controller = UISearchController(searchResultsController: nil)
       controller.searchResultsUpdater = self
@@ -66,16 +71,10 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
       self?.tableView.tableHeaderView = controller.searchBar
       return controller
       }()
-  }
-  
-  override func viewWillAppear(animated: Bool) {
-    manager.observer = self
-    self.refreshUI()
     bgView.frame = tableView.bounds
     self.clearsSelectionOnViewWillAppear ?= self.splitViewController?.collapsed
     view.bringSubviewToFront(navigationController!.navigationBar)
     super.viewWillAppear(animated)
-    
   }
   
   @IBAction func showMenu(sender: AnyObject) {

@@ -234,7 +234,7 @@
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cZU-Oi-B1e" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1365" y="-580"/>
+            <point key="canvasLocation" x="-1365" y="-742"/>
         </scene>
         <!--Master-->
         <scene sceneID="smW-Zh-WAh">
@@ -522,10 +522,10 @@
             </objects>
             <point key="canvasLocation" x="-1050" y="982"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Side Menu Navigation Controller-->
         <scene sceneID="r7l-gg-dq7">
             <objects>
-                <navigationController id="vC3-pB-5Vb" sceneMemberID="viewController">
+                <navigationController id="vC3-pB-5Vb" customClass="SideMenuNavigationController" customModule="Fritz_TR064" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="DjV-YW-jjY">
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
@@ -671,7 +671,7 @@
                                     <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="H1p-Uh-vWS" kind="presentation" identifier="ShowAllCommands" modalTransitionStyle="coverVertical" id="v5k-xI-I05"/>
+                                    <action selector="showActions:" destination="g0B-Y0-KL0" eventType="primaryActionTriggered" id="IU5-Do-U2I"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1173,8 +1173,8 @@
         <image name="icon-hamburger" width="22" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="JdU-zT-xbZ"/>
+        <segue reference="q3B-oB-KHy"/>
+        <segue reference="QQ4-o9-h9Z"/>
         <segue reference="Tll-UG-LXB"/>
-        <segue reference="ToQ-L7-DMx"/>
     </inferredMetricsTieBreakers>
 </document>

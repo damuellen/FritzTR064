@@ -28,7 +28,8 @@ extension AEXMLDocument {
     
   func checkForURLWithAction(action: Action) -> String? {
     var URL: String?
-    guard let validResponse = self.checkWithAction(action) else { return nil }
+    guard let validResponse = self.checkWithAction(action)
+      else { return nil }
     for possibleURL in validResponse.children where possibleURL.value != nil {
       if possibleURL.value!.containsString("http") {
         URL = possibleURL.value!

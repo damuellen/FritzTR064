@@ -27,6 +27,20 @@ func ?=<T>(inout left: T, right: T?) {
   }
 }
 
+func loadValuesFromDefaults(key: String) -> [AnyObject]? {
+  return NSUserDefaults.standardUserDefaults().objectForKey("Services") as? [AnyObject]
+}
+
+func extractValuesFromPropertyListArray<T:PropertyListReadable>(propertyListArray:[AnyObject]?) -> [T] {
+  guard let encodedArray = propertyListArray else {return []}
+  return encodedArray.map { $0 as? NSDictionary }.flatMap { T (propertyListRepresentation: $0) }
+}
+
+func saveValuesToDefaults<T:PropertyListReadable>(newValues:[T], key:String) {
+  let encodedValues = newValues.map{$0.propertyListRepresentation()}
+  NSUserDefaults.standardUserDefaults().setObject(encodedValues, forKey:key)
+}
+
 extension UITableViewController {
   
   func reloadDataShowAnimated() {
@@ -410,3 +424,12 @@ extension Bool {
   }
   
 }
+
+extension UIDevice {
+     var isIpad: Bool {
+         return userInterfaceIdiom == .Pad
+    }
+    var isIphone: Bool {
+    	        return userInterfaceIdiom == .Phone
+       }
+ 	}

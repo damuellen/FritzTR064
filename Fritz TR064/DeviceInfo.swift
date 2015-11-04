@@ -27,18 +27,16 @@ class DeviceInfo: TR064Service {
   }
   
   class func getInfo() -> ActionResultPromise? {
-    guard let action = knownActions.GetInfo.action else {
-      return nil
-    }
+    guard let action = knownActions.GetInfo.action
+      else { return nil }
     return TR064.startAction(action).then { xml in
       self.dataSource = xml.value.convertWithAction(action)!
     }
   }
   
   class func getDeviceLog() -> ActionResultPromise? {
-    guard let action = knownActions.GetDeviceLog.action else {
-      return nil
-    }
+    guard let action = knownActions.GetDeviceLog.action
+      else { return nil }
     return TR064.startAction(action).then { xml in
       self.dataSource = xml.value.convertWithAction(action)!
     }

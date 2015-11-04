@@ -52,7 +52,8 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
     default:
       needsInput = false
     }
-    guard let action = self.action else { return }
+    guard let action = self.action
+      else { return }
     self.tableData.input = action.input.map { (name: $0.0, value: $0.1.defaultValue) }
     self.tableData.output = action.output.keys.map { ($0.stringByReplacingOccurrencesOfString("New", withString: ""),"") }
     self.navigationItem.title = action.name

@@ -102,7 +102,7 @@ class SideMenu : NSObject, UIGestureRecognizerDelegate {
     sideMenuView.layer.shadowOffset = menuPosition.shadowOffset
     
     sideMenuView.addBlurEffect(.Light)
-    
+
     navigationControllerView.addSubview(sideMenuView)
   }
   
