@@ -45,9 +45,8 @@ extension UITableViewController {
   
   func reloadDataShowAnimated() {
     self.tableView.reloadData()
-    
     let cells = tableView.visibleCells
-    
+   
     let tableHeight: CGFloat = tableView.bounds.size.height
     
     cells.forEach { cell in

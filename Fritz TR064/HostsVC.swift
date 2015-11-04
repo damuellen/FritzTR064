@@ -14,14 +14,15 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
     didSet {
       tableView.separatorStyle = .SingleLine
       self.reloadDataShowAnimated()
+      self.refreshControl?.endRefreshing()
     }
   }
 
   var action: Action!
-  var timeout: Timeout!
   
   func refreshUI() {
-    
+    refreshControl?.beginRefreshing()
+    Hosts.getAllHosts()
   }
   
   let bgView = GradientView(frame: CGRectZero)
@@ -30,12 +31,12 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
     super.viewDidLoad()
     manager.observer = self
     manager.activeService = Hosts()
-    Hosts.getAllHosts()
-    
     tableView.estimatedRowHeight = 64.0
     tableView.rowHeight = 64
     tableView.backgroundView = bgView
     tableView.separatorStyle = .None
+    self.refreshControl = UIRefreshControl()
+    self.refreshControl!.addTarget(self, action: "refreshUI", forControlEvents: .ValueChanged)
   }
 
   override func viewWillAppear(animated: Bool) {
@@ -43,7 +44,7 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   }
   
   override func viewDidAppear(animated: Bool) {
-
+    self.refreshUI()
   }
   
   @IBAction func showMenu(sender: AnyObject) {

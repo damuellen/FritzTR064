@@ -11,25 +11,34 @@ import UIKit
 class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   
   let bgView = GradientView(frame: CGRectZero)
+  var messageLabel: UILabel?
   
   var tableData = [Call]() {
     didSet {
       self.reloadDataShowAnimated()
+      self.refreshControl?.endRefreshing()
     }
   }
   
   func refreshUI() {
-    // self.tableData = TR064Manager.sharedManager.lastResponse!.transformXMLtoCalls().sort(<)
+    refreshControl?.beginRefreshing()
+    OnTel.getCallListMaxCalls(30)
+  }
+  
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     manager.observer = self
     manager.activeService = OnTel()
-
     tableView.estimatedRowHeight = 64
     tableView.rowHeight = 64
     tableView.backgroundView = bgView
+    self.refreshControl = UIRefreshControl()
+    self.refreshControl!.addTarget(self, action: "refreshUI", forControlEvents: .ValueChanged)
   }
   
   override func viewWillAppear(animated: Bool) {
@@ -37,7 +46,7 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   }
   
   override func viewDidAppear(animated: Bool) {
-    delay(0.1) { OnTel.getCallListMaxCalls(30) }
+    delay(0.1) { self.refreshUI() }
   }
 
   @IBAction func showMenu(sender: AnyObject) {
@@ -56,7 +65,23 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
 extension CallListTableViewController {
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return 1
+    if tableData.count > 0 {
+      
+      return 1
+      
+    } else {
+      
+    //  messageLabel = UILabel(frame: self.view.bounds)
+    //  messageLabel!.text = "No data is currently available. Please pull down to refresh."
+    //  messageLabel!.numberOfLines = 0
+    //  messageLabel!.textAlignment = .Center
+    //  messageLabel!.font = UIFont .boldSystemFontOfSize(18)
+    //  messageLabel!.sizeToFit()
+    //  bgView.addSubview(messageLabel!)
+      //self.tableView.backgroundView = messageLabel;
+      return 0
+    }
+    
   }
   
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
