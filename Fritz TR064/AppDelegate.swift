@@ -11,6 +11,7 @@ import NetworkExtension
 
 let application = UIApplication.sharedApplication()
 let appDelegate = application.delegate! as! AppDelegate
+let rootViewController = application.windows.first!.rootViewController
 let reachability = try? Reachability.reachabilityForInternetConnection()
 
 @UIApplicationMain

@@ -13,16 +13,14 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate,
   var sideMenu : SideMenu?
   
   override func viewDidLoad() {
-    
-    let tableView = SideMenuTableViewController()
-    tableView.sideMenuNavigationController = self
-    sideMenu = SideMenu(navigationController: self, menuViewController: tableView, menuPosition:.Right)
-    
     self.delegate = self
     self.preferredPrimaryColumnWidthFraction = 0.5
     let navigationController = self.viewControllers[self.viewControllers.count-1] as! UINavigationController
     navigationController.topViewController!.navigationItem.leftBarButtonItem = self.displayModeButtonItem()
     navigationController.view.bringSubviewToFront(navigationController.navigationBar)
+		let tableView = SideMenuTableViewController()
+		tableView.sideMenuNavigationController = self
+		sideMenu = SideMenu(navigationController: self, menuViewController: tableView, menuPosition:.Left)
   }
   
   override func viewWillLayoutSubviews() {
@@ -46,11 +44,38 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate,
     //transition.subtype = kCATransitionFromTop
     self.view.subviews.first?.layer.addAnimation(transition, forKey:kCATransition)
     self.viewControllers = [contentViewController]
+		//showDetailViewController(<#T##vc: UIViewController##UIViewController#>, sender: <#T##AnyObject?#>)
   }
 
+	
   // MARK: - Split view
-  
+	/*
+	
+	// Asks the delegate to provide the new secondary view controller for the split view interface.
+	func splitViewController(splitViewController: UISplitViewController, separateSecondaryViewControllerFromPrimaryViewController primaryViewController: UIViewController) -> UIViewController? {
+		
+	}
+	
+	// Asks the delegate if it wants to do the work of displaying a view controller in the secondary position of the split view interface.
+	func splitViewController(splitViewController: UISplitViewController, showDetailViewController vc: UIViewController, sender: AnyObject?) -> Bool {
+		
+	}
+	
+  */
+	
+	// Asks the delegate if it wants to do the work of displaying a view controller in the primary position of the split view interface.
+	func splitViewController(splitViewController: UISplitViewController, showViewController vc: UIViewController, sender: AnyObject?) -> Bool {
+		return true
+	}
+
+	// Tells the delegate that the display mode for the split view controller is about to change.
+	func splitViewController(svc: UISplitViewController, willChangeToDisplayMode displayMode: UISplitViewControllerDisplayMode) {
+		sideMenu?.hideSideMenu()
+	}
+
+	// Asks the delegate to adjust the primary view controller and to incorporate the secondary view controller into the collapsed interface.
   func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
+		view.bringSubviewToFront((primaryViewController as! UINavigationController).navigationBar)
     return true
   }
   
