@@ -37,7 +37,7 @@ struct Call {
   
   init(_ id: Int, _ calltype: Int, _ called: String, _ caller: String,
     _ name: String, _ numbertype: String, _ device: String, _ port: String,
-    _ dateString: String, _ duration: String, _ pathURL: String?) {
+    _ date: NSDate, _ duration: CallingDuration, _ pathURL: String?) {
       
       self.id = id
       self.called = called
@@ -49,23 +49,11 @@ struct Call {
       
       self.type = CallType(rawValue: calltype)!
       
-      self.date = { date -> NSDate in
-        let dateFormatter = NSDateFormatter.sharedInstance
-        dateFormatter.dateFormat = "dd.MM.yy HH:mm"
-        if let dateObject = dateFormatter.dateFromString(dateString) {
-          return dateObject
-        } else {
-          return NSDate()
-        }
-      }()
-
-      self.duration = { durationTime -> NSTimeInterval in
-        let time = duration.componentsSeparatedByString(":").map { Int($0) }
-        return NSTimeInterval((time[0]! * 3600) + (time[1]! * 60))
-      }()
+      self.date = date
+      self.duration = duration
       
       if let URL = pathURL {
-      self.pathURL = URL
+        self.pathURL = URL
       } else {
         self.pathURL = nil
       }
@@ -121,5 +109,37 @@ func ==(lhs: Call, rhs: Call) -> Bool {
 
 func < (lhs: Call, rhs: Call) -> Bool {
   return lhs.id == rhs.id
+}
+
+extension Call: PropertyListReadable {
+  
+  func propertyListRepresentation() -> NSDictionary {
+    let representation:[String:AnyObject] =
+    ["id":id, "type":type.rawValue, "called":called,
+      "caller":caller, "name":name, "numbertype":numbertype,
+      "device":device, "port":port, "date":date!, "duration":duration]
+    return representation
+  }
+  
+  init?(propertyListRepresentation: NSDictionary?) {
+    
+    guard let values = propertyListRepresentation
+      else { return nil }
+    
+    guard let id = values["id"] as? Int,
+      type = values["type"] as? Int,
+      called = values["called"] as? String,
+      caller = values["caller"] as? String,
+      name = values["name"] as? String,
+      numbertype = values["numbertype"] as? String,
+      device = values["device"] as? String,
+      port = values["port"] as? String,
+      date = values["date"] as? NSDate,
+      duration = values["duration"] as? CallingDuration
+      else { return nil }
+    
+    self.init(id, type, called, caller, name, numbertype, device, port, date, duration, nil)
+  }
+  
 }
 

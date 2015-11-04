@@ -29,7 +29,6 @@
 		658D41301BD2A0B400CB5868 /* OnTel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D412F1BD2A0B400CB5868 /* OnTel.swift */; };
 		658D41391BD2DAA500CB5868 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658D41381BD2DAA500CB5868 /* NotificationCenter.framework */; };
 		659008591BDCF55B00F4CBAE /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659008581BDCF55B00F4CBAE /* SettingsVC.swift */; };
-		65903D861BEA60C5009657C7 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65903D851BEA60C5009657C7 /* Credentials.swift */; };
 		6594CB481BE151EA004A361A /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6594CB471BE151EA004A361A /* Reachability.swift */; };
 		6594CB4A1BE17780004A361A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6594CB491BE17780004A361A /* Settings.swift */; };
 		659D59231BC9B72D006382A4 /* AlamofireXMLPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659D59221BC9B72D006382A4 /* AlamofireXMLPromise.swift */; };
@@ -51,6 +50,7 @@
 		65C825851BB76079005DF551 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C825841BB76079005DF551 /* Action.swift */; };
 		65D5A1371BC6E98200D691DB /* Hosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D5A1361BC6E98200D691DB /* Hosts.swift */; };
 		65D5A1391BC708C900D691DB /* HostsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D5A1381BC708C900D691DB /* HostsVC.swift */; };
+		65D6BB5F1BEABA550027D0F9 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6BB5E1BEABA550027D0F9 /* Credentials.swift */; };
 		65DB0B231BC3191900D88E40 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65DB0B221BC3191900D88E40 /* NetworkExtension.framework */; };
 		65DB0B2B1BC3334400D88E40 /* keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 65DB0B2A1BC3334400D88E40 /* keychain.m */; };
 		65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E9F9521BBC4AE600DDA8E7 /* Call.swift */; };
@@ -114,7 +114,6 @@
 		658D41361BD2DAA500CB5868 /* TodayList.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayList.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		658D41381BD2DAA500CB5868 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		659008581BDCF55B00F4CBAE /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
-		65903D851BEA60C5009657C7 /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		6594CB471BE151EA004A361A /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		6594CB491BE17780004A361A /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		659D59221BC9B72D006382A4 /* AlamofireXMLPromise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireXMLPromise.swift; sourceTree = "<group>"; };
@@ -137,6 +136,7 @@
 		65C825841BB76079005DF551 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		65D5A1361BC6E98200D691DB /* Hosts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hosts.swift; sourceTree = "<group>"; };
 		65D5A1381BC708C900D691DB /* HostsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostsVC.swift; sourceTree = "<group>"; };
+		65D6BB5E1BEABA550027D0F9 /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Credentials.swift; path = "Fritz TR064/Credentials.swift"; sourceTree = "<group>"; };
 		65DB0B221BC3191900D88E40 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		65DB0B261BC3328600D88E40 /* Fritz TR064-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fritz TR064-Bridging-Header.h"; sourceTree = "<group>"; };
 		65DB0B291BC3334400D88E40 /* keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keychain.h; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 				65F4695F1BDEB37C009B82A7 /* Fritz TR064Tests */,
 				658D41371BD2DAA500CB5868 /* Frameworks */,
 				65C825681BB75E02005DF551 /* Products */,
-				65903D851BEA60C5009657C7 /* Credentials.swift */,
+				65D6BB5E1BEABA550027D0F9 /* Credentials.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -514,11 +514,11 @@
 				6508C5CA1BDA3A340088AB55 /* GradientView.swift in Sources */,
 				656BDA341BC9C9520083D0DE /* State.swift in Sources */,
 				656BDA311BC9C9520083D0DE /* Future.swift in Sources */,
+				65D6BB5F1BEABA550027D0F9 /* Credentials.swift in Sources */,
 				65D5A1391BC708C900D691DB /* HostsVC.swift in Sources */,
 				65337A401BC166BB009925E5 /* CallListTableViewController.swift in Sources */,
 				656BDA331BC9C9520083D0DE /* Promise.swift in Sources */,
 				65C8256B1BB75E02005DF551 /* AppDelegate.swift in Sources */,
-				65903D861BEA60C5009657C7 /* Credentials.swift in Sources */,
 				65B2BC281BD6D2F300C244B1 /* Extensions.swift in Sources */,
 				65F7EB691BE6A71100AFA322 /* SideMenu.swift in Sources */,
 				65C0059B1BC14E3300FDCFFA /* XMLResponseViewController.swift in Sources */,
