@@ -10,7 +10,7 @@ import UIKit
 
 class SideMenuTableViewController: UITableViewController {
   
-	weak var sideMenuNavigationController: UIViewController? {
+	weak var sideMenuController: SideMenuProtocol? {
 		didSet {
 			selectedMenuItem = 6
 		}
@@ -100,7 +100,7 @@ class SideMenuTableViewController: UITableViewController {
    // tableView.selectRowAtIndexPath(NSIndexPath(forRow: selectedMenuItem, inSection: 0), animated: false, scrollPosition: .Middle)
   }
 	
-// MARK: - Table View
+  // MARK: - Table View
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return 1
@@ -134,15 +134,19 @@ class SideMenuTableViewController: UITableViewController {
     selectedMenuItem = indexPath.row
     
     if let split = SideMenu(rawValue: selectedMenuItem)?.splitViewController  {
-      self.sideMenuNavigationController?.presentViewController(split, animated: true, completion: nil)
+      self.sideMenuController?.sideMenu?.animator = nil
+      self.sideMenuController?.sideMenu?.hideSideMenu()
+      delay(0.15) { self.presentViewController(split, animated: true, completion: nil) }
       return
     }
-    if sideMenuNavigationController is SplitViewController {
+    if sideMenuController is SplitViewController {
+      self.sideMenuController?.sideMenu?.animator = nil
+      self.sideMenuController?.sideMenu?.hideSideMenu()
       if let navigationController = (SideMenu(rawValue: selectedMenuItem)?.navigationController) {
-         (self.sideMenuNavigationController as! SplitViewController).presentViewController(navigationController, animated: true, completion: nil)
+        delay(0.15) { self.presentViewController(navigationController, animated: true, completion: nil) }
       }
-    }else {
-      (sideMenuNavigationController as! SideMenuNavigationController).setContentViewController((SideMenu(rawValue: selectedMenuItem)?.viewController)!)
+    } else {
+      sideMenuController?.setContentViewController!((SideMenu(rawValue: selectedMenuItem)?.viewController)!)
     }
   }
   

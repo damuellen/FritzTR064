@@ -21,9 +21,8 @@ extension SideMenu: UIGestureRecognizerDelegate {
   
   func handleGesture(gesture: UISwipeGestureRecognizer) {
     switch (self.menuPosition, gesture.direction) {
-    case (.Right, UISwipeGestureRecognizerDirection.Left):
-      toggleMenu(true)
-    case (.Left, UISwipeGestureRecognizerDirection.Right):
+    case (.Right, UISwipeGestureRecognizerDirection.Left),
+    (.Left, UISwipeGestureRecognizerDirection.Right):
       toggleMenu(true)
     default:
       toggleMenu(false)
@@ -66,7 +65,7 @@ class SideMenu : NSObject {
   private var menuPosition = SideMenuPosition.Left
   let sideMenuView = UIView()
   private var menuViewController: UITableViewController!
-  private var animator: UIDynamicAnimator!
+  var animator: UIDynamicAnimator?
   private var navigationControllerView: UIView!
   private var navigationController: UIViewController!
   
@@ -75,7 +74,7 @@ class SideMenu : NSObject {
   var needUpdateApperance: Bool = false
   var allowLeftSwipe: Bool = true
   var allowRightSwipe: Bool = true
-
+  
   convenience init(navigationController: UIViewController, menuViewController: UITableViewController, menuPosition: SideMenuPosition) {
     self.init(navigationController: navigationController, menuPosition: menuPosition)
     self.menuViewController = menuViewController
@@ -127,7 +126,7 @@ class SideMenu : NSObject {
   
   private func updateSideMenuApperanceIfNeeded() {
     if !needUpdateApperance { return }
-
+    
     var frame = sideMenuView.frame
     frame.size.width = menuWidth
     frame.size.height = navigationControllerView.frame.height
@@ -143,43 +142,59 @@ class SideMenu : NSObject {
     isMenuOpen = shouldOpen
     let width: CGFloat = navigationControllerView.frame.size.width
     let height: CGFloat = navigationControllerView.frame.size.height
-    
-    animator.removeAllBehaviors()
-    
-    var gravityDirectionX: CGFloat
-    var pushMagnitude: CGFloat
-    var boundaryPointX: CGFloat
-    var boundaryPointY: CGFloat
-    
-    switch menuPosition {
-    case .Left:
-      pushMagnitude = shouldOpen ? 60 : -60
-      boundaryPointX = shouldOpen ? menuWidth : -menuWidth-1
-      boundaryPointY = 60
-      gravityDirectionX = shouldOpen ? 1 : -1
-    case .Right:
-      pushMagnitude = shouldOpen ? -60 : 60
-      boundaryPointX = shouldOpen ? width-menuWidth : width+menuWidth+1
-      boundaryPointY = -60
-      gravityDirectionX = shouldOpen ? -1 : 1
+
+    if animator != nil {
+      
+      var gravityDirectionX: CGFloat
+      var pushMagnitude: CGFloat
+      var boundaryPointX: CGFloat
+      var boundaryPointY: CGFloat
+      
+      switch menuPosition {
+      case .Left:
+        pushMagnitude = shouldOpen ? 80 : -80
+        boundaryPointX = shouldOpen ? menuWidth : -menuWidth-1
+        boundaryPointY = 40
+        gravityDirectionX = shouldOpen ? 1 : -1
+      case .Right:
+        pushMagnitude = shouldOpen ? -80 : 80
+        boundaryPointX = shouldOpen ? width-menuWidth : width+menuWidth+1
+        boundaryPointY = -40
+        gravityDirectionX = shouldOpen ? -1 : 1
+      }
+      
+      let collisionBehavior = UICollisionBehavior(items: [sideMenuView])
+      collisionBehavior.collisionMode = .Boundaries
+      collisionBehavior.addBoundaryWithIdentifier("menuBoundary",
+        fromPoint: CGPointMake(boundaryPointX, boundaryPointY),
+        toPoint: CGPointMake(boundaryPointX, height))
+      
+      let gravityBehavior = UIGravityBehavior(items: [sideMenuView])
+      gravityBehavior.gravityDirection = CGVectorMake(gravityDirectionX,  0)
+      
+      let pushBehavior = UIPushBehavior(items: [sideMenuView], mode: UIPushBehaviorMode.Instantaneous)
+      pushBehavior.magnitude = pushMagnitude
+      
+      let menuViewBehavior = UIDynamicItemBehavior(items: [sideMenuView])
+      
+      animator?.removeAllBehaviors()
+      animator?.addBehavior(collisionBehavior)
+      animator?.addBehavior(gravityBehavior)
+      animator?.addBehavior(pushBehavior)
+      animator?.addBehavior(menuViewBehavior)
+
+    } else {
+      
+      let destFrame: CGRect
+      
+      switch menuPosition {
+      case .Left:
+        destFrame = CGRectMake((shouldOpen) ? -2.0 : -menuWidth, 0, menuWidth, sideMenuView.frame.size.height)
+      case .Right:
+        destFrame = CGRectMake((shouldOpen) ? width-menuWidth : width+2.0, 0, menuWidth, sideMenuView.frame.size.height)
+      }
+      UIView.animateWithDuration(0.25) { self.sideMenuView.frame = destFrame }
     }
-    
-    let collisionBehavior = UICollisionBehavior(items: [sideMenuView])
-    collisionBehavior.addBoundaryWithIdentifier("menuBoundary",
-      fromPoint: CGPointMake(boundaryPointX, boundaryPointY),
-      toPoint: CGPointMake(boundaryPointX, height))
-    animator.addBehavior(collisionBehavior)
-    
-    let gravityBehavior = UIGravityBehavior(items: [sideMenuView])
-    gravityBehavior.gravityDirection = CGVectorMake(gravityDirectionX,  0)
-    animator.addBehavior(gravityBehavior)
-    
-    let pushBehavior = UIPushBehavior(items: [sideMenuView], mode: UIPushBehaviorMode.Instantaneous)
-    pushBehavior.magnitude = pushMagnitude
-    animator.addBehavior(pushBehavior)
-    
-    let menuViewBehavior = UIDynamicItemBehavior(items: [sideMenuView])
-    animator.addBehavior(menuViewBehavior)
     
     if shouldOpen { delegate?.sideMenuWillOpen?() }
     else { delegate?.sideMenuWillClose?() }
@@ -208,10 +223,9 @@ class SideMenu : NSObject {
   optional func sideMenuShouldOpSideMenu() -> Bool
 }
 
-
-public enum SideMenuAnimation: Int {
-  case None
-  case Default
+@objc protocol SideMenuProtocol {
+  var sideMenu: SideMenu? { get }
+  optional func setContentViewController(contentViewController: UIViewController)
 }
 
 public enum SideMenuPosition: Int {
@@ -221,9 +235,9 @@ public enum SideMenuPosition: Int {
   var shadowOffset: CGSize {
     switch self {
     case Left:
-    return CGSizeMake(1.5, 1.5)
+      return CGSizeMake(1.5, 1.5)
     case Right:
-    return CGSizeMake(-1.5, -1.5)
+      return CGSizeMake(-1.5, -1.5)
     }
   }
   

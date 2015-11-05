@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SplitViewController: UISplitViewController, UISplitViewControllerDelegate {
+class SplitViewController: UISplitViewController, UISplitViewControllerDelegate, SideMenuProtocol {
   
   var sideMenu : SideMenu?
   
@@ -18,18 +18,14 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate 
     let navigationController = self.viewControllers[self.viewControllers.count-1] as! UINavigationController
     navigationController.topViewController!.navigationItem.leftBarButtonItem = self.displayModeButtonItem()
 		let tableView = SideMenuTableViewController()
-		tableView.sideMenuNavigationController = self
+		tableView.sideMenuController = self
 		sideMenu = SideMenu(navigationController: self, menuViewController: tableView, menuPosition:.Left)
     modalTransitionStyle = .CrossDissolve
   }
   
-  override func viewWillLayoutSubviews() {
+  override func viewDidLayoutSubviews() {
     sideMenu?.needUpdateApperance = true
-    sideMenu?.hideSideMenu()
-  }
-  
-  override func viewDidDisappear(animated: Bool) {
-    sideMenu = nil
+    if sideMenu!.isMenuOpen { sideMenu?.hideSideMenu() }
   }
   
   required init?(coder aDecoder: NSCoder) {

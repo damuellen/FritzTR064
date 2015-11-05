@@ -8,30 +8,27 @@
 
 import UIKit
 
-class SideMenuNavigationController: UINavigationController {
+class SideMenuNavigationController: UINavigationController, SideMenuProtocol {
   
-  var sideMenu : SideMenu?
+  var sideMenu: SideMenu?
   
   override func viewDidLoad() {
     super.viewDidLoad()
     modalTransitionStyle = .CrossDissolve
+    let tableView = SideMenuTableViewController()
+    tableView.sideMenuController = self
+    sideMenu = SideMenu(navigationController: self, menuViewController: tableView, menuPosition:.Left)
   }
   
   override func viewWillAppear(animated: Bool) {
-    let tableView = SideMenuTableViewController()
-    tableView.sideMenuNavigationController = self
-    sideMenu = SideMenu(navigationController: self, menuViewController: tableView, menuPosition:.Left)
     view.bringSubviewToFront(navigationBar)
   }
   
-  override func viewWillLayoutSubviews() {
+  override func viewDidLayoutSubviews() {
     sideMenu?.needUpdateApperance = true
-    sideMenu?.hideSideMenu()
+    if sideMenu!.isMenuOpen { sideMenu?.hideSideMenu() }
   }
   
-  override func viewDidDisappear(animated: Bool) {
-    sideMenu = nil
-  }
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
@@ -39,7 +36,6 @@ class SideMenuNavigationController: UINavigationController {
 // MARK: - Navigation
   
   func setContentViewController(contentViewController: UIViewController) {
-    sideMenu?.toggleMenu()
     contentViewController.navigationItem.hidesBackButton = true
     let transition = CATransition()
     transition.duration = 0.5
