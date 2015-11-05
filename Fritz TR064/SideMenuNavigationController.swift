@@ -8,12 +8,13 @@
 
 import UIKit
 
-class SideMenuNavigationController: UINavigationController, SideMenuProtocol {
+class SideMenuNavigationController: UINavigationController {
   
   var sideMenu : SideMenu?
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    modalTransitionStyle = .CrossDissolve
   }
   
   override func viewWillAppear(animated: Bool) {
@@ -34,7 +35,7 @@ class SideMenuNavigationController: UINavigationController, SideMenuProtocol {
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
-
+  
 // MARK: - Navigation
   
   func setContentViewController(contentViewController: UIViewController) {

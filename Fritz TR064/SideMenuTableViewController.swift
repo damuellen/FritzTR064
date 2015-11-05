@@ -10,12 +10,12 @@ import UIKit
 
 class SideMenuTableViewController: UITableViewController {
   
-	weak var sideMenuNavigationController: SideMenuProtocol? {
+	weak var sideMenuNavigationController: UIViewController? {
 		didSet {
-			hiddenMenuItem = 0
+			selectedMenuItem = 6
 		}
 	}
-  var selectedMenuItem: Int = 0
+  var selectedMenuItem: Int = 6
   var hiddenMenuItem: Int = 0
 
   enum SideMenu: Int {
@@ -90,9 +90,13 @@ class SideMenuTableViewController: UITableViewController {
     super.viewDidLoad()
     tableView.separatorStyle = .None
     tableView.backgroundColor = UIColor.clearColor()
+    tableView.backgroundView?.backgroundColor = UIColor.clearColor()
     tableView.scrollsToTop = false
     tableView.showsVerticalScrollIndicator = false
     self.clearsSelectionOnViewWillAppear = false
+    //  let navBarHeight =  sideMenuNavigationController.navigationBar.frame.size.height ?? 44
+    let contentInsets = UIEdgeInsetsMake(64, 0, 0, 0)
+    tableView.contentInset = contentInsets
    // tableView.selectRowAtIndexPath(NSIndexPath(forRow: selectedMenuItem, inSection: 0), animated: false, scrollPosition: .Middle)
   }
 	
@@ -130,19 +134,15 @@ class SideMenuTableViewController: UITableViewController {
     selectedMenuItem = indexPath.row
     
     if let split = SideMenu(rawValue: selectedMenuItem)?.splitViewController  {
-      sideMenuNavigationController?.sideMenu?.toggleMenu()
-      (sideMenuNavigationController as! UIViewController).presentViewController(split, animated: true, completion: nil)
-      // application.windows.first?.rootViewController = split
+      self.sideMenuNavigationController?.presentViewController(split, animated: true, completion: nil)
       return
     }
     if sideMenuNavigationController is SplitViewController {
-      sideMenuNavigationController?.sideMenu?.toggleMenu()
       if let navigationController = (SideMenu(rawValue: selectedMenuItem)?.navigationController) {
-        (sideMenuNavigationController as! SplitViewController).presentViewController(navigationController, animated: true, completion: nil)
-        // application.windows.first?.rootViewController = navigationController
+         (self.sideMenuNavigationController as! SplitViewController).presentViewController(navigationController, animated: true, completion: nil)
       }
     }else {
-      sideMenuNavigationController?.setContentViewController((SideMenu(rawValue: selectedMenuItem)?.viewController)!)
+      (sideMenuNavigationController as! SideMenuNavigationController).setContentViewController((SideMenu(rawValue: selectedMenuItem)?.viewController)!)
     }
   }
   

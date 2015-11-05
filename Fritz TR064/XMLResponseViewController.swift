@@ -12,7 +12,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   
   var tableData = [String:String]() {
     didSet {
-      self.reloadDataShowAnimated()
+      tableView.reloadData()
     }
   }
   
@@ -20,11 +20,12 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   var action: Action?
   
   func refreshUI() {
-    
+    self.reloadDataShowAnimated()
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    modalTransitionStyle = .CrossDissolve
     tableView.delegate = self
     manager.observer = self
     tableView.estimatedRowHeight = 44.0
@@ -39,7 +40,6 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   }
   
   override func viewDidAppear(animated: Bool) {
-  //  self.reloadDataShowAnimated()
   }
   
   @IBAction func showMenu(sender: AnyObject) {
@@ -100,6 +100,10 @@ extension XMLResponseViewController {
       return UITableViewAutomaticDimension
   }
   
+  override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    cell.backgroundColor = UIColor.clearColor()
+    cell.backgroundView?.backgroundColor = UIColor.clearColor()
+  }
 }
 
 

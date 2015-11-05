@@ -8,63 +8,7 @@
 
 import UIKit
 
-class SideMenu : NSObject, UIGestureRecognizerDelegate {
-  
-  weak var delegate: SideMenuDelegate?
-  
-  var menuWidth : CGFloat = 180.0 {
-    didSet {
-      needUpdateApperance = true
-      updateFrame()
-    }
-  }
-  
-  private var menuPosition = SideMenuPosition.Left
-  private let sideMenuView = UIView()
-  private var menuViewController: UITableViewController!
-  private var animator: UIDynamicAnimator!
-  private var navigationControllerView: UIView!
-  private var navigationController: SideMenuProtocol!
-  
-  private(set) var isMenuOpen: Bool = false
-  
-  var needUpdateApperance: Bool = false
-  var allowLeftSwipe: Bool = true
-  var allowRightSwipe: Bool = true
-
-  convenience init(navigationController: SideMenuProtocol, menuViewController: UITableViewController, menuPosition: SideMenuPosition) {
-    self.init(navigationController: navigationController, menuPosition: menuPosition)
-    self.menuViewController = menuViewController
-    self.menuViewController.view.frame = self.sideMenuView.bounds
-    self.sideMenuView.addSubview(self.menuViewController.view)
-  }
-  
-  init(navigationController: SideMenuProtocol, menuPosition: SideMenuPosition) {
-    super.init()
-    self.navigationController = navigationController
-    self.navigationControllerView = (navigationController as? UIViewController)?.view
-    self.menuPosition = menuPosition
-    self.setupMenuView()
-    
-    self.animator = UIDynamicAnimator(referenceView: navigationControllerView)
-    
-    let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "handleGesture:")
-    rightSwipeGestureRecognizer.delegate = self
-    rightSwipeGestureRecognizer.direction = .Right
-    
-    let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "handleGesture:")
-    leftSwipeGestureRecognizer.delegate = self
-    leftSwipeGestureRecognizer.direction = .Left
-    
-    switch menuPosition {
-    case .Left:
-      self.navigationControllerView.addGestureRecognizer(rightSwipeGestureRecognizer)
-      self.sideMenuView.addGestureRecognizer(leftSwipeGestureRecognizer)
-    case .Right:
-      self.sideMenuView.addGestureRecognizer(rightSwipeGestureRecognizer)
-      self.navigationControllerView.addGestureRecognizer(leftSwipeGestureRecognizer)
-    }
-  }
+extension SideMenu: UIGestureRecognizerDelegate {
   
   func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
     if let swipe = gestureRecognizer as? UISwipeGestureRecognizer where
@@ -86,6 +30,76 @@ class SideMenu : NSObject, UIGestureRecognizerDelegate {
     }
   }
   
+  func addSwipeGestureRecognizer() {
+    
+    let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "handleGesture:")
+    rightSwipeGestureRecognizer.delegate = self
+    rightSwipeGestureRecognizer.direction = .Right
+    
+    let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "handleGesture:")
+    leftSwipeGestureRecognizer.delegate = self
+    leftSwipeGestureRecognizer.direction = .Left
+    
+    switch menuPosition {
+    case .Left:
+      self.navigationControllerView.addGestureRecognizer(rightSwipeGestureRecognizer)
+      self.sideMenuView.addGestureRecognizer(leftSwipeGestureRecognizer)
+    case .Right:
+      self.sideMenuView.addGestureRecognizer(rightSwipeGestureRecognizer)
+      self.navigationControllerView.addGestureRecognizer(leftSwipeGestureRecognizer)
+    }
+  }
+  
+}
+
+class SideMenu : NSObject {
+  
+  weak var delegate: SideMenuDelegate?
+  
+  var menuWidth : CGFloat = 180.0 {
+    didSet {
+      needUpdateApperance = true
+      updateFrame()
+    }
+  }
+  
+  private var menuPosition = SideMenuPosition.Left
+  let sideMenuView = UIView()
+  private var menuViewController: UITableViewController!
+  private var animator: UIDynamicAnimator!
+  private var navigationControllerView: UIView!
+  private var navigationController: UIViewController!
+  
+  private(set) var isMenuOpen: Bool = false
+  
+  var needUpdateApperance: Bool = false
+  var allowLeftSwipe: Bool = true
+  var allowRightSwipe: Bool = true
+
+  convenience init(navigationController: UIViewController, menuViewController: UITableViewController, menuPosition: SideMenuPosition) {
+    self.init(navigationController: navigationController, menuPosition: menuPosition)
+    self.menuViewController = menuViewController
+    menuViewController.view.frame = self.sideMenuView.bounds
+    self.sideMenuView.addSubview(menuViewController.view)
+  }
+  
+  init(navigationController: UIViewController, menuPosition: SideMenuPosition) {
+    super.init()
+    self.navigationController = navigationController
+    self.navigationControllerView = navigationController.view
+    self.menuPosition = menuPosition
+    self.setupMenuView()
+    if navigationController is UISplitViewController {
+      let embededNavigationController = ((navigationController as! UISplitViewController).viewControllers.first! as! UINavigationController)
+      self.animator = UIDynamicAnimator(referenceView: embededNavigationController.view)
+      let navigationBar = embededNavigationController.navigationBar
+      embededNavigationController.view.bringSubviewToFront(navigationBar)
+    } else {
+      self.animator = UIDynamicAnimator(referenceView: navigationControllerView)
+    }
+    addSwipeGestureRecognizer()
+  }
+  
   func updateFrame() {
     let menuFrame = CGRectMake(menuPosition.positionX(self),
       navigationControllerView.frame.origin.y,
@@ -102,15 +116,18 @@ class SideMenu : NSObject, UIGestureRecognizerDelegate {
     sideMenuView.layer.shadowOffset = menuPosition.shadowOffset
     
     sideMenuView.addBlurEffect(.Light)
-
-    navigationControllerView.addSubview(sideMenuView)
+    switch navigationController {
+    case is UISplitViewController:
+      (navigationController as! UISplitViewController).viewControllers.first!.view.addSubview(sideMenuView)
+    default:
+      navigationControllerView.addSubview(sideMenuView)
+    }
+    
   }
   
   private func updateSideMenuApperanceIfNeeded() {
     if !needUpdateApperance { return }
-  //  let navBarHeight =  navigationController.navigationBar.frame.size.height ?? 44
-    let contentInsets = UIEdgeInsetsMake(64 + 20, 0, 0, 0)
-    menuViewController.tableView.contentInset = contentInsets
+
     var frame = sideMenuView.frame
     frame.size.width = menuWidth
     frame.size.height = navigationControllerView.frame.height
@@ -162,7 +179,6 @@ class SideMenu : NSObject, UIGestureRecognizerDelegate {
     animator.addBehavior(pushBehavior)
     
     let menuViewBehavior = UIDynamicItemBehavior(items: [sideMenuView])
-    menuViewBehavior.elasticity = 0.15
     animator.addBehavior(menuViewBehavior)
     
     if shouldOpen { delegate?.sideMenuWillOpen?() }
@@ -192,10 +208,6 @@ class SideMenu : NSObject, UIGestureRecognizerDelegate {
   optional func sideMenuShouldOpSideMenu() -> Bool
 }
 
-@objc protocol SideMenuProtocol {
-  var sideMenu: SideMenu? { get }
-  func setContentViewController(contentViewController: UIViewController)
-}
 
 public enum SideMenuAnimation: Int {
   case None

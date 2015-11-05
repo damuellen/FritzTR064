@@ -8,19 +8,19 @@
 
 import UIKit
 
-class SplitViewController: UISplitViewController, UISplitViewControllerDelegate, SideMenuProtocol {
+class SplitViewController: UISplitViewController, UISplitViewControllerDelegate {
   
   var sideMenu : SideMenu?
   
   override func viewDidLoad() {
     self.delegate = self
-    self.preferredPrimaryColumnWidthFraction = 0.5
+    self.preferredDisplayMode = .AllVisible
     let navigationController = self.viewControllers[self.viewControllers.count-1] as! UINavigationController
     navigationController.topViewController!.navigationItem.leftBarButtonItem = self.displayModeButtonItem()
-    navigationController.view.bringSubviewToFront(navigationController.navigationBar)
 		let tableView = SideMenuTableViewController()
 		tableView.sideMenuNavigationController = self
 		sideMenu = SideMenu(navigationController: self, menuViewController: tableView, menuPosition:.Left)
+    modalTransitionStyle = .CrossDissolve
   }
   
   override func viewWillLayoutSubviews() {
@@ -28,26 +28,14 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate,
     sideMenu?.hideSideMenu()
   }
   
+  override func viewDidDisappear(animated: Bool) {
+    sideMenu = nil
+  }
+  
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
-  
-  // MARK: - Navigation
-  
-  func setContentViewController(contentViewController: UIViewController) {
-    sideMenu?.toggleMenu()
-    contentViewController.navigationItem.hidesBackButton = true
-    let transition = CATransition()
-    transition.duration = 0.5
-    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-    transition.type = kCATransitionFade
-    //transition.subtype = kCATransitionFromTop
-    self.view.subviews.first?.layer.addAnimation(transition, forKey:kCATransition)
-    self.viewControllers = [contentViewController]
-		//showDetailViewController(<#T##vc: UIViewController##UIViewController#>, sender: <#T##AnyObject?#>)
-  }
 
-	
   // MARK: - Split view
 	/*
 	
@@ -75,7 +63,6 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate,
 
 	// Asks the delegate to adjust the primary view controller and to incorporate the secondary view controller into the collapsed interface.
   func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
-		view.bringSubviewToFront((primaryViewController as! UINavigationController).navigationBar)
     return true
   }
   

@@ -12,9 +12,9 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
     
   var tableData = [Host]() {
     didSet {
-      tableView.separatorStyle = .SingleLine
       self.reloadDataShowAnimated()
       self.refreshControl?.endRefreshing()
+      tableView.separatorStyle = .SingleLine
     }
   }
 
@@ -88,7 +88,12 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
       actionTitle: ["Wake up", "VNC"],
       actionBlock: [{ Hosts.wakeHost(host.macAddress) },
         { appDelegate.vpnStayConnected = true
-          UIApplication.sharedApplication().openURL(NSURL(string: "vnc://" + host.ip!)!) }])
+          Hosts.wakeHost(host.macAddress)
+          delay(2) { UIApplication.sharedApplication().openURL(NSURL(string: "vnc://" + host.ip!)!) } }])
   }
 	
+  override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    cell.backgroundColor = UIColor.clearColor()
+    cell.backgroundView?.backgroundColor = UIColor.clearColor()
+  }
 }

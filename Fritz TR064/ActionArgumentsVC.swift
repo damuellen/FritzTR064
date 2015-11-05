@@ -167,5 +167,9 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
     return false
   }
 
+  override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    cell.backgroundColor = UIColor.clearColor()
+    cell.backgroundView?.backgroundColor = UIColor.clearColor()
+  }
 }
 

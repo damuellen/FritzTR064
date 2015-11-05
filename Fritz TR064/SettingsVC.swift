@@ -54,6 +54,12 @@ class SettingsVC: UITableViewController {
     self.vpnUser.text = Settings.get(Setting.vpnUserName)
     self.vpnGroup.text = Settings.get(Setting.vpnGroupName)
   }
+  
+  override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    cell.backgroundColor = UIColor.clearColor()
+    cell.backgroundView?.backgroundColor = UIColor.clearColor()
+  }
+  
 }
 
 extension SettingsVC: UITextFieldDelegate {

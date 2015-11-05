@@ -44,10 +44,11 @@ func saveValuesToDefaults<T:PropertyListReadable>(newValues:[T], key:String) {
 extension UITableViewController {
   
   func reloadDataShowAnimated() {
+    refreshControl?.beginRefreshing()
     self.tableView.reloadData()
-    let cells = tableView.visibleCells
+    let cells = self.tableView.visibleCells
    
-    let tableHeight: CGFloat = tableView.bounds.size.height
+    let tableHeight: CGFloat = self.tableView.bounds.size.height
     
     cells.forEach { cell in
       cell.transform = CGAffineTransformMakeTranslation(0, tableHeight)
@@ -57,7 +58,8 @@ extension UITableViewController {
       UIView.animateWithDuration(1.0, delay: 0.04 * Double(index) + 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [],
         animations: {
         cell.transform = CGAffineTransformMakeTranslation(0, 0)
-        }, completion: nil)
+        }, completion: { _ in self.refreshControl?.endRefreshing() })
+    
     }
   }
 }
@@ -65,8 +67,8 @@ extension UITableViewController {
 extension UIViewController {
   
   public func toggleSideMenuView() {
-    (splitViewController as? SideMenuProtocol)?.sideMenu?.toggleMenu()
-    (navigationController as? SideMenuProtocol)?.sideMenu?.toggleMenu()
+    (splitViewController as? SplitViewController)?.sideMenu?.toggleMenu()
+    (navigationController as? SideMenuNavigationController)?.sideMenu?.toggleMenu()
   }
   
 }

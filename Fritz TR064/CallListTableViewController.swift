@@ -92,13 +92,13 @@ extension CallListTableViewController {
       if call.called.isPhoneNumber {
         phone += call.called
         let url = NSURL(string: phone)!
-        UIApplication.sharedApplication().openURL(url)
+    //    UIApplication.sharedApplication().openURL(url)
       }
     default:
       if call.caller.isPhoneNumber {
       phone += call.caller
       let url = NSURL(string: phone)!
-      UIApplication.sharedApplication().openURL(url)
+   //   UIApplication.sharedApplication().openURL(url)
       }
     }
 
