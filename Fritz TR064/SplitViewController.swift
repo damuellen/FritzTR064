@@ -8,30 +8,40 @@
 
 import UIKit
 
-class SplitViewController: UISplitViewController, UISplitViewControllerDelegate, SideMenuProtocol {
+class SplitViewController: UISplitViewController, UISplitViewControllerDelegate, UIViewControllerTransitioningDelegate, SideMenuProtocol {
   
   var sideMenu : SideMenu?
   
   override func viewDidLoad() {
     self.delegate = self
-    self.preferredDisplayMode = .AllVisible
+    if UIDevice().isIpad {
+      self.preferredDisplayMode = .AllVisible
+    }
     let navigationController = self.viewControllers[self.viewControllers.count-1] as! UINavigationController
     navigationController.topViewController!.navigationItem.leftBarButtonItem = self.displayModeButtonItem()
 		let tableView = SideMenuTableViewController()
 		tableView.sideMenuController = self
 		sideMenu = SideMenu(navigationController: self, menuViewController: tableView, menuPosition:.Left)
-    modalTransitionStyle = .CrossDissolve
+    transitioningDelegate = self
   }
   
   override func viewDidLayoutSubviews() {
     sideMenu?.needUpdateApperance = true
-    if sideMenu!.isMenuOpen { sideMenu?.hideSideMenu() }
+    sideMenu?.hideSideMenu() 
+  }
+  
+  override func viewDidDisappear(animated: Bool) {
+    sideMenu = nil
   }
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
 
+  func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+      return FadeInTransitionAnimator()
+  }
+  
   // MARK: - Split view
 	/*
 	
@@ -63,3 +73,4 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate,
   }
   
 }
+

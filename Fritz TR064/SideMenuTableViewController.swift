@@ -15,8 +15,8 @@ class SideMenuTableViewController: UITableViewController {
 			selectedMenuItem = 6
 		}
 	}
-  var selectedMenuItem: Int = 6
-  var hiddenMenuItem: Int = 0
+  var selectedMenuItem: Int = 8
+  var hiddenMenuItem: Int = 8
 
   enum SideMenu: Int {
     
@@ -136,17 +136,17 @@ class SideMenuTableViewController: UITableViewController {
     if let split = SideMenu(rawValue: selectedMenuItem)?.splitViewController  {
       self.sideMenuController?.sideMenu?.animator = nil
       self.sideMenuController?.sideMenu?.hideSideMenu()
-      delay(0.15) { self.presentViewController(split, animated: true, completion: nil) }
+      delay(0.15) { self.sideMenuController?.presentViewController(split, animated: true, completion: nil) }
       return
     }
     if sideMenuController is SplitViewController {
       self.sideMenuController?.sideMenu?.animator = nil
       self.sideMenuController?.sideMenu?.hideSideMenu()
       if let navigationController = (SideMenu(rawValue: selectedMenuItem)?.navigationController) {
-        delay(0.15) { self.presentViewController(navigationController, animated: true, completion: nil) }
+        delay(0.15) { self.sideMenuController?.presentViewController(navigationController, animated: true, completion: nil) }
       }
     } else {
-      sideMenuController?.setContentViewController!((SideMenu(rawValue: selectedMenuItem)?.viewController)!)
+      sideMenuController?.setViewController!((SideMenu(rawValue: selectedMenuItem)?.viewController)!)
     }
   }
   

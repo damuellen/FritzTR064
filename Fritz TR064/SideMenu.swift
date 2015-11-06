@@ -224,8 +224,9 @@ class SideMenu : NSObject {
 }
 
 @objc protocol SideMenuProtocol {
-  var sideMenu: SideMenu? { get }
-  optional func setContentViewController(contentViewController: UIViewController)
+  var sideMenu: SideMenu? { get set }
+  optional func setViewController(viewController: UIViewController)
+  func presentViewController(viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)?)
 }
 
 public enum SideMenuPosition: Int {
