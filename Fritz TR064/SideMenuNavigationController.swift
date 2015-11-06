@@ -42,8 +42,8 @@ class SideMenuNavigationController: UINavigationController, UIViewControllerTran
   func setViewController(viewController: UIViewController) {
     viewController.navigationItem.hidesBackButton = true
     let transition = CATransition()
-    transition.duration = 0.4
-    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+    transition.duration = animationDuration
+    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
     transition.type = kCATransitionFade
     //transition.subtype = kCATransitionFromTop
     self.view.subviews.first?.layer.addAnimation(transition, forKey:kCATransition)

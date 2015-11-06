@@ -134,19 +134,16 @@ class SideMenuTableViewController: UITableViewController {
     selectedMenuItem = indexPath.row
     
     if let split = SideMenu(rawValue: selectedMenuItem)?.splitViewController  {
-      self.sideMenuController?.sideMenu?.animator = nil
-      self.sideMenuController?.sideMenu?.hideSideMenu()
-      delay(0.15) { self.sideMenuController?.presentViewController(split, animated: true, completion: nil) }
+      self.sideMenuController?.presentViewController(split, animated: true, completion: nil)
       return
     }
     if sideMenuController is SplitViewController {
-      self.sideMenuController?.sideMenu?.animator = nil
-      self.sideMenuController?.sideMenu?.hideSideMenu()
+     // self.sideMenuController?.sideMenu?.animator = nil
       if let navigationController = (SideMenu(rawValue: selectedMenuItem)?.navigationController) {
-        delay(0.15) { self.sideMenuController?.presentViewController(navigationController, animated: true, completion: nil) }
+        self.sideMenuController?.presentViewController(navigationController, animated: true, completion: nil)
       }
     } else {
-      sideMenuController?.setViewController!((SideMenu(rawValue: selectedMenuItem)?.viewController)!)
+      self.sideMenuController?.setViewController!((SideMenu(rawValue: self.selectedMenuItem)?.viewController)!)
     }
   }
   

@@ -4,17 +4,24 @@
       "idiom" : "universal"
     },
     {
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
+      "resizing" : {
+        "mode" : "9-part",
+        "center" : {
+          "mode" : "tile",
+          "width" : 1,
+          "height" : 1
+        },
+        "cap-insets" : {
+          "bottom" : 32,
+          "top" : 32,
+          "right" : 32,
+          "left" : 32
+        }
+      },
       "idiom" : "universal",
       "filename" : "ButtonRoundRect@2x.png",
+      "unassigned" : true,
       "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
     }
   ],
   "info" : {

@@ -113,6 +113,7 @@ extension UIView {
   
   private func createGradientLayer() -> CAGradientLayer {
     let layer = CAGradientLayer()
+    layer.contentsScale = UIScreen.mainScreen().scale
     layer.frame = self.bounds
     layer.masksToBounds = true
     layer.shouldRasterize = true

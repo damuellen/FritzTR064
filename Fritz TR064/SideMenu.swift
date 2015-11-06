@@ -63,12 +63,12 @@ class SideMenu : NSObject {
   }
   
   private var menuPosition = SideMenuPosition.Left
-  let sideMenuView = UIView()
+  private let sideMenuView = UIView()
   private var menuViewController: UITableViewController!
-  var animator: UIDynamicAnimator?
+  private var animator: UIDynamicAnimator?
   private var navigationControllerView: UIView!
   private var navigationController: UIViewController!
-  
+  private var shouldBounce: Bool = true
   private(set) var isMenuOpen: Bool = false
   
   var needUpdateApperance: Bool = false
@@ -133,6 +133,7 @@ class SideMenu : NSObject {
     sideMenuView.frame = frame
     sideMenuView.layer.shadowPath = UIBezierPath(rect: sideMenuView.bounds).CGPath
     needUpdateApperance = false
+    shouldBounce = true
   }
   
   private func toggleMenu(shouldOpen: Bool) {
@@ -143,7 +144,7 @@ class SideMenu : NSObject {
     let width: CGFloat = navigationControllerView.frame.size.width
     let height: CGFloat = navigationControllerView.frame.size.height
 
-    if animator != nil {
+    if animator != nil && shouldBounce {
       
       var gravityDirectionX: CGFloat
       var pushMagnitude: CGFloat
@@ -153,12 +154,12 @@ class SideMenu : NSObject {
       switch menuPosition {
       case .Left:
         pushMagnitude = shouldOpen ? 80 : -80
-        boundaryPointX = shouldOpen ? menuWidth : -menuWidth-1
+        boundaryPointX = shouldOpen ? menuWidth : -menuWidth-2
         boundaryPointY = 40
         gravityDirectionX = shouldOpen ? 1 : -1
       case .Right:
         pushMagnitude = shouldOpen ? -80 : 80
-        boundaryPointX = shouldOpen ? width-menuWidth : width+menuWidth+1
+        boundaryPointX = shouldOpen ? width-menuWidth : width+menuWidth+2
         boundaryPointY = -40
         gravityDirectionX = shouldOpen ? -1 : 1
       }
@@ -186,7 +187,7 @@ class SideMenu : NSObject {
     } else {
       
       let destFrame: CGRect
-      
+ 
       switch menuPosition {
       case .Left:
         destFrame = CGRectMake((shouldOpen) ? -2.0 : -menuWidth, 0, menuWidth, sideMenuView.frame.size.height)
@@ -213,6 +214,7 @@ class SideMenu : NSObject {
   }
   
   func hideSideMenu() {
+    shouldBounce = true
     if isMenuOpen { toggleMenu(false) }
   }
 }
