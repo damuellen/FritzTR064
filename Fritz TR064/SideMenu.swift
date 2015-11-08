@@ -113,8 +113,7 @@ class SideMenu : NSObject {
     
     sideMenuView.addShadow()
     sideMenuView.layer.shadowOffset = menuPosition.shadowOffset
-    
-    sideMenuView.addBlurEffect(.Light)
+     sideMenuView.addBlurEffect(.ExtraLight)
     switch navigationController {
     case is UISplitViewController:
       (navigationController as! UISplitViewController).viewControllers.first!.view.addSubview(sideMenuView)
@@ -133,14 +132,15 @@ class SideMenu : NSObject {
     sideMenuView.frame = frame
     sideMenuView.layer.shadowPath = UIBezierPath(rect: sideMenuView.bounds).CGPath
     needUpdateApperance = false
+    isMenuOpen = false
     shouldBounce = true
   }
   
   private func toggleMenu(shouldOpen: Bool) {
     if (shouldOpen && delegate?.sideMenuShouldOpSideMenu?() == false) { return }
-    
     updateSideMenuApperanceIfNeeded()
     isMenuOpen = shouldOpen
+
     let width: CGFloat = navigationControllerView.frame.size.width
     let height: CGFloat = navigationControllerView.frame.size.height
 
@@ -153,14 +153,14 @@ class SideMenu : NSObject {
       
       switch menuPosition {
       case .Left:
-        pushMagnitude = shouldOpen ? 80 : -80
-        boundaryPointX = shouldOpen ? menuWidth : -menuWidth-2
-        boundaryPointY = 40
+        pushMagnitude = shouldOpen ? 60 : -60
+        boundaryPointX = shouldOpen ? menuWidth : -menuWidth-4
+        boundaryPointY = 64
         gravityDirectionX = shouldOpen ? 1 : -1
       case .Right:
-        pushMagnitude = shouldOpen ? -80 : 80
-        boundaryPointX = shouldOpen ? width-menuWidth : width+menuWidth+2
-        boundaryPointY = -40
+        pushMagnitude = shouldOpen ? -60 : 60
+        boundaryPointX = shouldOpen ? width-menuWidth : width+menuWidth+4
+        boundaryPointY = -64
         gravityDirectionX = shouldOpen ? -1 : 1
       }
       
@@ -204,7 +204,6 @@ class SideMenu : NSObject {
   func toggleMenu() {
     if isMenuOpen { toggleMenu(false) }
     else {
-      updateSideMenuApperanceIfNeeded()
       toggleMenu(true)
     }
   }
@@ -257,4 +256,13 @@ public enum SideMenuPosition: Int {
         : width+2
     }
   }
+}
+
+extension UIViewController {
+  
+  public func toggleSideMenuView() {
+    (splitViewController as? SplitViewController)?.sideMenu?.toggleMenu()
+    (navigationController as? SideMenuNavigationController)?.sideMenu?.toggleMenu()
+  }
+  
 }

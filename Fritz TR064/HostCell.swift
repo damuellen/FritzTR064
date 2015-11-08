@@ -24,6 +24,13 @@ class HostCell: UITableViewCell {
 		addressSource.text = host.addressSource + " " + host.interfaceType
 		macAddress.text = host.macAddress
 	
+    self.addOrChangeGradientLayerWithColors(UIColor.metalic())
+    self.gradientLayer?.opacity = 0.5
 	}
 	
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.layer.sublayers?.filter { $0 is CAGradientLayer }.forEach { $0.frame = self.bounds }
+  }
+  
 }

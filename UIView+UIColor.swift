@@ -144,15 +144,18 @@ extension UIView {
     self.layer.shadowPath = UIBezierPath(rect: self.bounds).CGPath
   }
   
-  func addBlurEffect(style: UIBlurEffectStyle, withVibrancy: Bool = false) {
+  func addBlurEffect(style: UIBlurEffectStyle, addVibrancy: Bool = false) -> UIVisualEffectView! {
     let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: style)) as UIVisualEffectView
     visualEffectView.frame = self.bounds
     visualEffectView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     visualEffectView.userInteractionEnabled = false
     self.addSubview(visualEffectView)
-    if withVibrancy {
-      UIView.vibrancyEffectView(forBlurEffectView: visualEffectView)
+    if addVibrancy {
+      let vibrancyView = UIView.vibrancyEffectView(forBlurEffectView: visualEffectView)
+      visualEffectView.contentView.addSubview(vibrancyView)
+      return vibrancyView
     }
+    return nil
   }
 	
   func addVibrantStatusBarBackground(effect: UIBlurEffect) {

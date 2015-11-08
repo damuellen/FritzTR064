@@ -9,17 +9,12 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>Fritz TR064.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>0</integer>
-		</dict>
-		<key>TodayList.xcscheme</key>
+		<key>Fritz!Widget.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>TodayList.xcscheme_^#shared#^_</key>
+		<key>TodayList.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
@@ -27,6 +22,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>656B317D1BECE94000CAF1F4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>658D41351BD2DAA500CB5868</key>
 		<dict>
 			<key>primary</key>

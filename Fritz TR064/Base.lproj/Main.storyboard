@@ -212,7 +212,7 @@
                     <navigationItem key="navigationItem" id="JJ4-sc-WkJ"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
-                        <segue destination="xa0-E2-kEW" kind="show" identifier="showCallList" id="ToQ-L7-DMx"/>
+                        <segue destination="xa0-E2-kEW" kind="showDetail" identifier="showCallList" action="showViewController:sender:" id="ToQ-L7-DMx"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r8F-LP-e8j" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -608,9 +608,6 @@
                                     <color key="titleColor" red="0.090196078431372548" green="0.098039215686274508" blue="0.10588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <segue destination="QNM-7J-jen" kind="presentation" identifier="DeviceInfo" modalTransitionStyle="coverVertical" id="q3B-oB-KHy"/>
-                                </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fFf-kk-MvW" customClass="NiceButton" customModule="Fritz_TR064" customModuleProvider="target">
                                 <rect key="frame" x="85" y="370" width="150" height="60"/>
@@ -626,24 +623,7 @@
                                     <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="gKC-6K-loI" kind="presentation" modalTransitionStyle="coverVertical" id="4Cf-Ba-jnj"/>
-                                </connections>
-                            </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOP-yl-BCx" customClass="NiceButton" customModule="Fritz_TR064" customModuleProvider="target">
-                                <rect key="frame" x="85" y="210" width="150" height="60"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="7JP-WT-2DG"/>
-                                    <constraint firstAttribute="height" constant="60" id="m9i-Ku-HrH"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
-                                <size key="titleShadowOffset" width="2.2250738585072014e-308" height="2.2250738585072014e-308"/>
-                                <state key="normal" title="Call List">
-                                    <color key="titleColor" red="0.090196078431372548" green="0.098039215686274508" blue="0.10588235294117647" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="xa0-E2-kEW" kind="presentation" identifier="showCallList" modalTransitionStyle="coverVertical" id="QQ4-o9-h9Z"/>
+                                    <segue destination="gKC-6K-loI" kind="presentation" id="7hx-II-VNC"/>
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i7Z-kO-fRP" customClass="NiceButton" customModule="Fritz_TR064" customModuleProvider="target">
@@ -660,7 +640,7 @@
                                     <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="xqs-T5-pQM" kind="presentation" modalTransitionStyle="coverVertical" id="xkm-PR-yQ7"/>
+                                    <segue destination="xqs-T5-pQM" kind="presentation" id="LxG-QG-VMb"/>
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i3Z-Jv-9iC" customClass="NiceButton" customModule="Fritz_TR064" customModuleProvider="target">
@@ -677,12 +657,26 @@
                                     <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="showActions:" destination="g0B-Y0-KL0" eventType="primaryActionTriggered" id="IU5-Do-U2I"/>
+                                    <segue destination="H1p-Uh-vWS" kind="presentation" id="k5A-ab-MY1"/>
                                 </connections>
+                            </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOP-yl-BCx" customClass="NiceButton" customModule="Fritz_TR064" customModuleProvider="target">
+                                <rect key="frame" x="85" y="210" width="150" height="60"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="7JP-WT-2DG"/>
+                                    <constraint firstAttribute="height" constant="60" id="m9i-Ku-HrH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
+                                <size key="titleShadowOffset" width="2.2250738585072014e-308" height="2.2250738585072014e-308"/>
+                                <state key="normal" title="Call List">
+                                    <color key="titleColor" red="0.090196078431372548" green="0.098039215686274508" blue="0.10588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                             </button>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="DOP-yl-BCx" firstAttribute="top" secondItem="i3Z-Jv-9iC" secondAttribute="bottom" constant="20" id="6mu-DA-mRo"/>
                             <constraint firstItem="fFf-kk-MvW" firstAttribute="centerX" secondItem="i7Z-kO-fRP" secondAttribute="centerX" id="GIq-X3-SDc"/>
@@ -706,7 +700,6 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
-                        <outlet property="Actions" destination="i3Z-Jv-9iC" id="Mab-mL-ZiH"/>
                         <outlet property="Button1" destination="8Ib-4h-aAe" id="soD-Cb-vNA"/>
                         <outlet property="Button2" destination="fFf-kk-MvW" id="jQ4-c8-9q7"/>
                         <outlet property="ButtonCenter" destination="z7O-mE-IrS" id="x0v-u6-CFQ"/>
@@ -1181,8 +1174,6 @@
         <image name="icon-hamburger" width="22" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="JdU-zT-xbZ"/>
         <segue reference="Tll-UG-LXB"/>
-        <segue reference="QQ4-o9-h9Z"/>
     </inferredMetricsTieBreakers>
 </document>

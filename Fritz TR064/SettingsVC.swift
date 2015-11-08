@@ -23,12 +23,17 @@ class SettingsVC: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    tableView.backgroundView = bgView
-    tableView.scrollsToTop = false
+    setup(tableView)
     keyboardResizeObserver()
     allTextFields.forEach { textfield in
       textfield.delegate = self
     }
+  }
+  
+  func setup(tableView: UITableView) {
+    tableView.backgroundView = bgView
+    tableView.scrollsToTop = false
+    tableView.delegate = self
   }
   
   @IBAction func showMenu(sender: AnyObject) {

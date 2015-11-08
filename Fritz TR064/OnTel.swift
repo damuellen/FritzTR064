@@ -23,7 +23,12 @@ class OnTel: TR064Service {
     set { (TR064Manager.sharedManager.observer as? CallListTableViewController)?.tableData = newValue }
   }
   
-  class func getCallList(argument: String = "") {
+  class func getCallList(argument: String = "", ignoreCache: Bool = false) {
+    var cachedCalls = [Call]()
+    if let cachedCallList = loadValuesFromDiskCache("CallList") where ignoreCache == false {
+      cachedCalls = extractValuesFromPropertyListArray(cachedCallList)
+      self.dataSource = cachedCalls
+    }
     guard let action = knownActions.GetCallList.action
       else { return }
     TR064.startAction(action).then { xml in
@@ -31,7 +36,11 @@ class OnTel: TR064Service {
         else { return }
       let callList = TR064.getXMLFromURL(url + argument)?.responseXMLPromise()
       callList?.then { callList in
-        self.dataSource = Call.extractCalls(callList.value).map { Call($0) }.flatMap {$0}
+        let newCalls = Call.extractCalls(callList.value).map { Call($0) }.flatMap {$0}
+        if cachedCalls.count < newCalls.count {
+          self.dataSource = newCalls
+        saveValuesToDiskCache(newCalls, name: "CallList")
+        }
       }
     }
   }

@@ -17,9 +17,10 @@ class CallCell: UITableViewCell {
   @IBOutlet weak var duration: UILabel!
   @IBOutlet weak var time: UILabel!
 
-  func configure(call: Call) {
+  func configureCellWith(call: Call) {
     name.text = call.name
     device.text = call.device
+    backgroundColor = UIColor.clearColor()
     let dateFormatter = NSDateFormatter.sharedInstance
     let local = NSLocale.currentLocale()
     dateFormatter.locale = local
@@ -51,26 +52,26 @@ class CallCell: UITableViewCell {
     switch call.type {
     case .activeIncoming:
       calledClosure()
-      self.addOrChangeGradientLayerWithColors(UIColor.blueOcean())
+      self.addOrChangeGradientLayerWithColors(UIColor.metalic())
     case .activeOutgoing:
       calledClosure()
-      self.addOrChangeGradientLayerWithColors(UIColor.deepBlue())
+      self.addOrChangeGradientLayerWithColors(UIColor.metalic())
     case .incoming:
       callerClosure()
       self.addOrChangeGradientLayerWithColors(UIColor.mojitoBlast())
     case .missed:
       callerClosure()
-      self.addOrChangeGradientLayerWithColors(UIColor.haze())
+      self.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
     case .outgoing:
       calledClosure()
-      self.addOrChangeGradientLayerWithColors(UIColor.lovelyPink())
+      self.addOrChangeGradientLayerWithColors(UIColor.deepBlue())
     case .rejectedIncoming:
       callerClosure()
       self.addOrChangeGradientLayerWithColors(UIColor.maceWindu())
     case .error:
       break
     }
-    self.gradientLayer?.opacity = 0.6
+    self.gradientLayer?.opacity = 0.2
   }
   
   override func layoutSubviews() {

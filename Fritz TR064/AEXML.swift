@@ -24,48 +24,7 @@
 
 import Foundation
 
-extension AEXMLDocument {
-    
-  func checkForURLWithAction(action: Action) -> String? {
-    var URL: String?
-    guard let validResponse = self.checkWithAction(action)
-      else { return nil }
-    for possibleURL in validResponse.children where possibleURL.value != nil {
-      if possibleURL.value!.containsString("http") {
-        URL = possibleURL.value!
-      }
-    }
-    return URL
-  }
-  
-  func checkWithAction(action: Action) -> AEXMLElement? {
-    let soapResponse = self.root["s:Body"]["u:\(action.name)Response"]
-    if soapResponse.name == "AEXMLError" { return nil }
-    return soapResponse
-  }
-}
 
-extension AEXMLElement {
-  
-  func convertWithAction(action: Action) -> [String:String]? {
-    var result = [String:String]()
-    for key in action.output.keys {
-      if let value = self[key].value {
-        result[key] = value
-      }
-    }
-    return result
-  }
-  
-  func checkForURL() -> String? {
-    var URL: String?
-    for possibleURL in self.children where possibleURL.value != nil {
-      URL = possibleURL.value!.getLink()
-    }
-    return URL
-  }
-
-}
 
 
 /**

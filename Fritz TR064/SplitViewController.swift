@@ -39,7 +39,7 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate,
   }
 
   func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-      return FadeInTransitionAnimator()
+      return TransitionsController()
   }
   
   // MARK: - Split view

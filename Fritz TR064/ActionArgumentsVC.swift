@@ -30,7 +30,6 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   var arguments = [String]()
   
   func sendAction() {
-    self.navigationItem.rightBarButtonItem?.enabled = false
     self.performSegueWithIdentifier("sendAction", sender: self)
   }
   
@@ -66,13 +65,18 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    tableView.backgroundView = bgView
+    setup(tableView)
     let addButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "sendAction")
     self.navigationItem.rightBarButtonItem = addButton
-    // tableView.estimatedRowHeight = 44.0
-    tableView.rowHeight = UITableViewAutomaticDimension
+
     self
   }
+  
+  func setup(tableView: UITableView) {
+    tableView.backgroundView = bgView
+    tableView.delegate = self
+  }
+  
   
   override func viewWillAppear(animated: Bool) {
     bgView.frame = tableView.bounds
@@ -170,6 +174,8 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
     cell.backgroundColor = UIColor.clearColor()
     cell.backgroundView?.backgroundColor = UIColor.clearColor()
+    CellAnimator.animateCell(cell, withTransform: CellAnimator.TransformWave, andDuration: animationDuration)
   }
+  
 }
 

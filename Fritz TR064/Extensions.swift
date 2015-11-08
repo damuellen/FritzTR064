@@ -64,15 +64,6 @@ extension UITableViewController {
   }
 }
 
-extension UIViewController {
-  
-  public func toggleSideMenuView() {
-    (splitViewController as? SplitViewController)?.sideMenu?.toggleMenu()
-    (navigationController as? SideMenuNavigationController)?.sideMenu?.toggleMenu()
-  }
-  
-}
-
 extension String {
   
   var isEmpty: Bool  {

@@ -6,6 +6,8 @@
 //  Copyright © 2015 Daniel Müllenborn. All rights reserved.
 //
 
+import Foundation
+
 struct Service {
   
   let serviceType: String
@@ -62,3 +64,4 @@ extension Service: PropertyListReadable {
   }
   
 }
+

@@ -31,21 +31,6 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
     manager.activeService = nil
     configureUI()
   }
-  
-  @IBAction func showActions(sender: AnyObject) {
-    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main",bundle: nil)
-   // if UIDevice().isIpad {
-    //  let viewController = mainStoryboard.instantiateViewControllerWithIdentifier("ActionsNC")
-    //  presentViewController(viewController, animated: true, completion: nil)
-   // }else if UIDevice().isIpad {
-      let viewController = mainStoryboard.instantiateViewControllerWithIdentifier("SplitView")
-      presentViewController(viewController, animated: true, completion: nil)
-   // }
-  }
-  
-  override func viewWillAppear(animated: Bool) {
-
-  }
 
   override func viewDidAppear(animated: Bool) {
     if !manager.isReady {
@@ -65,10 +50,6 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   }
   
   func configureUI() {
-    
-   // let subview = UIView(frame: self.view.frame)
-  //  subview.backgroundColor = UIColor.whiteColor()
-  //  subview.alpha = 0.5
     self.view.addOrChangeGradientLayerWithColors(UIColor.beach())
   }
   

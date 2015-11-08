@@ -26,13 +26,17 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   override func viewDidLoad() {
     super.viewDidLoad()
     modalTransitionStyle = .CrossDissolve
-    tableView.delegate = self
     manager.observer = self
-    tableView.estimatedRowHeight = 44.0
-    tableView.rowHeight = UITableViewAutomaticDimension
-    tableView.backgroundView = bgView
+    setup(tableView)
   }
   
+  func setup(tableView: UITableView) {
+    tableView.backgroundView = bgView
+    tableView.estimatedRowHeight = 44.0
+    tableView.delegate = self
+    tableView.scrollsToTop = false
+  }
+
   override func viewWillAppear(animated: Bool) {
     bgView.frame = tableView.bounds
   //  self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
@@ -103,7 +107,12 @@ extension XMLResponseViewController {
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
     cell.backgroundColor = UIColor.clearColor()
     cell.backgroundView?.backgroundColor = UIColor.clearColor()
+    cell.alpha = 0
+    UIView.animateWithDuration(animationDuration) {
+      cell.alpha = 1
+    }
   }
+  
 }
 
 

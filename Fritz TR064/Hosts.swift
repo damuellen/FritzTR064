@@ -62,6 +62,11 @@ class Hosts: TR064Service {
   }
 
   class func getAllHosts() {
+    var cachedHosts = [Host]()
+    if let cachedHostList = loadValuesFromDiskCache("Hosts") {
+      cachedHosts = extractValuesFromPropertyListArray(cachedHostList)
+      self.dataSource = cachedHosts
+    }
     guard let HostNumberOfEntries = getHostNumberOfEntries() else { return }
     HostNumberOfEntries.then { xml in
       var hosts = [ActionResultPromise]()
@@ -77,9 +82,11 @@ class Hosts: TR064Service {
       }
       guard let action = knownActions.GetGenericHostEntry.action else { return }
       whenAll(hosts).then { hosts in
-        self.dataSource = hosts.map {
-          $0.value.convertWithAction(action)
-          }.flatMap {$0}.map { Host(host: $0)}
+        let newHosts = hosts.map { $0.value.convertWithAction(action) }.flatMap {$0}.map { Host(host: $0) }
+        if cachedHosts.count < newHosts.count {
+          self.dataSource = newHosts
+          saveValuesToDiskCache(newHosts, name: "Hosts")
+        }
       }
     }
   }

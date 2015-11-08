@@ -20,6 +20,10 @@
 		655984121BE94A510089349F /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655984111BE94A510089349F /* SplitViewController.swift */; };
 		655F61FE1BC12C9000D723EE /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FD1BC12C9000D723EE /* Contact.swift */; };
 		655F62001BC139A900D723EE /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F61FF1BC139A900D723EE /* WebViewController.swift */; };
+		656B317F1BECE94000CAF1F4 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658D41381BD2DAA500CB5868 /* NotificationCenter.framework */; };
+		656B31821BECE94000CAF1F4 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B31811BECE94000CAF1F4 /* TodayViewController.swift */; };
+		656B31851BECE94000CAF1F4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 656B31831BECE94000CAF1F4 /* MainInterface.storyboard */; };
+		656B31891BECE94000CAF1F4 /* Fritz!Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 656B317E1BECE94000CAF1F4 /* Fritz!Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		656BDA2F1BC9C9520083D0DE /* Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA291BC9C9520083D0DE /* Combinators.swift */; };
 		656BDA301BC9C9520083D0DE /* Delay+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA2A1BC9C9520083D0DE /* Delay+Promise.swift */; };
 		656BDA311BC9C9520083D0DE /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA2B1BC9C9520083D0DE /* Future.swift */; };
@@ -27,7 +31,6 @@
 		656BDA331BC9C9520083D0DE /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA2D1BC9C9520083D0DE /* Promise.swift */; };
 		656BDA341BC9C9520083D0DE /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BDA2E1BC9C9520083D0DE /* State.swift */; };
 		658D41301BD2A0B400CB5868 /* OnTel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D412F1BD2A0B400CB5868 /* OnTel.swift */; };
-		658D41391BD2DAA500CB5868 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658D41381BD2DAA500CB5868 /* NotificationCenter.framework */; };
 		659008591BDCF55B00F4CBAE /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659008581BDCF55B00F4CBAE /* SettingsVC.swift */; };
 		6594CB481BE151EA004A361A /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6594CB471BE151EA004A361A /* Reachability.swift */; };
 		6594CB4A1BE17780004A361A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6594CB491BE17780004A361A /* Settings.swift */; };
@@ -56,22 +59,31 @@
 		65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E9F9521BBC4AE600DDA8E7 /* Call.swift */; };
 		65EA37DC1BCCFF6B00754DD4 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */; };
 		65EF43711BDFF9F700FBAE69 /* Timeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EF43701BDFF9F700FBAE69 /* Timeout.swift */; };
+		65F25DC21BED645A00719BAF /* DiskFileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DC11BED645A00719BAF /* DiskFileCache.swift */; };
+		65F25DC51BED6A0200719BAF /* DiskFileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DC11BED645A00719BAF /* DiskFileCache.swift */; };
+		65F25DC61BED6AEA00719BAF /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E9F9521BBC4AE600DDA8E7 /* Call.swift */; };
+		65F25DC71BED6AF700719BAF /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C825821BB76048005DF551 /* Service.swift */; };
+		65F25DC81BED6B4900719BAF /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8257E1BB75E86005DF551 /* AEXML.swift */; };
+		65F25DC91BED6B6000719BAF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B2BC271BD6D2F300C244B1 /* Extensions.swift */; };
+		65F25DCA1BED6BFB00719BAF /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C825841BB76079005DF551 /* Action.swift */; };
+		65F25DCE1BEDB03B00719BAF /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F25DCD1BEDB03B00719BAF /* libcompression.tbd */; };
+		65F25DD01BEF8BCF00719BAF /* TransitionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DCF1BEF8BCF00719BAF /* TransitionsController.swift */; };
+		65F25DD21BEFB3CF00719BAF /* ViewMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DD11BEFB3CF00719BAF /* ViewMenu.swift */; };
 		65F359C51BDD5A3A002B1F6D /* Host.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F359C31BDD5A3A002B1F6D /* Host.swift */; };
 		65F359C61BDD5A3B002B1F6D /* HostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F359C41BDD5A3A002B1F6D /* HostCell.swift */; };
 		65F4692D1BDDB557009B82A7 /* NiceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F4692C1BDDB557009B82A7 /* NiceButton.swift */; };
-		65F469611BDEB37C009B82A7 /* Fritz_TR064Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F469601BDEB37C009B82A7 /* Fritz_TR064Tests.swift */; };
 		65F7EB691BE6A71100AFA322 /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F7EB671BE6A71100AFA322 /* SideMenu.swift */; };
 		65F7EB6A1BE6A71100AFA322 /* SideMenuNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F7EB681BE6A71100AFA322 /* SideMenuNavigationController.swift */; };
 		65F7EB701BE6B58900AFA322 /* SideMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F7EB6F1BE6B58900AFA322 /* SideMenuTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		65F469631BDEB37C009B82A7 /* PBXContainerItemProxy */ = {
+		656B31871BECE94000CAF1F4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65C8255F1BB75E02005DF551 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 65C825661BB75E02005DF551;
-			remoteInfo = "Fritz TR064";
+			remoteGlobalIDString = 656B317D1BECE94000CAF1F4;
+			remoteInfo = "Fritz!Widget";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -85,6 +97,17 @@
 				65B6AD331BD4474D0070D0DA /* Alamofire.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		656B318D1BECE94000CAF1F4 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				656B31891BECE94000CAF1F4 /* Fritz!Widget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -104,6 +127,10 @@
 		655984111BE94A510089349F /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 		655F61FD1BC12C9000D723EE /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		655F61FF1BC139A900D723EE /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		656B317E1BECE94000CAF1F4 /* Fritz!Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Fritz!Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		656B31811BECE94000CAF1F4 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		656B31841BECE94000CAF1F4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		656B31861BECE94000CAF1F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		656BDA291BC9C9520083D0DE /* Combinators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Combinators.swift; sourceTree = "<group>"; };
 		656BDA2A1BC9C9520083D0DE /* Delay+Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Delay+Promise.swift"; sourceTree = "<group>"; };
 		656BDA2B1BC9C9520083D0DE /* Future.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
@@ -111,7 +138,6 @@
 		656BDA2D1BC9C9520083D0DE /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 		656BDA2E1BC9C9520083D0DE /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		658D412F1BD2A0B400CB5868 /* OnTel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnTel.swift; sourceTree = "<group>"; };
-		658D41361BD2DAA500CB5868 /* TodayList.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayList.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		658D41381BD2DAA500CB5868 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		659008581BDCF55B00F4CBAE /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		6594CB471BE151EA004A361A /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -144,10 +170,13 @@
 		65E9F9521BBC4AE600DDA8E7 /* Call.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		65EF43701BDFF9F700FBAE69 /* Timeout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeout.swift; sourceTree = "<group>"; };
+		65F25DC11BED645A00719BAF /* DiskFileCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskFileCache.swift; sourceTree = "<group>"; };
+		65F25DCD1BEDB03B00719BAF /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
+		65F25DCF1BEF8BCF00719BAF /* TransitionsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionsController.swift; sourceTree = "<group>"; };
+		65F25DD11BEFB3CF00719BAF /* ViewMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewMenu.swift; sourceTree = "<group>"; };
 		65F359C31BDD5A3A002B1F6D /* Host.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Host.swift; sourceTree = "<group>"; };
 		65F359C41BDD5A3A002B1F6D /* HostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostCell.swift; sourceTree = "<group>"; };
 		65F4692C1BDDB557009B82A7 /* NiceButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NiceButton.swift; sourceTree = "<group>"; };
-		65F4695E1BDEB37C009B82A7 /* Fritz TR064Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fritz TR064Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65F469601BDEB37C009B82A7 /* Fritz_TR064Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fritz_TR064Tests.swift; sourceTree = "<group>"; };
 		65F469621BDEB37C009B82A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65F7EB671BE6A71100AFA322 /* SideMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
@@ -156,11 +185,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		658D41331BD2DAA500CB5868 /* Frameworks */ = {
+		656B317B1BECE94000CAF1F4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				658D41391BD2DAA500CB5868 /* NotificationCenter.framework in Frameworks */,
+				656B317F1BECE94000CAF1F4 /* NotificationCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,22 +199,27 @@
 			files = (
 				65DB0B231BC3191900D88E40 /* NetworkExtension.framework in Frameworks */,
 				65B6AD321BD4474D0070D0DA /* Alamofire.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		65F4695B1BDEB37C009B82A7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				65F25DCE1BEDB03B00719BAF /* libcompression.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		656B31801BECE94000CAF1F4 /* Fritz!Widget */ = {
+			isa = PBXGroup;
+			children = (
+				656B31811BECE94000CAF1F4 /* TodayViewController.swift */,
+				656B31831BECE94000CAF1F4 /* MainInterface.storyboard */,
+				656B31861BECE94000CAF1F4 /* Info.plist */,
+			);
+			path = "Fritz!Widget";
+			sourceTree = "<group>";
+		};
 		658D41371BD2DAA500CB5868 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				65F25DCD1BEDB03B00719BAF /* libcompression.tbd */,
 				658D41381BD2DAA500CB5868 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
@@ -198,6 +232,7 @@
 				65DB0B221BC3191900D88E40 /* NetworkExtension.framework */,
 				65C825691BB75E02005DF551 /* Fritz TR064 */,
 				65F4695F1BDEB37C009B82A7 /* Fritz TR064Tests */,
+				656B31801BECE94000CAF1F4 /* Fritz!Widget */,
 				658D41371BD2DAA500CB5868 /* Frameworks */,
 				65C825681BB75E02005DF551 /* Products */,
 				65D6BB5E1BEABA550027D0F9 /* Credentials.swift */,
@@ -208,8 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				65C825671BB75E02005DF551 /* Fritz TR064.app */,
-				658D41361BD2DAA500CB5868 /* TodayList.appex */,
-				65F4695E1BDEB37C009B82A7 /* Fritz TR064Tests.xctest */,
+				656B317E1BECE94000CAF1F4 /* Fritz!Widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -260,7 +294,9 @@
 			children = (
 				65F7EB671BE6A71100AFA322 /* SideMenu.swift */,
 				65F7EB6F1BE6B58900AFA322 /* SideMenuTableViewController.swift */,
+				65F25DD11BEFB3CF00719BAF /* ViewMenu.swift */,
 				65F7EB681BE6A71100AFA322 /* SideMenuNavigationController.swift */,
+				65F25DCF1BEF8BCF00719BAF /* TransitionsController.swift */,
 				65C8256C1BB75E02005DF551 /* MasterViewController.swift */,
 				65C8256E1BB75E02005DF551 /* ActionArgumentsVC.swift */,
 				65D5A1381BC708C900D691DB /* HostsVC.swift */,
@@ -315,6 +351,7 @@
 			isa = PBXGroup;
 			children = (
 				65C8256A1BB75E02005DF551 /* AppDelegate.swift */,
+				65F25DC11BED645A00719BAF /* DiskFileCache.swift */,
 				6594CB471BE151EA004A361A /* Reachability.swift */,
 				65DB0B261BC3328600D88E40 /* Fritz TR064-Bridging-Header.h */,
 				65DB0B291BC3334400D88E40 /* keychain.h */,
@@ -335,21 +372,21 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		658D41351BD2DAA500CB5868 /* TodayList */ = {
+		656B317D1BECE94000CAF1F4 /* Fritz!Widget */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 658D41441BD2DAA500CB5868 /* Build configuration list for PBXNativeTarget "TodayList" */;
+			buildConfigurationList = 656B318A1BECE94000CAF1F4 /* Build configuration list for PBXNativeTarget "Fritz!Widget" */;
 			buildPhases = (
-				658D41321BD2DAA500CB5868 /* Sources */,
-				658D41331BD2DAA500CB5868 /* Frameworks */,
-				658D41341BD2DAA500CB5868 /* Resources */,
+				656B317A1BECE94000CAF1F4 /* Sources */,
+				656B317B1BECE94000CAF1F4 /* Frameworks */,
+				656B317C1BECE94000CAF1F4 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = TodayList;
-			productName = TodayList;
-			productReference = 658D41361BD2DAA500CB5868 /* TodayList.appex */;
+			name = "Fritz!Widget";
+			productName = "Fritz!Widget";
+			productReference = 656B317E1BECE94000CAF1F4 /* Fritz!Widget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		65C825661BB75E02005DF551 /* Fritz TR064 */ = {
@@ -360,33 +397,17 @@
 				65C825641BB75E02005DF551 /* Frameworks */,
 				65C825651BB75E02005DF551 /* Resources */,
 				651B04721BC9C17A00DD81BD /* Embed Frameworks */,
+				656B318D1BECE94000CAF1F4 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				656B31881BECE94000CAF1F4 /* PBXTargetDependency */,
 			);
 			name = "Fritz TR064";
 			productName = "Fritz TR064";
 			productReference = 65C825671BB75E02005DF551 /* Fritz TR064.app */;
 			productType = "com.apple.product-type.application";
-		};
-		65F4695D1BDEB37C009B82A7 /* Fritz TR064Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 65F469651BDEB37C009B82A7 /* Build configuration list for PBXNativeTarget "Fritz TR064Tests" */;
-			buildPhases = (
-				65F4695A1BDEB37C009B82A7 /* Sources */,
-				65F4695B1BDEB37C009B82A7 /* Frameworks */,
-				65F4695C1BDEB37C009B82A7 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				65F469641BDEB37C009B82A7 /* PBXTargetDependency */,
-			);
-			name = "Fritz TR064Tests";
-			productName = "Fritz TR064Tests";
-			productReference = 65F4695E1BDEB37C009B82A7 /* Fritz TR064Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -398,7 +419,7 @@
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Daniel Müllenborn";
 				TargetAttributes = {
-					658D41351BD2DAA500CB5868 = {
+					656B317D1BECE94000CAF1F4 = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = 4DULQX68Z9;
 					};
@@ -410,10 +431,6 @@
 								enabled = 1;
 							};
 						};
-					};
-					65F4695D1BDEB37C009B82A7 = {
-						CreatedOnToolsVersion = 7.1;
-						TestTargetID = 65C825661BB75E02005DF551;
 					};
 				};
 			};
@@ -431,17 +448,17 @@
 			projectRoot = "";
 			targets = (
 				65C825661BB75E02005DF551 /* Fritz TR064 */,
-				658D41351BD2DAA500CB5868 /* TodayList */,
-				65F4695D1BDEB37C009B82A7 /* Fritz TR064Tests */,
+				656B317D1BECE94000CAF1F4 /* Fritz!Widget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		658D41341BD2DAA500CB5868 /* Resources */ = {
+		656B317C1BECE94000CAF1F4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				656B31851BECE94000CAF1F4 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,20 +472,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		65F4695C1BDEB37C009B82A7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		658D41321BD2DAA500CB5868 /* Sources */ = {
+		656B317A1BECE94000CAF1F4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65F25DC81BED6B4900719BAF /* AEXML.swift in Sources */,
+				65F25DC91BED6B6000719BAF /* Extensions.swift in Sources */,
+				656B31821BECE94000CAF1F4 /* TodayViewController.swift in Sources */,
+				65F25DC71BED6AF700719BAF /* Service.swift in Sources */,
+				65F25DCA1BED6BFB00719BAF /* Action.swift in Sources */,
+				65F25DC61BED6AEA00719BAF /* Call.swift in Sources */,
+				65F25DC51BED6A0200719BAF /* DiskFileCache.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,6 +509,7 @@
 				6508C5C81BD96A5A0088AB55 /* SwiftSpinner.swift in Sources */,
 				65F359C51BDD5A3A002B1F6D /* Host.swift in Sources */,
 				6541C6D61BE2A74600044DCA /* Textfield.swift in Sources */,
+				65F25DD01BEF8BCF00719BAF /* TransitionsController.swift in Sources */,
 				6594CB481BE151EA004A361A /* Reachability.swift in Sources */,
 				650296001BD315B5008CC54A /* UIView+UIColor.swift in Sources */,
 				656BDA301BC9C9520083D0DE /* Delay+Promise.swift in Sources */,
@@ -503,10 +521,12 @@
 				65C8256D1BB75E02005DF551 /* MasterViewController.swift in Sources */,
 				65C005991BC1478100FDCFFA /* FadePushSegue.swift in Sources */,
 				659008591BDCF55B00F4CBAE /* SettingsVC.swift in Sources */,
+				65F25DD21BEFB3CF00719BAF /* ViewMenu.swift in Sources */,
 				651BAD671BC5317100DBB9EC /* TableViewInputCell.swift in Sources */,
 				65F7EB6A1BE6A71100AFA322 /* SideMenuNavigationController.swift in Sources */,
 				65337A421BC2E3C4009925E5 /* TR064Manager.swift in Sources */,
 				65C825851BB76079005DF551 /* Action.swift in Sources */,
+				65F25DC21BED645A00719BAF /* DiskFileCache.swift in Sources */,
 				656BDA321BC9C9520083D0DE /* FutureSource.swift in Sources */,
 				65F359C61BDD5A3B002B1F6D /* HostCell.swift in Sources */,
 				65337A3E1BC16526009925E5 /* CallCell.swift in Sources */,
@@ -527,21 +547,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		65F4695A1BDEB37C009B82A7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				65F469611BDEB37C009B82A7 /* Fritz_TR064Tests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		65F469641BDEB37C009B82A7 /* PBXTargetDependency */ = {
+		656B31881BECE94000CAF1F4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 65C825661BB75E02005DF551 /* Fritz TR064 */;
-			targetProxy = 65F469631BDEB37C009B82A7 /* PBXContainerItemProxy */;
+			target = 656B317D1BECE94000CAF1F4 /* Fritz!Widget */;
+			targetProxy = 656B31871BECE94000CAF1F4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -552,6 +564,14 @@
 				6559840F1BE93BA60089349F /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		656B31831BECE94000CAF1F4 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				656B31841BECE94000CAF1F4 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 		65C825751BB75E02005DF551 /* LaunchScreen.storyboard */ = {
@@ -565,29 +585,29 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		658D41451BD2DAA500CB5868 /* Debug */ = {
+		656B318B1BECE94000CAF1F4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = TodayList/Info.plist;
+				INFOPLIST_FILE = "Fritz!Widget/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.damuellen.Fritz-TR064.TodayList";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.damuellen.Fritz-TR064.Fritz-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		658D41461BD2DAA500CB5868 /* Release */ = {
+		656B318C1BECE94000CAF1F4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = TodayList/Info.plist;
+				INFOPLIST_FILE = "Fritz!Widget/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.damuellen.Fritz-TR064.TodayList";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.damuellen.Fritz-TR064.Fritz-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -684,6 +704,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Fritz TR064/Fritz TR064.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -708,6 +729,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Fritz TR064/Fritz TR064.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -724,38 +746,14 @@
 			};
 			name = Release;
 		};
-		65F469661BDEB37C009B82A7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = "Fritz TR064Tests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.damuellen.Fritz-TR064Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fritz TR064.app/Fritz TR064";
-			};
-			name = Debug;
-		};
-		65F469671BDEB37C009B82A7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = "Fritz TR064Tests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.damuellen.Fritz-TR064Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fritz TR064.app/Fritz TR064";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		658D41441BD2DAA500CB5868 /* Build configuration list for PBXNativeTarget "TodayList" */ = {
+		656B318A1BECE94000CAF1F4 /* Build configuration list for PBXNativeTarget "Fritz!Widget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				658D41451BD2DAA500CB5868 /* Debug */,
-				658D41461BD2DAA500CB5868 /* Release */,
+				656B318B1BECE94000CAF1F4 /* Debug */,
+				656B318C1BECE94000CAF1F4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -774,15 +772,6 @@
 			buildConfigurations = (
 				65C8257C1BB75E02005DF551 /* Debug */,
 				65C8257D1BB75E02005DF551 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		65F469651BDEB37C009B82A7 /* Build configuration list for PBXNativeTarget "Fritz TR064Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				65F469661BDEB37C009B82A7 /* Debug */,
-				65F469671BDEB37C009B82A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

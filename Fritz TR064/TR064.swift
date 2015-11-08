@@ -67,8 +67,8 @@ struct TR064 {
   
   /// Use the URL from the given service to request his actions.
   static func requestActionsFor(services: [Service]) -> [Promise<AFPValue<AEXMLDocument>, AFPError>] {
-    let requestURL = TR064.serviceURL
-    return services.map { return (Alamofire.request(.GET, requestURL + $0.SCPDURL ).validate().responseXMLPromise()) }
+    return services.map {
+      return (Alamofire.request(.GET, TR064.serviceURL + $0.SCPDURL ).validate().responseXMLPromise()) }
   }
   
   static func commitActionsToManager(actions: [Promise<AFPValue<AEXMLDocument>, AFPError>]) {
@@ -88,6 +88,9 @@ struct TR064 {
           Action(element: $0, stateVariables: stateVariables, service: manager.services[index])
           }.flatMap {$0}
       }
+      }
+    whenAny(actions).trap { error in
+      defer { manager.isReady = false }
     }
   }
   
@@ -166,6 +169,49 @@ struct TR064 {
      + WANDevice["serviceList"].children
     
     return serviceList.map { service in Service(element: service) }.flatMap {$0}
+  }
+  
+}
+
+extension AEXMLDocument {
+  
+  func checkForURLWithAction(action: Action) -> String? {
+    var URL: String?
+    guard let validResponse = self.checkWithAction(action)
+      else { return nil }
+    for possibleURL in validResponse.children where possibleURL.value != nil {
+      if possibleURL.value!.containsString("http") {
+        URL = possibleURL.value!
+      }
+    }
+    return URL
+  }
+  
+  func checkWithAction(action: Action) -> AEXMLElement? {
+    let soapResponse = self.root["s:Body"]["u:\(action.name)Response"]
+    if soapResponse.name == "AEXMLError" { return nil }
+    return soapResponse
+  }
+}
+
+extension AEXMLElement {
+  
+  func convertWithAction(action: Action) -> [String:String]? {
+    var result = [String:String]()
+    for key in action.output.keys {
+      if let value = self[key].value {
+        result[key] = value
+      }
+    }
+    return result
+  }
+  
+  func checkForURL() -> String? {
+    var URL: String?
+    for possibleURL in self.children where possibleURL.value != nil {
+      URL = possibleURL.value!.getLink()
+    }
+    return URL
   }
   
 }

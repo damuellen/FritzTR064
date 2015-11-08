@@ -9,7 +9,9 @@
 import UIKit
 
 class HostsVC: UITableViewController, TR064ServiceObserver {
-    
+  
+  let bgView = GradientView(frame: CGRectZero)
+  
   var tableData = [Host]() {
     didSet {
       self.reloadDataShowAnimated()
@@ -25,16 +27,11 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
     Hosts.getAllHosts()
   }
   
-  let bgView = GradientView(frame: CGRectZero)
-    
   override func viewDidLoad() {
     super.viewDidLoad()
     manager.observer = self
     manager.activeService = Hosts()
-    tableView.estimatedRowHeight = 64.0
-    tableView.rowHeight = 64
-    tableView.backgroundView = bgView
-    tableView.separatorStyle = .None
+    setup(tableView)
     self.refreshControl = UIRefreshControl()
     self.refreshControl!.addTarget(self, action: "refreshUI", forControlEvents: .ValueChanged)
   }
@@ -44,11 +41,18 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   }
   
   override func viewDidAppear(animated: Bool) {
-    self.refreshUI()
+    delay(0.2) { self.refreshUI() }
   }
   
   @IBAction func showMenu(sender: AnyObject) {
     toggleSideMenuView()
+  }
+  
+  func setup(tableView: UITableView) {
+    tableView.rowHeight = 64
+    tableView.backgroundView = bgView
+    tableView.separatorStyle = .None
+    tableView.delegate = self
   }
   
   func alert() {

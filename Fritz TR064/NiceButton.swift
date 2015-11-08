@@ -15,13 +15,7 @@ class NiceButton: UIButton {
   override func awakeFromNib() {
     self.layer.cornerRadius = 10
     self.layer.masksToBounds = true
-    let blurEffect = UIBlurEffect(style: .Light)
-    blurEffectView = UIVisualEffectView(effect: blurEffect)
-    blurEffectView.userInteractionEnabled = false
-    self.addSubview(blurEffectView)
-    let vibrancyEffectView = UIView.vibrancyEffectView(forBlurEffectView: blurEffectView)
-    blurEffectView.contentView.addSubview(vibrancyEffectView)
-    vibrancyEffectView.contentView.addSubview(self.titleLabel!)
+    addBlurEffect(.Light, addVibrancy: true).contentView.addSubview(self.titleLabel!)
   }
   
   private func tintedIconButton(iconNamed iconName: String) -> UIButton {
@@ -32,11 +26,6 @@ class NiceButton: UIButton {
     button.setBackgroundImage(borderImage, forState: .Normal)
     button.setImage(iconImage, forState: .Normal)
     return button
-  }
-  
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    blurEffectView.frame = self.bounds
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

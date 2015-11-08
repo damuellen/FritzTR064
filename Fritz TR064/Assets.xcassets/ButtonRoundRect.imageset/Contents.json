@@ -1,7 +1,8 @@
 {
   "images" : [
     {
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "scale" : "1x"
     },
     {
       "resizing" : {
@@ -20,8 +21,11 @@
       },
       "idiom" : "universal",
       "filename" : "ButtonRoundRect@2x.png",
-      "unassigned" : true,
       "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

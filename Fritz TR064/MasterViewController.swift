@@ -44,7 +44,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
 
   let bgView = GradientView(frame: CGRectZero)
   
-  var resultSearchController: UISearchController!
+  let resultSearchController =  UISearchController(searchResultsController: nil)
   var detailViewController: ActionArgumentsVC?
 
   override func viewDidLoad() {
@@ -53,24 +53,27 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
       let controllers = split.viewControllers
       self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ActionArgumentsVC
     }
+    setup(tableView)
+    
+    resultSearchController.searchResultsUpdater = self
+    resultSearchController.hidesNavigationBarDuringPresentation = false
+    resultSearchController.dimsBackgroundDuringPresentation = false
+    resultSearchController.searchBar.searchBarStyle = UISearchBarStyle.Prominent
+    resultSearchController.searchBar.sizeToFit()
+    resultSearchController.searchBar.delegate = self
+  }
+  
+  func setup(tableView: UITableView) {
     tableView.backgroundView = bgView
     tableView.rowHeight = 44
+    tableView.tableHeaderView = resultSearchController.searchBar
+    tableView.delegate = self
   }
   
   override func viewWillAppear(animated: Bool) {
     manager.observer = self
     self.refreshUI()
-    resultSearchController = { [weak self] in
-      let controller = UISearchController(searchResultsController: nil)
-      controller.searchResultsUpdater = self
-      controller.hidesNavigationBarDuringPresentation = false
-      controller.dimsBackgroundDuringPresentation = false
-      controller.searchBar.searchBarStyle = UISearchBarStyle.Prominent
-      controller.searchBar.sizeToFit()
-      controller.searchBar.delegate = self
-      self?.tableView.tableHeaderView = controller.searchBar
-      return controller
-      }()
+
     bgView.frame = tableView.bounds
     self.clearsSelectionOnViewWillAppear ?= self.splitViewController?.collapsed
     view.bringSubviewToFront(navigationController!.navigationBar)
@@ -95,7 +98,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
     vc.navigationItem.leftItemsSupplementBackButton = true
 		vc.action = self.filteredData[indexPath.section].actions[indexPath.row]
     vc.showArguments(segue)
-    self.resultSearchController?.dismissViewControllerAnimated(true, completion: {})
+    resultSearchController.dismissViewControllerAnimated(true, completion: {})
   }
   
   // MARK: - Table View
@@ -135,5 +138,6 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
     cell.backgroundColor = UIColor.clearColor()
     cell.backgroundView?.backgroundColor = UIColor.clearColor()
+    CellAnimator.animateCell(cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.2)
   }
 }
