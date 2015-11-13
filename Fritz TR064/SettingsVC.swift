@@ -25,15 +25,17 @@ class SettingsVC: UITableViewController {
     super.viewDidLoad()
     setup(tableView)
     keyboardResizeObserver()
-    allTextFields.forEach { textfield in
-      textfield.delegate = self
-    }
+  //  allTextFields.forEach { textfield in
+   //   textfield.delegate = self
+   // }
   }
   
   func setup(tableView: UITableView) {
     tableView.backgroundView = bgView
     tableView.scrollsToTop = false
     tableView.delegate = self
+    let contentInsets = UIEdgeInsetsMake(20, 0, 0, 0)
+    tableView.contentInset = contentInsets
   }
   
   @IBAction func showMenu(sender: AnyObject) {
@@ -54,10 +56,10 @@ class SettingsVC: UITableViewController {
   }
   
   override func viewDidAppear(animated: Bool) {
-    self.vpnAdresse.text = Settings.get(Setting.vpnAddress)
-    self.routerIP.text = Settings.get(Setting.routerAddress)
-    self.vpnUser.text = Settings.get(Setting.vpnUserName)
-    self.vpnGroup.text = Settings.get(Setting.vpnGroupName)
+ //   self.vpnAdresse.text = Settings.get(Setting.vpnAddress)
+//    self.routerIP.text = Settings.get(Setting.routerAddress)
+ //   self.vpnUser.text = Settings.get(Setting.vpnUserName)
+ //   self.vpnGroup.text = Settings.get(Setting.vpnGroupName)
   }
   
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {

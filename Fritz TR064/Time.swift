@@ -22,7 +22,7 @@ class Time: TR064Service {
   
   private var entries = [String:String]() {
     didSet {
-      observer?.tableData = entries
+      Manager.soapResponse = entries
     }
   }
   

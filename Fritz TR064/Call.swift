@@ -27,11 +27,15 @@ enum CallType: Int {
   case error = 99
 }
 
-struct Call {
+protocol DateRepresentation {
+  var date: NSDate { get }
+}
+
+struct Call: DateRepresentation {
   var id: Int
   let type: CallType
   let called: String, caller: String, name: String, numbertype: String, device: String, port: String
-  let date: NSDate?
+  let date: NSDate
   let duration: CallingDuration
   let pathURL: String?
   
@@ -104,11 +108,11 @@ struct Call {
 extension Call: Equatable, Comparable { }
 
 func ==(lhs: Call, rhs: Call) -> Bool {
-  return lhs.id < rhs.id
+  return lhs.id == rhs.id
 }
 
 func < (lhs: Call, rhs: Call) -> Bool {
-  return lhs.id == rhs.id
+  return lhs.id < rhs.id
 }
 
 extension Call: PropertyListReadable {
@@ -117,7 +121,7 @@ extension Call: PropertyListReadable {
     let representation:[String:AnyObject] =
     ["id":id, "type":type.rawValue, "called":called,
       "caller":caller, "name":name, "numbertype":numbertype,
-      "device":device, "port":port, "date":date!, "duration":duration]
+      "device":device, "port":port, "date":date, "duration":duration]
     return representation
   }
   

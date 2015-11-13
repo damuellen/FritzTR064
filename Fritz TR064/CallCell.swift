@@ -17,7 +17,11 @@ class CallCell: UITableViewCell {
   @IBOutlet weak var duration: UILabel!
   @IBOutlet weak var time: UILabel!
 
+  var id = -1
+  var missed = false
+
   func configureCellWith(call: Call) {
+    id = call.id
     name.text = call.name
     device.text = call.device
     backgroundColor = UIColor.clearColor()
@@ -25,11 +29,10 @@ class CallCell: UITableViewCell {
     let local = NSLocale.currentLocale()
     dateFormatter.locale = local
     dateFormatter.dateFormat = "EEEE d.M."
-    date.text = dateFormatter.stringFromDate(call.date!)
+    date.text = dateFormatter.stringFromDate(call.date)
     dateFormatter.dateFormat = "HH:mm"
-    time.text = dateFormatter.stringFromDate(call.date!)
-    duration.text = "\(call.duration)"
-    
+    time.text = dateFormatter.stringFromDate(call.date) 
+    duration.text = "\(call.id)" //"\(Int(call.duration))"
     let callerClosure = {
       if call.name == "" {
         self.name.text = call.caller
@@ -60,6 +63,7 @@ class CallCell: UITableViewCell {
       callerClosure()
       self.addOrChangeGradientLayerWithColors(UIColor.mojitoBlast())
     case .missed:
+      missed = true
       callerClosure()
       self.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
     case .outgoing:
@@ -118,4 +122,13 @@ class CellAnimator {
       cell.layer.transform = CATransform3DIdentity
     }
   }
+}
+
+
+func ==(lhs: CallCell, rhs: CallCell) -> Bool {
+  return lhs.id < rhs.id
+}
+
+func < (lhs: CallCell, rhs: CallCell) -> Bool {
+  return lhs.id == rhs.id
 }

@@ -36,6 +36,8 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
     if !manager.isReady {
       SwiftSpinner.showWithDelay(1.5, title: "It's taking longer than expected", animated: true)
       SwiftSpinner.showWithDelay(5, title: "Still trying to connect", animated: true)
+        .addTapHandler(TR064.getAvailableServices())
+      
     }
     if manager.isReady {
       refreshUI()

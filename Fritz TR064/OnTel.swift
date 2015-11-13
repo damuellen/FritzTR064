@@ -19,8 +19,8 @@ class OnTel: TR064Service {
   }
   
   private static var dataSource: [Call] {
-    get { return (TR064Manager.sharedManager.observer as! CallListTableViewController).tableData }
-    set { (TR064Manager.sharedManager.observer as? CallListTableViewController)?.tableData = newValue }
+    get { return (TR064Manager.sharedManager.soapResponse as? [Call]) ?? [] }
+    set { TR064Manager.sharedManager.soapResponse = newValue }
   }
   
   class func getCallList(argument: String = "", ignoreCache: Bool = false) {

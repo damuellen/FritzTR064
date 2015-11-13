@@ -32,15 +32,15 @@ enum ViewMenu: Int {
     let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main",bundle: nil)
     switch self {
     case .Hosts:
-      return mainStoryboard.instantiateViewControllerWithIdentifier("HostsNC") as? SideMenuNavigationController
+      return mainStoryboard.instantiateViewControllerWithIdentifier("HostsNC") as! SideMenuNavigationController
     case .CallList:
-      return mainStoryboard.instantiateViewControllerWithIdentifier("CallListNC") as? SideMenuNavigationController
+      return mainStoryboard.instantiateViewControllerWithIdentifier("CallListNC") as! SideMenuNavigationController
     case .Actions:
-      return mainStoryboard.instantiateViewControllerWithIdentifier("ActionsNC") as? SideMenuNavigationController
+      return mainStoryboard.instantiateViewControllerWithIdentifier("ActionsNC") as! SideMenuNavigationController
     case .Settings:
-      return mainStoryboard.instantiateViewControllerWithIdentifier("SettingsNC") as? SideMenuNavigationController
+      return mainStoryboard.instantiateViewControllerWithIdentifier("SettingsNC") as! SideMenuNavigationController
     case .Info:
-      return mainStoryboard.instantiateViewControllerWithIdentifier("HostsNC") as? SideMenuNavigationController
+      return mainStoryboard.instantiateViewControllerWithIdentifier("HostsNC") as! SideMenuNavigationController
     }
   }
   
@@ -52,9 +52,9 @@ enum ViewMenu: Int {
     case .CallList:
       return nil
     case .Actions:
-      return mainStoryboard.instantiateViewControllerWithIdentifier("SplitView") as? SplitViewController
+      return mainStoryboard.instantiateViewControllerWithIdentifier("ActionsSplitView") as! SplitViewController
     case .Settings:
-      return nil
+      return mainStoryboard.instantiateViewControllerWithIdentifier("SettingsSplitView") as! SettingsSplitViewController
     case .Info:
       return nil
     }

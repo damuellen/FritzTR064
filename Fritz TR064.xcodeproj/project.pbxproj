@@ -10,7 +10,9 @@
 		650296001BD315B5008CC54A /* UIView+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650295FF1BD315B5008CC54A /* UIView+UIColor.swift */; };
 		6508C5C81BD96A5A0088AB55 /* SwiftSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6508C5C71BD96A5A0088AB55 /* SwiftSpinner.swift */; };
 		6508C5CA1BDA3A340088AB55 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6508C5C91BDA3A340088AB55 /* GradientView.swift */; };
+		650E06AE1BF2B32200F2F756 /* CallListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650E06AD1BF2B32200F2F756 /* CallListDataSource.swift */; };
 		651BAD671BC5317100DBB9EC /* TableViewInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651BAD661BC5317100DBB9EC /* TableViewInputCell.swift */; };
+		6525AC751BEFD156008A07BD /* SettingsSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525AC741BEFD156008A07BD /* SettingsSplitViewController.swift */; };
 		65287C0B1BC30E8000103231 /* VPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65287C0A1BC30E8000103231 /* VPN.swift */; };
 		65337A3E1BC16526009925E5 /* CallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3D1BC16526009925E5 /* CallCell.swift */; };
 		65337A401BC166BB009925E5 /* CallListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */; };
@@ -116,7 +118,9 @@
 		650295FF1BD315B5008CC54A /* UIView+UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+UIColor.swift"; path = "../UIView+UIColor.swift"; sourceTree = "<group>"; };
 		6508C5C71BD96A5A0088AB55 /* SwiftSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSpinner.swift; sourceTree = "<group>"; };
 		6508C5C91BDA3A340088AB55 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		650E06AD1BF2B32200F2F756 /* CallListDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallListDataSource.swift; sourceTree = "<group>"; };
 		651BAD661BC5317100DBB9EC /* TableViewInputCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewInputCell.swift; sourceTree = "<group>"; };
+		6525AC741BEFD156008A07BD /* SettingsSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSplitViewController.swift; sourceTree = "<group>"; };
 		65287C0A1BC30E8000103231 /* VPN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPN.swift; sourceTree = "<group>"; };
 		65287C0E1BC3175D00103231 /* Fritz TR064.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Fritz TR064.entitlements"; sourceTree = "<group>"; };
 		65337A3D1BC16526009925E5 /* CallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallCell.swift; sourceTree = "<group>"; };
@@ -306,7 +310,9 @@
 				65F4692C1BDDB557009B82A7 /* NiceButton.swift */,
 				65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */,
 				65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */,
+				650E06AD1BF2B32200F2F756 /* CallListDataSource.swift */,
 				655984111BE94A510089349F /* SplitViewController.swift */,
+				6525AC741BEFD156008A07BD /* SettingsSplitViewController.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -513,6 +519,7 @@
 				6594CB481BE151EA004A361A /* Reachability.swift in Sources */,
 				650296001BD315B5008CC54A /* UIView+UIColor.swift in Sources */,
 				656BDA301BC9C9520083D0DE /* Delay+Promise.swift in Sources */,
+				6525AC751BEFD156008A07BD /* SettingsSplitViewController.swift in Sources */,
 				65EA37DC1BCCFF6B00754DD4 /* MenuViewController.swift in Sources */,
 				655F62001BC139A900D723EE /* WebViewController.swift in Sources */,
 				65C825811BB76010005DF551 /* TR064.swift in Sources */,
@@ -526,6 +533,7 @@
 				65F7EB6A1BE6A71100AFA322 /* SideMenuNavigationController.swift in Sources */,
 				65337A421BC2E3C4009925E5 /* TR064Manager.swift in Sources */,
 				65C825851BB76079005DF551 /* Action.swift in Sources */,
+				650E06AE1BF2B32200F2F756 /* CallListDataSource.swift in Sources */,
 				65F25DC21BED645A00719BAF /* DiskFileCache.swift in Sources */,
 				656BDA321BC9C9520083D0DE /* FutureSource.swift in Sources */,
 				65F359C61BDD5A3B002B1F6D /* HostCell.swift in Sources */,

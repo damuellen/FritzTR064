@@ -23,8 +23,11 @@ class HostCell: UITableViewCell {
 		ipAddress.text = host.ip
 		addressSource.text = host.addressSource + " " + host.interfaceType
 		macAddress.text = host.macAddress
-	
-    self.addOrChangeGradientLayerWithColors(UIColor.metalic())
+    if host.active {
+      self.addOrChangeGradientLayerWithColors(UIColor.metalic())
+    } else {
+      self.addOrChangeGradientLayerWithColors(UIColor.haze())
+    }
     self.gradientLayer?.opacity = 0.5
 	}
 	

@@ -6,37 +6,39 @@
 //  Copyright © 2015 Daniel Müllenborn. All rights reserved.
 //
 
+
 import UIKit
 
 class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   
   let bgView = GradientView(frame: CGRectZero)
   var messageLabel: UILabel?
+  var filter = false
   
-  var tableData = [Call]() {
-    didSet {
-      self.reloadDataShowAnimated()
-      self.refreshControl?.endRefreshing()
+  var tableData: [Call] {
+    get {
+      let calls = manager.soapResponse as? [Call] ?? []
+      if callFilter.selectedSegmentIndex == 1 {
+        return calls.filter { $0.duration == 0 }
+      } else {
+        return calls
+      }
     }
   }
   
   func refreshUI() {
     refreshControl?.beginRefreshing()
-    OnTel.getCallListMaxCalls(30)
+    self.reloadDataShowAnimated()
+    self.refreshControl?.endRefreshing()
   }
   
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    
-  }
+  @IBOutlet weak var callFilter: UISegmentedControl!
   
   override func viewDidLoad() {
     super.viewDidLoad()
     manager.observer = self
     manager.activeService = OnTel()
     setup(tableView)
-    self.refreshControl = UIRefreshControl()
-    self.refreshControl!.addTarget(self, action: "refreshUI", forControlEvents: .ValueChanged)
   }
   
   func setup(tableView: UITableView) {
@@ -45,13 +47,17 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
     tableView.delegate = self
   }
   
+  @IBAction func callFilterChanged(sender: AnyObject) {
+    filter = !filter
+    animateCallCells()
+  }
   
   override func viewWillAppear(animated: Bool) {
     bgView.frame = tableView.bounds
   }
   
   override func viewDidAppear(animated: Bool) {
-    delay(0.2) { self.refreshUI() }
+    delay(0.2) { OnTel.getCallListMaxCalls(30) }
   }
   
   @IBAction func showMenu(sender: AnyObject) {
@@ -100,13 +106,12 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
       return []
     }
   }
-  
+
   override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     
     // Intentionally blank. Required to use UITableViewRowActions
   }
-  
-  
+
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.tableData.count
   }
@@ -123,6 +128,44 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   }
   
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-    CellAnimator.animateCell(cell, withTransform: CellAnimator.TransformScale, andDuration: 0.2)
+   // CellAnimator.animateCell(cell, withTransform: CellAnimator.TransformScale, andDuration: 0.2)
   }
+}
+
+extension CallListTableViewController {
+  
+  func animateCallCells() {
+    
+    let visibleCellsBeforeReload = (self.tableView.visibleCells as! [CallCell])
+    let beforeIndicies = visibleCellsBeforeReload.map { $0.id }
+    
+    tableView.reloadData()
+    
+    let visibleCellsAfterReload = self.tableView.visibleCells as! [CallCell]
+    let afterIndicies = visibleCellsAfterReload.map { $0.id }
+    
+    let tableHeight: CGFloat = self.tableView.bounds.size.height
+    let rowHeight: CGFloat = self.tableView.rowHeight
+    
+    for (rowAfter,(cell,id)) in zip(visibleCellsAfterReload,afterIndicies).enumerate() {
+      
+      if let rowBefore = beforeIndicies.indexOf(id) {
+        let y = rowHeight * CGFloat(rowBefore - rowAfter)
+        cell.transform = CGAffineTransformMakeTranslation(0, +y)
+      } else {
+        cell.alpha = 0
+        if rowAfter >= beforeIndicies.intersection(afterIndicies).count {
+          cell.transform = CGAffineTransformMakeTranslation(0, +tableHeight)
+        } else {
+          cell.transform = CGAffineTransformMakeTranslation(0, -tableHeight)
+        }
+      }
+    }
+    
+    UIView.animateWithDuration(animationDuration) {
+      visibleCellsAfterReload.forEach { $0.transform = CGAffineTransformIdentity
+        $0.alpha = 1 }
+    }
+  }
+  
 }

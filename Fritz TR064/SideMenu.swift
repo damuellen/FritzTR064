@@ -113,7 +113,7 @@ class SideMenu : NSObject {
     
     sideMenuView.addShadow()
     sideMenuView.layer.shadowOffset = menuPosition.shadowOffset
-     sideMenuView.addBlurEffect(.ExtraLight)
+    sideMenuView.addBlurEffect(.Light)
     switch navigationController {
     case is UISplitViewController:
       (navigationController as! UISplitViewController).viewControllers.first!.view.addSubview(sideMenuView)

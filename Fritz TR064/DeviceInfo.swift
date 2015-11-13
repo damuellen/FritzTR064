@@ -22,8 +22,8 @@ class DeviceInfo: TR064Service {
   }
   
   private static var dataSource: [String: String] {
-    get { return ((manager.observer as! XMLResponseViewController).tableData) }
-    set { (observer as? XMLResponseViewController)?.tableData = newValue }
+    get { return manager.soapResponse as! [String: String] }
+    set { manager.soapResponse = newValue }
   }
   
   class func getInfo() -> ActionResultPromise? {

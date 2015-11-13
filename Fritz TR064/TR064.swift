@@ -29,8 +29,7 @@ struct TR064 {
         if let value = element.value {
           tableData[element.name] = value }
     }
-    
-    (Manager.observer as? XMLResponseViewController)?.tableData = tableData
+    Manager.soapResponse = tableData
   }
   
   /// Request the tr064desc.xml from the router.
@@ -42,8 +41,8 @@ struct TR064 {
   
   private static func addServicesToManager(request: Request) {
     
-    request.responseXMLPromise().then {
-      manager.services = getServicesFromDescription($0)
+    request.responseXMLPromise().then { xml in
+      manager.services = extractServicesFromDescription(xml)
       saveValuesToDefaults(manager.services, key: "Services")
       if manager.actions.count == 0 {
         TR064.requestActionsFor(manager.services) => TR064.commitActionsToManager
@@ -60,8 +59,9 @@ struct TR064 {
     Timeout.scheduledTimer(4, repeats: true) { timer in
       if manager.isReady {
         timer.invalidate()
-      }
+      } else {
       TR064.requestServices => TR064.addServicesToManager
+      }
     }
   }
   
@@ -76,7 +76,7 @@ struct TR064 {
     whenAll(actions).then { xml in
       
       defer { manager.isReady = true }
-      
+      manager.actions.removeAll()
       for (index,xml) in xml.enumerate() {
         let serviceStateTable = xml.value.root["serviceStateTable"].children
         let stateVariables = serviceStateTable.map {
@@ -90,7 +90,7 @@ struct TR064 {
       }
       }
     whenAny(actions).trap { error in
-      defer { manager.isReady = false }
+       getAvailableServices()
     }
   }
   
@@ -156,7 +156,7 @@ struct TR064 {
   }
   
   /// Helper function to get known services from tr064desc.xml.
-  private static func getServicesFromDescription(discription: AFPValue<AEXMLDocument>) -> [Service] {
+  private static func extractServicesFromDescription(discription: AFPValue<AEXMLDocument>) -> [Service] {
     
     let discription = discription.value
     

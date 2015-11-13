@@ -71,7 +71,7 @@ class SideMenuTableViewController: UITableViewController {
       self.sideMenuController?.presentViewController(split, animated: true, completion: nil)
       return
     }
-    if sideMenuController is SplitViewController {
+    if sideMenuController is UISplitViewController {
       if let navigationController = (ViewMenu(rawValue: selectedMenuItem)?.navigationController) {
         self.sideMenuController?.presentViewController(navigationController, animated: true, completion: nil)
       }

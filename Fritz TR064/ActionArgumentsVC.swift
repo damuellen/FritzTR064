@@ -77,7 +77,6 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
     tableView.delegate = self
   }
   
-  
   override func viewWillAppear(animated: Bool) {
     bgView.frame = tableView.bounds
   }
@@ -91,7 +90,7 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
       controller.action = self.action
       TR064.startAction(action, arguments: arguments).then { xml in
         if let result = xml.value.convertWithAction(self.action) {
-          controller.tableData = result
+          Manager.soapResponse = result
         }
       }
     }

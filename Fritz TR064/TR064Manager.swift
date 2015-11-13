@@ -26,12 +26,12 @@ class TR064Manager {
     }
   }
 
- // var lastResponse: AEXMLDocument? {
- //   didSet {
- //     observer?.refreshUI()
- //  }
- // }
-
+  var soapResponse: Any? {
+    didSet {
+      observer?.refreshUI()
+    }
+  }
+  
   subscript(ServiceName: String) -> [Action] {
     return self.actions.filter { $0.name == ServiceName }
   }
@@ -70,11 +70,10 @@ extension TR064Service {
 extension MasterViewController: TR064ServiceObserver {
   
   func refreshUI() {
-    var result = [(service: Service, actions: [Action])]()
-    result = Manager.services.map { service in
+    self.tableData = Manager.services.map { service in
       (service: service, actions: Manager[ActionsFrom: service] )
     }
-    self.tableData = result
+
   }
   
 }

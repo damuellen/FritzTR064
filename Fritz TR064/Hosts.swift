@@ -23,22 +23,8 @@ class Hosts: TR064Service {
   }
   
   private static var dataSource: [Host] {
-    get {
-      switch manager.observer {
-      case is HostsVC:
-        return ((manager.observer as! HostsVC).tableData)
-      default:
-        return []
-      }
-    }
-    set {
-      switch manager.observer {
-      case is HostsVC:
-        (observer as? HostsVC)?.tableData = newValue
-      default:
-        break
-      }
-    }
+    get { return (TR064Manager.sharedManager.soapResponse as? [Host]) ?? [] }
+    set { TR064Manager.sharedManager.soapResponse = newValue }
   }
   
   class func setHostName(name: String, ByMACAdress mac: String) {

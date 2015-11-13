@@ -12,19 +12,18 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   
   let bgView = GradientView(frame: CGRectZero)
   
-  var tableData = [Host]() {
-    didSet {
-      self.reloadDataShowAnimated()
-      self.refreshControl?.endRefreshing()
-      tableView.separatorStyle = .SingleLine
+  var tableData: [Host] {
+    get {
+      return manager.soapResponse as? [Host] ?? []
     }
   }
-
+  
   var action: Action!
   
   func refreshUI() {
     refreshControl?.beginRefreshing()
-    Hosts.getAllHosts()
+    self.reloadDataShowAnimated()
+    self.refreshControl?.endRefreshing()
   }
   
   override func viewDidLoad() {
@@ -41,7 +40,7 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   }
   
   override func viewDidAppear(animated: Bool) {
-    delay(0.2) { self.refreshUI() }
+    delay(0.5) { Hosts.getAllHosts() }
   }
   
   @IBAction func showMenu(sender: AnyObject) {
@@ -100,4 +99,5 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
     cell.backgroundColor = UIColor.clearColor()
     cell.backgroundView?.backgroundColor = UIColor.clearColor()
   }
+  
 }

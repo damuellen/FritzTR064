@@ -47,18 +47,19 @@ extension UITableViewController {
     refreshControl?.beginRefreshing()
     self.tableView.reloadData()
     let cells = self.tableView.visibleCells
-   
     let tableHeight: CGFloat = self.tableView.bounds.size.height
     
     cells.forEach { cell in
-      cell.transform = CGAffineTransformMakeTranslation(0, tableHeight)
+      cell.transform = CGAffineTransformMakeTranslation(0, -tableHeight)
     }
     
-    for (index, cell) in cells.enumerate() {
-      UIView.animateWithDuration(1.0, delay: 0.04 * Double(index) + 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [],
+    for (index, cell) in cells.reverse().enumerate() {
+      UIView.animateWithDuration(1.0, delay: 0.04 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 1, options: [],
         animations: {
-        cell.transform = CGAffineTransformMakeTranslation(0, 0)
-        }, completion: { _ in self.refreshControl?.endRefreshing() })
+        cell.transform = CGAffineTransformIdentity
+        }, completion: { _ in
+          self.refreshControl?.endRefreshing()
+      })
     
     }
   }
@@ -225,6 +226,45 @@ extension Array {
   func slice(every every: Index) -> ChunkSequence<Element> {
     return ChunkSequence(chunkSize: every, collection: self)
   }
+  
+  func indexOf <U: Equatable> (item: U) -> Int? {
+    if item is Element {
+      return self.indexOf({ (object) -> Bool in
+        return (object as! U) == item
+      })
+    }
+    return nil
+  }
+  
+  func contains <T: Equatable> (items: T...) -> Bool {
+    return items.all { (item: T) -> Bool in self.indexOf(item) >= 0 }
+  }
+  
+  func intersection <U: Equatable> (values: [U]...) -> Array {
+    var result = self
+    var intersection = Array()
+    
+    for (i, value) in values.enumerate() {
+      //  the intersection is computed by intersecting a couple per loop:
+      //  self n values[0], (self n values[0]) n values[1], ...
+      if (i > 0) {
+        result = intersection
+        intersection = Array()
+      }
+      //  find common elements and save them in first set
+      //  to intersect in the next loop
+      value.forEach { (item: U) -> Void in
+        if result.contains(item) {
+          intersection.append(item as! Element)
+        }
+      }
+    }
+    return intersection
+  }
+  
+
+  
+  
 }
 
 public extension NSDate {

@@ -10,9 +10,9 @@ import UIKit
 
 class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR064ServiceObserver {
   
-  var tableData = [String:String]() {
-    didSet {
-      tableView.reloadData()
+  var tableData: [String:String] {
+    get {
+      return manager.soapResponse as? [String:String] ?? [String:String]()
     }
   }
   
@@ -20,7 +20,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   var action: Action?
   
   func refreshUI() {
-    self.reloadDataShowAnimated()
+    tableView.reloadData()
   }
   
   override func viewDidLoad() {
