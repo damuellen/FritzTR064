@@ -34,7 +34,7 @@ class SettingsVC: UITableViewController {
     tableView.backgroundView = bgView
     tableView.scrollsToTop = false
     tableView.delegate = self
-    let contentInsets = UIEdgeInsetsMake(20, 0, 0, 0)
+    let contentInsets = UIEdgeInsetsMake(10, 0, 0, 0)
     tableView.contentInset = contentInsets
   }
   

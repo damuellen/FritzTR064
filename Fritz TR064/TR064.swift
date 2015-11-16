@@ -19,7 +19,6 @@ enum TR064Error: ErrorType {
 struct TR064 {
   
   static let manager = TR064Manager.sharedManager
-  static let serviceURL = "http://192.168.178.1:49000"
   static let descURL = "/tr64desc.xml"
   
   static let completionHandler = { (_:NSURLRequest?, _:NSHTTPURLResponse?, XML:Result<AEXMLDocument>) -> Void in
@@ -35,8 +34,8 @@ struct TR064 {
   /// Request the tr064desc.xml from the router.
   private static func requestServices() -> Request {
     
-    let requestURL = TR064.serviceURL + TR064.descURL
-    return Alamofire.request(.GET, requestURL)
+    let requestURL = "https://fritz.box:49443" + TR064.descURL
+    return TR064Manager.sharedManager.request(.GET, requestURL)
   }
   
   private static func addServicesToManager(request: Request) {
@@ -60,7 +59,7 @@ struct TR064 {
       if manager.isReady {
         timer.invalidate()
       } else {
-      TR064.requestServices => TR064.addServicesToManager
+        manager.observer?.alert()
       }
     }
   }
@@ -68,7 +67,7 @@ struct TR064 {
   /// Use the URL from the given service to request his actions.
   static func requestActionsFor(services: [Service]) -> [Promise<AFPValue<AEXMLDocument>, AFPError>] {
     return services.map {
-      return (Alamofire.request(.GET, TR064.serviceURL + $0.SCPDURL ).validate().responseXMLPromise()) }
+      return (TR064Manager.sharedManager.request(.GET, "https://fritz.box:49443" + $0.SCPDURL ).validate().responseXMLPromise()) }
   }
   
   static func commitActionsToManager(actions: [Promise<AFPValue<AEXMLDocument>, AFPError>]) {
@@ -90,7 +89,7 @@ struct TR064 {
       }
       }
     whenAny(actions).trap { error in
-       getAvailableServices()
+       manager.observer?.alert()
     }
   }
   
@@ -131,7 +130,7 @@ struct TR064 {
     let request = createRequest(action)
     request.HTTPBody = createMessage(action, arguments: arguments)
     
-    return Alamofire.request(request).authenticate(user: account, password: pass).validate()
+    return TR064Manager.sharedManager.request(request).authenticate(user: account, password: pass).validate()
   }
   
   /// Sends an request for an action with arguments, and returns a future response.
@@ -152,7 +151,7 @@ struct TR064 {
   }
   
   static func getXMLFromURL(requestURL: String) -> Request? {
-    return Alamofire.request(.GET, requestURL).validate()
+    return TR064Manager.sharedManager.request(.GET, requestURL).validate()
   }
   
   /// Helper function to get known services from tr064desc.xml.

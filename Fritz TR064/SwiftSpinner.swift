@@ -264,11 +264,11 @@ public class SwiftSpinner: UIView {
   //
   // Tap handler
   //
-  public func addTapHandler(tap: (()), subtitle subtitleText: String? = nil) {
+  public func addTapHandler(tap: (()->()), subtitle subtitleText: String? = nil) {
     clearTapHandler()
     
     //vibrancyView.contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("didTapSpinner")))
-    tapHandler = tap
+    tapHandler = tap()
     
     if subtitleText != nil {
       subtitleLabel = UILabel()

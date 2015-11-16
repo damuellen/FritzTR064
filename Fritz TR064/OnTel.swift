@@ -37,7 +37,7 @@ class OnTel: TR064Service {
       let callList = TR064.getXMLFromURL(url + argument)?.responseXMLPromise()
       callList?.then { callList in
         let newCalls = Call.extractCalls(callList.value).map { Call($0) }.flatMap {$0}
-        if cachedCalls.count < newCalls.count {
+        if cachedCalls.first?.id != newCalls.first?.id {
           self.dataSource = newCalls
         saveValuesToDiskCache(newCalls, name: "CallList")
         }
@@ -52,5 +52,10 @@ class OnTel: TR064Service {
   class func getCallListMaxCalls(calls: Int) {
     getCallList("&max=\(calls)")
   }
+  
+  class func getCallListAfter(id: Int) {
+    getCallList("&id=\(id)")
+  }
+  
   
 }

@@ -17,7 +17,7 @@ class Settings {
     static let vpnAddress = (key: "server-address", defaultValue: "")
     static let vpnUserName = (key: "vpn-user-name", defaultValue: "")
     static let vpnGroupName = (key: "vpn-group-name", defaultValue: "")
-    static let routerAddress = (key: "router-dddress", defaultValue: "")
+    static let routerAddress = (key: "router-dddress", defaultValue: "http://fritz.box")
     static let routerUserName = (key: "router-user", defaultValue: "admin")
     static let launchedForTheFirstTime = (key: "first-time-launch", defaultValue: "yes")
     

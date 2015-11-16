@@ -6,19 +6,19 @@
 //  Copyright © 2015 Daniel Müllenborn. All rights reserved.
 //
 
-
 import UIKit
 
 class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   
-  let bgView = GradientView(frame: CGRectZero)
-  var messageLabel: UILabel?
-  var filter = false
+  private let bgView = GradientView(frame: CGRectZero)
+  private var messageLabel: UILabel?
+  private var filter = false
+  private var reloading = false
   
   var tableData: [Call] {
     get {
       let calls = manager.soapResponse as? [Call] ?? []
-      if callFilter.selectedSegmentIndex == 1 {
+      if filter {
         return calls.filter { $0.duration == 0 }
       } else {
         return calls
@@ -31,8 +31,6 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
     self.reloadDataShowAnimated()
     self.refreshControl?.endRefreshing()
   }
-  
-  @IBOutlet weak var callFilter: UISegmentedControl!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -48,7 +46,7 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   }
   
   @IBAction func callFilterChanged(sender: AnyObject) {
-    filter = !filter
+    filter.toggle()
     animateCallCells()
   }
   
@@ -57,7 +55,7 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   }
   
   override func viewDidAppear(animated: Bool) {
-    delay(0.2) { OnTel.getCallListMaxCalls(30) }
+    delay(0.2) { OnTel.getCallListForDays(90) }
   }
   
   @IBAction func showMenu(sender: AnyObject) {
@@ -67,7 +65,7 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   func alert() {
     self.appearAlertViewWithTitle("Error", message: "No calls found",
       actionTitle: ["Retry"],
-      actionBlock: [{OnTel.getCallListMaxCalls(20)}])
+      actionBlock: [{ OnTel.getCallListForDays(90) }])
   }
   
   
@@ -128,7 +126,7 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   }
   
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-   // CellAnimator.animateCell(cell, withTransform: CellAnimator.TransformScale, andDuration: 0.2)
+    if !reloading { CellAnimator.animateCell(cell, withTransform: CellAnimator.TransformScale, andDuration: 0.2) }
   }
 }
 
@@ -138,19 +136,18 @@ extension CallListTableViewController {
     
     let visibleCellsBeforeReload = (self.tableView.visibleCells as! [CallCell])
     let beforeIndicies = visibleCellsBeforeReload.map { $0.id }
-    
+    reloading.toggle()
     tableView.reloadData()
-    
+    tableView.setContentOffset(self.tableView.contentOffset, animated: true)
     let visibleCellsAfterReload = self.tableView.visibleCells as! [CallCell]
     let afterIndicies = visibleCellsAfterReload.map { $0.id }
     
     let tableHeight: CGFloat = self.tableView.bounds.size.height
-    let rowHeight: CGFloat = self.tableView.rowHeight
     
     for (rowAfter,(cell,id)) in zip(visibleCellsAfterReload,afterIndicies).enumerate() {
       
-      if let rowBefore = beforeIndicies.indexOf(id) {
-        let y = rowHeight * CGFloat(rowBefore - rowAfter)
+      if let i = beforeIndicies.indexOf(id) {
+        let y = visibleCellsBeforeReload[i].center.y - cell.center.y
         cell.transform = CGAffineTransformMakeTranslation(0, +y)
       } else {
         cell.alpha = 0
@@ -161,11 +158,12 @@ extension CallListTableViewController {
         }
       }
     }
-    
+    reloading.toggle()
     UIView.animateWithDuration(animationDuration) {
       visibleCellsAfterReload.forEach { $0.transform = CGAffineTransformIdentity
         $0.alpha = 1 }
     }
+    
   }
   
 }

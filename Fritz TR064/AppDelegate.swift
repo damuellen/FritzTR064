@@ -12,7 +12,7 @@ import NetworkExtension
 let application = UIApplication.sharedApplication()
 let appDelegate = application.delegate! as! AppDelegate
 let rootViewController = application.windows.first!.rootViewController
-let reachability = try? Reachability.reachabilityForInternetConnection()
+let reachability = try? Reachability(hostname: NSURL(string: "https://fritz.box:49443")!.host!)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var alert: UIAlertController?
 
   func setup() {
+    print(reachability?.currentReachabilityStatus)
     if isRunningSimulator {
       TR064.getAvailableServices()
     }else {

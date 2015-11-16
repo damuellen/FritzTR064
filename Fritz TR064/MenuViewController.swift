@@ -34,10 +34,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
 
   override func viewDidAppear(animated: Bool) {
     if !manager.isReady {
-      SwiftSpinner.showWithDelay(1.5, title: "It's taking longer than expected", animated: true)
-      SwiftSpinner.showWithDelay(5, title: "Still trying to connect", animated: true)
-        .addTapHandler(TR064.getAvailableServices())
-      
+      SwiftSpinner.showWithDelay(2.5, title: "It's taking longer than expected", animated: true)
     }
     if manager.isReady {
       refreshUI()
@@ -45,10 +42,9 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   }
   
   func alert() {
-    TR064.getAvailableServices()
-    //  self.appearAlertViewWithTitle("Error", message: "No Services found",
-    //    actionTitle: ["Retry"],
-    //    actionBlock: [{ TR064.getAvailableServices() }])
+    SwiftSpinner.show("Connecting \nto router...").addTapHandler({
+      TR064.getAvailableServices()
+      }, subtitle: "Tap to retry.")
   }
   
   func configureUI() {

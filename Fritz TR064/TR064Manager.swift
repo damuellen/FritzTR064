@@ -6,12 +6,17 @@
 //  Copyright © 2015 Daniel Müllenborn. All rights reserved.
 //
 
-/// Handler for the founded actions, and XML response of the last request.
 
-class TR064Manager {
+import Alamofire
+
+class TR064Manager: Manager {
   
-  static let sharedManager = TR064Manager()
+  static let sharedManager: TR064Manager = TR064Manager(
+      configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
+      serverTrustPolicyManager: ServerTrustPolicyManager(policies: serverTrustPolicies))
   
+  static let serverTrustPolicies: [String: ServerTrustPolicy] = [NSURL(string: "https://fritz.box:49443")!.host!: .DisableEvaluation ]
+
   var observer: TR064ServiceObserver?
 
   var activeService: TR064Service?
@@ -39,7 +44,7 @@ class TR064Manager {
   subscript(ActionsFrom service: Service) -> [Action] {
     return self.actions.filter { $0.service == service }
   }
-    
+  
 }
 
 let Manager = TR064Manager.sharedManager
