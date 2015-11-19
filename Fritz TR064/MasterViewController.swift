@@ -29,14 +29,14 @@ extension MasterViewController: UISearchResultsUpdating, UISearchBarDelegate {
   
 }
 
-class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
+class MasterViewController: UITableViewController, UISearchDisplayDelegate, TR064ServiceObserver   {
   
-  var tableData = [(service: Service, actions: [Action])]() {
+  private var tableData = [(service: Service, actions: [Action])]() {
     didSet {
       filteredData = tableData
     }
   }
-  var filteredData = [(service: Service, actions: [Action])]() {
+  private var filteredData = [(service: Service, actions: [Action])]() {
     didSet {
       tableView.reloadData()
     }
@@ -44,7 +44,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
 
   let bgView = GradientView(frame: CGRectZero)
   
-  let resultSearchController =  UISearchController(searchResultsController: nil)
+  private let resultSearchController =  UISearchController(searchResultsController: nil)
   var detailViewController: ActionArgumentsVC?
 
   override func viewDidLoad() {
@@ -70,10 +70,16 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
     tableView.delegate = self
   }
   
+  func refreshUI() {
+    if let device = TR064Manager.sharedManager.activeDevice {
+    self.tableData = device.services.map { service in
+      (service: service, actions: TR064Manager.sharedManager[ActionsFrom: service]! )
+      }}
+  }
+  
   override func viewWillAppear(animated: Bool) {
     manager.observer = self
     self.refreshUI()
-
     bgView.frame = tableView.bounds
     self.clearsSelectionOnViewWillAppear ?= self.splitViewController?.collapsed
     view.bringSubviewToFront(navigationController!.navigationBar)
@@ -115,7 +121,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate   {
     let cell = tableView.dequeueReusableCellWithIdentifier("Section")
     cell?.backgroundColor = UIColor.blackColor()
     cell?.textLabel?.textColor = UIColor.whiteColor()
-    let object = TR064Manager.sharedManager.services.map {$0}[section]
+    let object = manager.activeDevice!.services.map {$0}[section]
     cell?.textLabel!.text = object.serviceType.stringByReplacingOccurrencesOfString("urn:dslforum-org:service:", withString: "")
     return cell
   }

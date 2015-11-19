@@ -21,33 +21,35 @@ class TR064Manager: Manager {
 
   var activeService: TR064Service?
   
-  var services = [Service]()
-  
-  var actions = [Action]()
+  var activeDevice: TR064.Device?
   
   var isReady: Bool = false {
     didSet {
       observer?.refreshUI()
     }
   }
-
+  
   var soapResponse: Any? {
     didSet {
       observer?.refreshUI()
     }
   }
   
-  subscript(ServiceName: String) -> [Action] {
-    return self.actions.filter { $0.name == ServiceName }
+  var passphrase: String?
+  
+  private override init(configuration: NSURLSessionConfiguration, serverTrustPolicyManager: ServerTrustPolicyManager?) {
+    super.init(configuration: configuration, serverTrustPolicyManager: serverTrustPolicyManager)
   }
   
-  subscript(ActionsFrom service: Service) -> [Action] {
-    return self.actions.filter { $0.service == service }
+  subscript(ServiceName: String) -> [Action]? {
+    return self.activeDevice?.actions.lazy.filter { $0.name == ServiceName }
+  }
+  
+  subscript(ActionsFrom service: Service) -> [Action]? {
+    return self.activeDevice?.actions.lazy.filter { $0.service == service }
   }
   
 }
-
-let Manager = TR064Manager.sharedManager
 
 protocol TR064ServiceObserver {
   var manager: TR064Manager { get }
@@ -56,30 +58,16 @@ protocol TR064ServiceObserver {
 }
 
 extension TR064ServiceObserver {
-  var manager: TR064Manager { return Manager }
+  var manager: TR064Manager { return TR064Manager.sharedManager }
 }
 
 protocol TR064Service {
+  static var manager: TR064Manager { get }
   static var serviceType: String { get }
 }
 
 extension TR064Service {
-  static var manager: TR064Manager { return Manager }
-  static var observer: TR064ServiceObserver? { return Manager.observer }
-  
-  static func alert() {
-    manager.observer?.alert()
-  }
-}
-
-extension MasterViewController: TR064ServiceObserver {
-  
-  func refreshUI() {
-    self.tableData = Manager.services.map { service in
-      (service: service, actions: Manager[ActionsFrom: service] )
-    }
-
-  }
-  
+  static var manager: TR064Manager { return TR064Manager.sharedManager }
+  static var observer: TR064ServiceObserver? { return TR064Manager.sharedManager.observer }
 }
 

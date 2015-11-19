@@ -15,8 +15,8 @@ class SideMenuTableViewController: UITableViewController {
 			selectedMenuItem = 6
 		}
 	}
-  var selectedMenuItem: Int = 8
-  var hiddenMenuItem: Int = 8
+  private var selectedMenuItem: Int = 8
+  private var hiddenMenuItem: Int = 8
   
   override func viewDidLoad() {
     super.viewDidLoad()

@@ -14,19 +14,17 @@ struct Service {
   let controlURL: String
   var SCPDURL: String
   
+}
+
+extension Service {
+
   init?(element: AEXMLElement) {
     guard let serviceType = element["serviceType"].value,
       controlURL = element["controlURL"].value,
       SCPDURL = element["SCPDURL"].value else { return nil }
     self.init(serviceType: serviceType, controlURL: controlURL, SCPDURL: SCPDURL)
-   }
-
-  init(serviceType: String, controlURL: String, SCPDURL: String) {
-    self.serviceType = serviceType
-    self.controlURL = controlURL
-    self.SCPDURL = SCPDURL
   }
-
+  
 }
 
 extension Service: Hashable, Equatable {

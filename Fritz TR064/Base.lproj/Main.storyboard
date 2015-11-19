@@ -1084,7 +1084,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xuw-14-Dco" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="665" y="-2249"/>
+            <point key="canvasLocation" x="665" y="-2235"/>
         </scene>
         <!--Settings-->
         <scene sceneID="cTR-mp-BIJ">
@@ -1318,8 +1318,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Port" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXh-g2-9wC">
-                                                    <rect key="frame" x="164" y="11" width="62" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXh-g2-9wC">
+                                                    <rect key="frame" x="167" y="11" width="62" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="62" id="UmE-iW-vk0"/>
                                                     </constraints>
@@ -1327,8 +1327,8 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="49443" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HHb-HG-NfL" customClass="TextField" customModule="Fritz_TR064" customModuleProvider="target">
-                                                    <rect key="frame" x="234" y="7" width="78" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="49443" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HHb-HG-NfL" customClass="TextField" customModule="Fritz_TR064" customModuleProvider="target">
+                                                    <rect key="frame" x="237" y="7" width="75" height="30"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="75" id="KWG-v7-iM6"/>
@@ -1344,7 +1344,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eZ1-EK-Pb5">
-                                                    <rect key="frame" x="86" y="7" width="51" height="31"/>
+                                                    <rect key="frame" x="89" y="7" width="51" height="29"/>
                                                 </switch>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1378,7 +1378,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tra-Ra-EvK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="665" y="-2847"/>
+            <point key="canvasLocation" x="665" y="-2813"/>
         </scene>
         <!--Side Menu Navigation Controller-->
         <scene sceneID="L9U-7s-27t">
@@ -1415,7 +1415,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Put-c0-zmh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="213" y="-2249"/>
+            <point key="canvasLocation" x="213" y="-2235"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="IdN-a4-PA1">
@@ -1433,7 +1433,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jYF-w4-tsx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="213" y="-2847"/>
+            <point key="canvasLocation" x="213" y="-2813"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="gsJ-Ax-Skz">
@@ -1477,7 +1477,7 @@
         <image name="icon-hamburger" width="22" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="thC-Bs-Hc1"/>
         <segue reference="Qda-GJ-I5w"/>
-        <segue reference="yxL-DB-w3k"/>
     </inferredMetricsTieBreakers>
 </document>

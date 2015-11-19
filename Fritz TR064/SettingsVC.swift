@@ -48,11 +48,10 @@ class SettingsVC: UITableViewController {
   }
   
   @IBAction func saveSettings(sender: AnyObject) {
-    Settings.set(Setting.vpnAddress.key, toValue: vpnAdresse.text!)
-    Settings.set(Setting.routerAddress.key, toValue: routerIP.text!)
-    Settings.set(Setting.vpnUserName.key, toValue: vpnUser.text!)
-    Settings.set(Setting.vpnGroupName.key, toValue: vpnGroup.text!)
-    Settings.set(Setting.launchedForTheFirstTime.key, toValue: "NO")
+ //   Settings.set(Setting.vpnAddress.key, toValue: vpnAdresse.text!)
+ //   Settings.set(Setting.vpnUserName.key, toValue: vpnUser.text!)
+  //Settings.set(Setting.vpnGroupName.key, toValue: vpnGroup.text!)
+  //  Settings.set(Setting.launchedForTheFirstTime.key, toValue: "NO")
   }
   
   override func viewDidAppear(animated: Bool) {

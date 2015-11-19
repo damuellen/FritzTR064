@@ -27,9 +27,6 @@ class Timeout {
   class func scheduledTimer(timeInterval: NSTimeInterval, repeats: Bool = false, actions: (NSTimer) -> ()) -> NSTimer {
     let holder = CallbackHolder(callback: actions)
     let timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval, target: holder, selector: Selector("fired:"), userInfo: nil, repeats: repeats)
-    if repeats {
-      holder.fired(timer)
-    }
     return timer
   }
   

@@ -43,10 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Override point for customization after application launch.
     storeCredentials() // private file
     setup()
-
+    // Settings.set(Setting.launchedForTheFirstTime.key, toValue: "NO")
     id = NSNotificationCenter.defaultCenter().addObserverForName(
       NEVPNStatusDidChangeNotification, object: nil, queue: nil) { _ in
-				delay(0.5) { TR064.getAvailableServices() }
+				delay(1) { TR064.getAvailableServices() }
         print(getIFAddresses())
       NSNotificationCenter.defaultCenter().removeObserver(self.id!)
       self.id = nil

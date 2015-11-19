@@ -18,44 +18,86 @@ enum TR064Error: ErrorType {
 
 struct TR064 {
   
+  class Device {
+    
+    static let activeURL = Settings.internalRouterURL ?? "fritz.box"
+    static let activePort = Settings.useSSL ? ":49443" : ":4900"
+    static let activeProtocol = Settings.useSSL ? "https://" : "http://"
+    static let URL = activeProtocol + activeURL + activePort
+    
+    var name: String!
+    var services: [Service] = []
+    var actions: [Action] = []
+  }
+  
   static let manager = TR064Manager.sharedManager
-  static let descURL = "/tr64desc.xml"
+  static let descURLs = ["/tr64desc.xml", "/igddesc.xml"]
   
   static let completionHandler = { (_:NSURLRequest?, _:NSHTTPURLResponse?, XML:Result<AEXMLDocument>) -> Void in
     guard let xml = XML.value else { return }
-    var tableData = [String:String]()
+    var values: [String:String] = [:]
       xml.root.all!.forEach { element in
         if let value = element.value {
-          tableData[element.name] = value }
+          values[element.name] = value }
     }
-    Manager.soapResponse = tableData
+    manager.soapResponse = values
+  }
+  
+  static func findDevice() {
+    var requests = requestServicesDescriptions()
+    manager.activeDevice = Device()
+    let UPNPServicesDescriptionRequest = requests.removeFirst()
+    TR064.checkUPNPServices(UPNPServicesDescriptionRequest)
+    if let TR064ServicesDescriptionRequest = requests.first {
+      TR064.checkTR064Services(TR064ServicesDescriptionRequest)
+    }
   }
   
   /// Request the tr064desc.xml from the router.
-  private static func requestServices() -> Request {
-    
-    let requestURL = "https://fritz.box:49443" + TR064.descURL
-    return TR064Manager.sharedManager.request(.GET, requestURL)
+  private static func requestServicesDescriptions() -> [Request] {
+    manager.passphrase = "dsf"
+    var requests: [Request] = []
+    requests.append(manager.request(.GET, Device.URL + descURLs[1]))
+    if manager.passphrase != nil {
+      requests.append(manager.request(.GET, Device.URL + descURLs[0]))
+    }
+    return requests
   }
   
-  private static func addServicesToManager(request: Request) {
+  private static func checkTR064Services(request: Request) {
     
     request.responseXMLPromise().then { xml in
-      manager.services = extractServicesFromDescription(xml)
-      saveValuesToDefaults(manager.services, key: "Services")
-      if manager.actions.count == 0 {
-        TR064.requestActionsFor(manager.services) => TR064.commitActionsToManager
+      let device = manager.activeDevice!
+      device.services += extractServicesFromDescription(xml)
+     // saveValuesToDefaults(manager.services, key: "Services")
+      if device.actions.isEmpty {
+        TR064.requestActionsFor(device) => TR064.commitActionsToActiveDevice
       }
     }
   }
-
-  static let getAvailableServices: ()->Void = {
-    if let services = loadValuesFromDefaults("Services") {
-      manager.services = extractValuesFromPropertyListArray(services)
-      TR064.requestActionsFor(manager.services) => TR064.commitActionsToManager
-      return
+  
+  private static func checkUPNPServices(request: Request) {
+    
+    request.responseXMLPromise().then { xml in
+      let device = manager.activeDevice!
+      device.services += extractServicesFromInternetGatewayDescription(xml)
+    //  saveValuesToDefaults(manager.services, key: "Services")
+      if device.actions.isEmpty {
+        TR064.requestActionsFor(device) => TR064.commitActionsToActiveDevice
+      }
     }
-    Timeout.scheduledTimer(4, repeats: true) { timer in
+  }
+  
+  static let getAvailableServices: ()->Void = {
+    if let services = loadValuesFromDefaults("Service") {
+      manager.activeDevice = Device()
+      manager.activeDevice!.services = extractValuesFromPropertyListArray(services)
+   //   TR064.requestActionsFor(device.services) => TR064.commitActionsToManager
+      return
+    } else {
+      TR064.findDevice()
+    }
+    Timeout.scheduledTimer(5, repeats: true) { timer in
       if manager.isReady {
         timer.invalidate()
       } else {
@@ -65,17 +107,16 @@ struct TR064 {
   }
   
   /// Use the URL from the given service to request his actions.
-  static func requestActionsFor(services: [Service]) -> [Promise<AFPValue<AEXMLDocument>, AFPError>] {
-    return services.map {
-      return (TR064Manager.sharedManager.request(.GET, "https://fritz.box:49443" + $0.SCPDURL ).validate().responseXMLPromise()) }
+  static func requestActionsFor(device: Device) -> [Promise<AFPValue<AEXMLDocument>, AFPError>] {
+    return device.services.map {
+      return TR064Manager.sharedManager.request(.GET, "https://fritz.box:49443" + $0.SCPDURL ).validate().responseXMLPromise() }
   }
   
-  static func commitActionsToManager(actions: [Promise<AFPValue<AEXMLDocument>, AFPError>]) {
+  static func commitActionsToActiveDevice(actions: [Promise<AFPValue<AEXMLDocument>, AFPError>]) {
     
     whenAll(actions).then { xml in
       
       defer { manager.isReady = true }
-      manager.actions.removeAll()
       for (index,xml) in xml.enumerate() {
         let serviceStateTable = xml.value.root["serviceStateTable"].children
         let stateVariables = serviceStateTable.map {
@@ -83,12 +124,11 @@ struct TR064 {
           }.flatMap {$0}
         let actionList = xml.value.root["actionList"].children
         
-        manager.actions += actionList.map {
-          Action(element: $0, stateVariables: stateVariables, service: manager.services[index])
+        manager.activeDevice!.actions += actionList.map {
+          Action(element: $0, stateVariables: stateVariables, service: manager.activeDevice!.services[index])
           }.flatMap {$0}
       }
-      }
-    whenAny(actions).trap { error in
+    }.trap { error in
        manager.observer?.alert()
     }
   }
@@ -151,7 +191,7 @@ struct TR064 {
   }
   
   static func getXMLFromURL(requestURL: String) -> Request? {
-    return TR064Manager.sharedManager.request(.GET, requestURL).validate()
+    return manager.request(.GET, requestURL).validate()
   }
   
   /// Helper function to get known services from tr064desc.xml.
@@ -170,6 +210,17 @@ struct TR064 {
     return serviceList.map { service in Service(element: service) }.flatMap {$0}
   }
   
+  private static func extractServicesFromInternetGatewayDescription(discription: AFPValue<AEXMLDocument>) -> [Service] {
+    
+    let discription = discription.value
+    manager.activeDevice?.name = discription.root["device"]["friendlyName"].value
+    let internetGatewayDevice = discription.root["device"]["deviceList"]["device"]
+    
+    let serviceList = internetGatewayDevice["serviceList"].children
+      + internetGatewayDevice["deviceList"]["device"]["serviceList"].children
+
+    return serviceList.map { service in Service(element: service) }.flatMap {$0}
+  }
 }
 
 extension AEXMLDocument {

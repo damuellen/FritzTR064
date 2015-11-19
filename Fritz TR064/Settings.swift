@@ -8,31 +8,51 @@
 
 import Foundation
 
-typealias Setting = Settings.defaults
 
 class Settings {
   
-  struct defaults {
-    
-    static let vpnAddress = (key: "server-address", defaultValue: "")
-    static let vpnUserName = (key: "vpn-user-name", defaultValue: "")
-    static let vpnGroupName = (key: "vpn-group-name", defaultValue: "")
-    static let routerAddress = (key: "router-dddress", defaultValue: "http://fritz.box")
-    static let routerUserName = (key: "router-user", defaultValue: "admin")
-    static let launchedForTheFirstTime = (key: "first-time-launch", defaultValue: "yes")
-    
+  static var externalURL: String? {
+    get {
+      return Settings.get("vpn-addrese")
+    }
+    set {
+      Settings.set("vpn-addrese", toValue: newValue)
+    }
+  }
+  
+  static var useVPN: Bool {
+    get {
+    return Settings.get("use-VPN") ?? true
+    }
+    set {
+      Settings.set("use-VPN", toValue: newValue)
+    }
+  }
+  
+  static var useSSL: Bool {
+    get {
+    return Settings.get("use-SSL") ?? true
+    }
+    set {
+      Settings.set("use-SSL", toValue: newValue)
+    }
+  }
+  
+  static var internalRouterURL: String? {
+    return Settings.get("router-addrese")
   }
   
   static let userDefaults = NSUserDefaults.standardUserDefaults()
-
-  static func get<T>(value: (key: String, defaultValue: T)) -> T {
-    let val: T? = userDefaults.objectForKey(value.key) as? T
-    return val ?? value.defaultValue
+  
+  static func get<T>(key: String) -> T? {
+    let val: T? = userDefaults.objectForKey(key) as? T
+    return val
   }
   
   static func set<T>(key: String, toValue: T) {
     userDefaults.setObject((toValue as! AnyObject), forKey: key)
     userDefaults.synchronize()
   }
+  
 }
 

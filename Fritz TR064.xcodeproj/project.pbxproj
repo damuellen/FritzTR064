@@ -61,8 +61,8 @@
 		65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E9F9521BBC4AE600DDA8E7 /* Call.swift */; };
 		65EA37DC1BCCFF6B00754DD4 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */; };
 		65EF43711BDFF9F700FBAE69 /* Timeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EF43701BDFF9F700FBAE69 /* Timeout.swift */; };
-		65F25DC21BED645A00719BAF /* DiskFileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DC11BED645A00719BAF /* DiskFileCache.swift */; };
-		65F25DC51BED6A0200719BAF /* DiskFileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DC11BED645A00719BAF /* DiskFileCache.swift */; };
+		65F25DC21BED645A00719BAF /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DC11BED645A00719BAF /* FileManager.swift */; };
+		65F25DC51BED6A0200719BAF /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DC11BED645A00719BAF /* FileManager.swift */; };
 		65F25DC61BED6AEA00719BAF /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E9F9521BBC4AE600DDA8E7 /* Call.swift */; };
 		65F25DC71BED6AF700719BAF /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C825821BB76048005DF551 /* Service.swift */; };
 		65F25DC81BED6B4900719BAF /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8257E1BB75E86005DF551 /* AEXML.swift */; };
@@ -174,7 +174,7 @@
 		65E9F9521BBC4AE600DDA8E7 /* Call.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		65EF43701BDFF9F700FBAE69 /* Timeout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeout.swift; sourceTree = "<group>"; };
-		65F25DC11BED645A00719BAF /* DiskFileCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskFileCache.swift; sourceTree = "<group>"; };
+		65F25DC11BED645A00719BAF /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		65F25DCD1BEDB03B00719BAF /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		65F25DCF1BEF8BCF00719BAF /* TransitionsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionsController.swift; sourceTree = "<group>"; };
 		65F25DD11BEFB3CF00719BAF /* ViewMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewMenu.swift; sourceTree = "<group>"; };
@@ -357,7 +357,7 @@
 			isa = PBXGroup;
 			children = (
 				65C8256A1BB75E02005DF551 /* AppDelegate.swift */,
-				65F25DC11BED645A00719BAF /* DiskFileCache.swift */,
+				65F25DC11BED645A00719BAF /* FileManager.swift */,
 				6594CB471BE151EA004A361A /* Reachability.swift */,
 				65DB0B261BC3328600D88E40 /* Fritz TR064-Bridging-Header.h */,
 				65DB0B291BC3334400D88E40 /* keychain.h */,
@@ -491,7 +491,7 @@
 				65F25DC71BED6AF700719BAF /* Service.swift in Sources */,
 				65F25DCA1BED6BFB00719BAF /* Action.swift in Sources */,
 				65F25DC61BED6AEA00719BAF /* Call.swift in Sources */,
-				65F25DC51BED6A0200719BAF /* DiskFileCache.swift in Sources */,
+				65F25DC51BED6A0200719BAF /* FileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,7 +534,7 @@
 				65337A421BC2E3C4009925E5 /* TR064Manager.swift in Sources */,
 				65C825851BB76079005DF551 /* Action.swift in Sources */,
 				650E06AE1BF2B32200F2F756 /* CallListDataSource.swift in Sources */,
-				65F25DC21BED645A00719BAF /* DiskFileCache.swift in Sources */,
+				65F25DC21BED645A00719BAF /* FileManager.swift in Sources */,
 				656BDA321BC9C9520083D0DE /* FutureSource.swift in Sources */,
 				65F359C61BDD5A3B002B1F6D /* HostCell.swift in Sources */,
 				65337A3E1BC16526009925E5 /* CallCell.swift in Sources */,

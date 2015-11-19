@@ -6,6 +6,8 @@
 //  Copyright © 2015 Daniel Müllenborn. All rights reserved.
 //
 
+import Foundation
+
 typealias Name = String
 
 let obsoleteActions:[String:[String]] =
@@ -55,6 +57,10 @@ struct StateVariable {
   var name = ""
   var type = ""
   var defaultValue = ""
+}
+
+extension StateVariable {
+  
   init?(element: AEXMLElement) {
     guard let name = element["name"].value,
       datatype = element["dataType"].value
@@ -86,3 +92,52 @@ func ==(lhs: Action, rhs: Action) -> Bool {
   return lhs.hashValue == rhs.hashValue
 }
 
+extension StateVariable: PropertyListReadable {
+  
+  func propertyListRepresentation() -> NSDictionary {
+    let representation:[String:AnyObject] =
+    ["Name":name, "Type":type, "DefaultValue":defaultValue]
+    return representation
+  }
+  
+  init?(propertyListRepresentation: NSDictionary?) {
+    
+    guard let values = propertyListRepresentation
+      else { return nil }
+    
+    guard let name = values["Name"] as? String,
+      type = values["Type"] as? String,
+      defaultValue = values["DefaultValue"] as? String
+      else { return nil }
+    
+    self.init(name: name, type: type, defaultValue: defaultValue)
+  }
+  
+}
+/*
+extension Action: PropertyListReadable {
+  
+  func propertyListRepresentation() -> NSDictionary {
+    let representation:[String:AnyObject] =
+    ["service":service.propertyListRepresentation(), "Name":name, "NeedsInput":needsInput,
+      "Input":input as! AnyObject, "Output":output as! AnyObject]
+    return representation
+  }
+  
+  init?(propertyListRepresentation: NSDictionary?) {
+    
+    guard let values = propertyListRepresentation
+      else { return nil }
+    
+    guard let serviceDict = (values["service"] as? NSDictionary),
+      service = Service(propertyListRepresentation: serviceDict),
+      name = values["Name"] as? String,
+      needsInput = values["NeedsInput"] as? Bool,
+      input = values["Input"]
+      else { return nil }
+    
+    self.init(serviceType: serviceType, controlURL: controlURL, SCPDURL: SCPDURL)
+  }
+
+}
+*/

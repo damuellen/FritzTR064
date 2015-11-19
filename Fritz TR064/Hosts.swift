@@ -18,38 +18,38 @@ class Hosts: TR064Service {
     case WakeOnLANByMACAddress = "X_AVM-DE_WakeOnLANByMACAddress"
     
     var action: Action? {
-      return manager.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
+      return manager.activeDevice?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }
   }
   
   private static var dataSource: [Host] {
-    get { return (TR064Manager.sharedManager.soapResponse as? [Host]) ?? [] }
-    set { TR064Manager.sharedManager.soapResponse = newValue }
+    get { return (manager.soapResponse as? [Host]) ?? [] }
+    set { manager.soapResponse = newValue }
   }
   
-  class func setHostName(name: String, ByMACAdress mac: String) {
+  static func setHostName(name: String, ByMACAdress mac: String) {
     if let action = knownActions.SetHostNameByMACAdress.action {
       TR064.startAction(action, arguments: [name, mac])
     }
   }
   
-  class func getHostNumberOfEntries() -> ActionResultPromise? {
+  static func getHostNumberOfEntries() -> ActionResultPromise? {
     guard let action = knownActions.GetHostNumberOfEntries.action else {
       return nil
     }
     return TR064.startAction(action)
   }
   
-  class func getHost(index: Int) -> ActionResultPromise? {
+  static func getHost(index: Int) -> ActionResultPromise? {
     guard let action = knownActions.GetGenericHostEntry.action else {
       return nil
     }
      return TR064.startAction(action, arguments: ["\(index)"])
   }
 
-  class func getAllHosts() {
+  static func getAllHosts() {
     var cachedHosts = [Host]()
-    if let cachedHostList = loadValuesFromDiskCache("Hosts") {
+    if let cachedHostList = FileManager.loadValuesFromDiskCache("Hosts") {
       cachedHosts = extractValuesFromPropertyListArray(cachedHostList)
       self.dataSource = cachedHosts
     }
@@ -71,14 +71,14 @@ class Hosts: TR064Service {
         let newHosts = hosts.map { $0.value.convertWithAction(action) }.flatMap {$0}.map { Host(host: $0) }
         if cachedHosts.count < newHosts.count {
           self.dataSource = newHosts
-          saveValuesToDiskCache(newHosts, name: "Hosts")
+          FileManager.saveValuesToDiskCache(newHosts, name: "Hosts")
         }
       }
     }
   }
   
-  class func wakeHost(MAC: String) {
-    guard let action = knownActions.WakeOnLANByMACAddress.action else { alert(); return }
+  static func wakeHost(MAC: String) {
+    guard let action = knownActions.WakeOnLANByMACAddress.action else { return }
     TR064.startAction(action, arguments: [MAC])
   }
   

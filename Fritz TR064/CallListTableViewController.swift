@@ -70,10 +70,10 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    if tableData.count > 0 {
-      return 1
-    } else {
+    if tableData.isEmpty {
       return 0
+    } else {
+      return 1
     }
   }
   

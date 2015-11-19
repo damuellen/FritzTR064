@@ -16,13 +16,7 @@ class Time: TR064Service {
     case getInfo = "GetInfo"
     
     var action: Action? {
-      return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
-    }
-  }
-  
-  private var entries = [String:String]() {
-    didSet {
-      Manager.soapResponse = entries
+      return TR064Manager.sharedManager.activeDevice?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }
   }
   

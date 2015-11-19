@@ -37,7 +37,9 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
     textField.resignFirstResponder()
     arguments.removeAll()
     for n in 0..<action!.input.count {
-      arguments.append((tableView.cellForRowAtIndexPath(NSIndexPath(forRow: n, inSection: 0)) as! TableViewInputCell).textField.text!)
+      let path = NSIndexPath(forRow: n, inSection: 0)
+      let value = (tableView.cellForRowAtIndexPath(path) as! TableViewInputCell).textField.text!
+      arguments.append(value)
     }
     self.navigationItem.rightBarButtonItem?.enabled = true
     return false
@@ -90,7 +92,7 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
       controller.action = self.action
       TR064.startAction(action, arguments: arguments).then { xml in
         if let result = xml.value.convertWithAction(self.action) {
-          Manager.soapResponse = result
+          TR064Manager.sharedManager.soapResponse = result
         }
       }
     }
@@ -102,15 +104,15 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     var numberOfSections: Int = 0
-    if tableData.input.count > 0 { numberOfSections += 1 }
-    if tableData.output.count > 0 { numberOfSections += 1 }
+    if !tableData.input.isEmpty { numberOfSections += 1 }
+    if !tableData.output.isEmpty { numberOfSections += 1 }
     return numberOfSections
   }
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     switch section {
     case 0:
-      if tableData.input.count > 0 { return self.tableData.input.count }
+      if !tableData.input.isEmpty { return self.tableData.input.count }
       else { return self.tableData.output.count }
     case 1:
       return self.tableData.output.count

@@ -17,7 +17,7 @@ class DeviceInfo: TR064Service {
     case GetDeviceLog
     
     var action: Action? {
-      return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
+      return TR064Manager.sharedManager.activeDevice?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }
   }
   
@@ -26,7 +26,7 @@ class DeviceInfo: TR064Service {
     set { manager.soapResponse = newValue }
   }
   
-  class func getInfo() -> ActionResultPromise? {
+  static func getInfo() -> ActionResultPromise? {
     guard let action = knownActions.GetInfo.action
       else { return nil }
     return TR064.startAction(action).then { xml in
@@ -34,7 +34,7 @@ class DeviceInfo: TR064Service {
     }
   }
   
-  class func getDeviceLog() -> ActionResultPromise? {
+  static func getDeviceLog() -> ActionResultPromise? {
     guard let action = knownActions.GetDeviceLog.action
       else { return nil }
     return TR064.startAction(action).then { xml in

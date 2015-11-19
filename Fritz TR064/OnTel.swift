@@ -14,18 +14,18 @@ class OnTel: TR064Service {
     case GetCallList
     
     var action: Action? {
-      return TR064Manager.sharedManager.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
+      return manager.activeDevice?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }
   }
   
   private static var dataSource: [Call] {
-    get { return (TR064Manager.sharedManager.soapResponse as? [Call]) ?? [] }
-    set { TR064Manager.sharedManager.soapResponse = newValue }
+    get { return (manager.soapResponse as? [Call]) ?? [] }
+    set { manager.soapResponse = newValue }
   }
   
-  class func getCallList(argument: String = "", ignoreCache: Bool = false) {
+  static func getCallList(argument: String = "", ignoreCache: Bool = false) {
     var cachedCalls = [Call]()
-    if let cachedCallList = loadValuesFromDiskCache("CallList") where ignoreCache == false {
+    if let cachedCallList = FileManager.loadValuesFromDiskCache("CallList") where ignoreCache == false {
       cachedCalls = extractValuesFromPropertyListArray(cachedCallList)
       self.dataSource = cachedCalls
     }
@@ -39,21 +39,21 @@ class OnTel: TR064Service {
         let newCalls = Call.extractCalls(callList.value).map { Call($0) }.flatMap {$0}
         if cachedCalls.first?.id != newCalls.first?.id {
           self.dataSource = newCalls
-        saveValuesToDiskCache(newCalls, name: "CallList")
+        FileManager.saveValuesToDiskCache(newCalls, name: "CallList")
         }
       }
     }
   }
   
-  class func getCallListForDays(days: Int) {
+  static func getCallListForDays(days: Int) {
     getCallList("&days=\(days)")
   }
   
-  class func getCallListMaxCalls(calls: Int) {
+  static func getCallListMaxCalls(calls: Int) {
     getCallList("&max=\(calls)")
   }
   
-  class func getCallListAfter(id: Int) {
+  static func getCallListAfter(id: Int) {
     getCallList("&id=\(id)")
   }
   
