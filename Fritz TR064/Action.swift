@@ -19,13 +19,18 @@ let serviceURL = "https://fritz.box:49443"
 struct Action {
   
   let service: Service
+  var name: String
+  var needsInput = false
+  var input = [Name: StateVariable]()
+  var output = [Name: StateVariable]()
+  
   var url: String {
     return serviceURL + service.controlURL
   }
-  var name: String
-  var input = [Name: StateVariable]()
-  var output = [Name: StateVariable]()
-  var needsInput = false
+  
+}
+
+extension Action {
   
   init?(element: AEXMLElement, stateVariables: [StateVariable], service: Service) {
     guard let value = element["name"].value
@@ -38,7 +43,7 @@ struct Action {
     self.name = value
     self.service = service
     element["argumentList"].children.forEach { argument in
-      let stateVariable = stateVariables.lazy.filter { argument["relatedStateVariable"].value == $0.name }.first!
+      let stateVariable = stateVariables.lazy.filter { argument["relatedStateVariable"].value == $0.name }.first
       switch argument["direction"].value {
       case "in"?:
         self.needsInput = true
@@ -63,11 +68,11 @@ extension StateVariable {
   
   init?(element: AEXMLElement) {
     guard let name = element["name"].value,
-      datatype = element["dataType"].value
+      datatype = element["dataType"].value,
+      defaultValue = element["defaultValue"].value
       else { return nil }
-    if let defaultValue = element["defaultValue"].value {
-      self.defaultValue = defaultValue
-    }
+    
+    self.defaultValue = defaultValue
     self.name = name
     switch datatype {
     case "string":
@@ -102,10 +107,8 @@ extension StateVariable: PropertyListReadable {
   
   init?(propertyListRepresentation: NSDictionary?) {
     
-    guard let values = propertyListRepresentation
-      else { return nil }
-    
-    guard let name = values["Name"] as? String,
+    guard let values = propertyListRepresentation,
+      name = values["Name"] as? String,
       type = values["Type"] as? String,
       defaultValue = values["DefaultValue"] as? String
       else { return nil }
@@ -114,30 +117,49 @@ extension StateVariable: PropertyListReadable {
   }
   
 }
-/*
+
 extension Action: PropertyListReadable {
   
   func propertyListRepresentation() -> NSDictionary {
+    
+    var inputs: [String:NSDictionary] = [:]
+    var outputs: [String:NSDictionary] = [:]
+    
+    for (name, stateVariable) in input {
+      inputs[name] = stateVariable.propertyListRepresentation()
+    }
+    for (name, stateVariable) in output {
+      outputs[name] = stateVariable.propertyListRepresentation()
+    }
     let representation:[String:AnyObject] =
-    ["service":service.propertyListRepresentation(), "Name":name, "NeedsInput":needsInput,
-      "Input":input as! AnyObject, "Output":output as! AnyObject]
+    ["service":service.propertyListRepresentation(),
+      "Name":name, "NeedsInput":needsInput,
+      "Input": inputs, "Output":outputs]
+    
     return representation
   }
   
   init?(propertyListRepresentation: NSDictionary?) {
     
-    guard let values = propertyListRepresentation
-      else { return nil }
-    
-    guard let serviceDict = (values["service"] as? NSDictionary),
+    guard let values = propertyListRepresentation,
+      serviceDict = (values["service"] as? NSDictionary),
       service = Service(propertyListRepresentation: serviceDict),
       name = values["Name"] as? String,
       needsInput = values["NeedsInput"] as? Bool,
-      input = values["Input"]
+      input = values["Input"] as? [String:NSDictionary],
+      output = values["Output"] as? [String:NSDictionary]
       else { return nil }
     
-    self.init(serviceType: serviceType, controlURL: controlURL, SCPDURL: SCPDURL)
+    var inputs: [String:StateVariable] = [:]
+    var outputs: [String:StateVariable] = [:]
+    
+    for (name, variables) in input {
+      inputs[name] = StateVariable(propertyListRepresentation: variables)
+    }
+    for (name, variables) in output {
+      outputs[name] = StateVariable(propertyListRepresentation: variables)
+    }
+    self.init(service: service, name: name, needsInput: needsInput, input: inputs, output: outputs)
   }
 
 }
-*/

@@ -77,6 +77,7 @@
 		65F7EB691BE6A71100AFA322 /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F7EB671BE6A71100AFA322 /* SideMenu.swift */; };
 		65F7EB6A1BE6A71100AFA322 /* SideMenuNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F7EB681BE6A71100AFA322 /* SideMenuNavigationController.swift */; };
 		65F7EB701BE6B58900AFA322 /* SideMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F7EB6F1BE6B58900AFA322 /* SideMenuTableViewController.swift */; };
+		65FBB9781C00B9870006E89A /* FritzButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FBB9771C00B9870006E89A /* FritzButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -186,6 +187,7 @@
 		65F7EB671BE6A71100AFA322 /* SideMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
 		65F7EB681BE6A71100AFA322 /* SideMenuNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuNavigationController.swift; sourceTree = "<group>"; };
 		65F7EB6F1BE6B58900AFA322 /* SideMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewController.swift; sourceTree = "<group>"; };
+		65FBB9771C00B9870006E89A /* FritzButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FritzButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -308,6 +310,7 @@
 				6541C6D51BE2A74600044DCA /* Textfield.swift */,
 				65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */,
 				65F4692C1BDDB557009B82A7 /* NiceButton.swift */,
+				65FBB9771C00B9870006E89A /* FritzButton.swift */,
 				65C0059A1BC14E3300FDCFFA /* XMLResponseViewController.swift */,
 				65337A3F1BC166BB009925E5 /* CallListTableViewController.swift */,
 				650E06AD1BF2B32200F2F756 /* CallListDataSource.swift */,
@@ -536,6 +539,7 @@
 				650E06AE1BF2B32200F2F756 /* CallListDataSource.swift in Sources */,
 				65F25DC21BED645A00719BAF /* FileManager.swift in Sources */,
 				656BDA321BC9C9520083D0DE /* FutureSource.swift in Sources */,
+				65FBB9781C00B9870006E89A /* FritzButton.swift in Sources */,
 				65F359C61BDD5A3B002B1F6D /* HostCell.swift in Sources */,
 				65337A3E1BC16526009925E5 /* CallCell.swift in Sources */,
 				65BA6B8A1BD3D7B9001D8420 /* Time.swift in Sources */,

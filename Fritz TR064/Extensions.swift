@@ -27,20 +27,6 @@ func ?=<T>(inout left: T, right: T?) {
   }
 }
 
-func loadValuesFromDefaults(key: String) -> [AnyObject]? {
-  return NSUserDefaults.standardUserDefaults().objectForKey("Services") as? [AnyObject]
-}
-
-func extractValuesFromPropertyListArray<T:PropertyListReadable>(propertyListArray:[AnyObject]?) -> [T] {
-  guard let encodedArray = propertyListArray else {return []}
-  return encodedArray.map { $0 as? NSDictionary }.flatMap { T (propertyListRepresentation: $0) }
-}
-
-func saveValuesToDefaults<T:PropertyListReadable>(newValues:[T], key:String) {
-  let encodedValues = newValues.map{$0.propertyListRepresentation()}
-  NSUserDefaults.standardUserDefaults().setObject(encodedValues, forKey:key)
-}
-
 extension UITableViewController {
   
   func reloadDataShowAnimated() {
@@ -65,6 +51,12 @@ extension UITableViewController {
   }
 }
 
+extension NSData {
+  public var stringValue: String {
+    return NSString(data: self, encoding: NSUTF8StringEncoding)! as String
+  }
+}
+
 extension String {
   
   var isEmpty: Bool  {
@@ -72,6 +64,10 @@ extension String {
   }
   var length: Int {
     return self.characters.count
+  }
+  
+  public var dataValue: NSData {
+    return dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
   }
   
   static var DateDetector = try? NSDataDetector(types: NSTextCheckingType.Date.rawValue)
@@ -87,7 +83,7 @@ extension String {
   }
   
   func containsDate() -> Bool {
-    return self.getDates().count > 0
+    return self.getDates().isEmpty
   }
   
   func getLink() -> String? {
@@ -102,7 +98,7 @@ extension String {
   }
   
   func containsURL() -> Bool {
-    return self.getURLs().count > 0
+    return self.getURLs().isEmpty
   }
   
   var isEmail: Bool {
@@ -188,7 +184,6 @@ extension Int {
   
 }
 
-
 struct ChunkSequence<Element>: SequenceType {
   let chunkSize: Array<Element>.Index
   let collection: Array<Element>
@@ -261,10 +256,7 @@ extension Array {
     }
     return intersection
   }
-  
 
-  
-  
 }
 
 public extension NSDate {
@@ -437,7 +429,6 @@ public extension NSDate {
   
 }
 
-
 public func ==(lhs: NSDate, rhs: NSDate) -> Bool {
   return lhs.compare(rhs) == NSComparisonResult.OrderedSame
 }
@@ -458,10 +449,10 @@ extension Bool {
 }
 
 extension UIDevice {
-     var isIpad: Bool {
-         return userInterfaceIdiom == .Pad
-    }
-    var isIphone: Bool {
-    	        return userInterfaceIdiom == .Phone
-       }
- 	}
+  var isIpad: Bool {
+    return userInterfaceIdiom == .Pad
+  }
+  var isIphone: Bool {
+    return userInterfaceIdiom == .Phone
+  }
+}

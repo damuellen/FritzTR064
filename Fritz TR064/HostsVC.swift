@@ -20,7 +20,7 @@ class HostsVC: UITableViewController, TR064ServiceObserver {
   
   var action: Action!
   
-  func refreshUI() {
+  func refreshUI(animated: Bool) {
     refreshControl?.beginRefreshing()
     self.reloadDataShowAnimated()
     self.refreshControl?.endRefreshing()

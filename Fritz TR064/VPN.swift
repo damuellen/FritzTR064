@@ -19,7 +19,7 @@ func VPN()->NEVPNConnection {
     p.disconnectOnSleep = true
     p.localIdentifier = "vpn"
     p.username = username
-    p.passwordReference = keychain.getData("password")
+    p.passwordReference = keychain.getData("passwordvpn")
     p.authenticationMethod = NEVPNIKEAuthenticationMethod.SharedSecret
     p.sharedSecretReference = keychain.getData("secret")
     

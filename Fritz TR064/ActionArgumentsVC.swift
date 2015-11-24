@@ -70,8 +70,6 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
     setup(tableView)
     let addButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "sendAction")
     self.navigationItem.rightBarButtonItem = addButton
-
-    self
   }
   
   func setup(tableView: UITableView) {
@@ -90,7 +88,7 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
     if segue.identifier == "sendAction" {
       let controller = ((segue.destinationViewController as! UINavigationController).topViewController as! XMLResponseViewController)
       controller.action = self.action
-      TR064.startAction(action, arguments: arguments).then { xml in
+      TR064Manager.sharedManager.startAction(action, arguments: arguments).then { xml in
         if let result = xml.value.convertWithAction(self.action) {
           TR064Manager.sharedManager.soapResponse = result
         }

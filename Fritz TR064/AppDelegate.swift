@@ -23,8 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var alert: UIAlertController?
 
   func setup() {
-    print(reachability?.currentReachabilityStatus)
-    if isRunningSimulator {
+     if isRunningSimulator {
       TR064.getAvailableServices()
     }else {
       switch reachability!.currentReachabilityStatus {
@@ -46,8 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Settings.set(Setting.launchedForTheFirstTime.key, toValue: "NO")
     id = NSNotificationCenter.defaultCenter().addObserverForName(
       NEVPNStatusDidChangeNotification, object: nil, queue: nil) { _ in
-				delay(1) { TR064.getAvailableServices() }
-        print(getIFAddresses())
+				delay(1) {
+          TR064.getAvailableServices() }
       NSNotificationCenter.defaultCenter().removeObserver(self.id!)
       self.id = nil
     }

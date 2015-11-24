@@ -19,7 +19,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
 	let bgView = GradientView(frame: CGRectZero)
   var action: Action?
   
-  func refreshUI() {
+  func refreshUI(animated: Bool) {
     tableView.reloadData()
   }
   
@@ -55,7 +55,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
       actionTitle: ["Retry"],
       actionBlock: [{
         if let action = self.action {
-        TR064.startAction(action)
+        self.manager.startAction(action)
         }
         }])
   }
@@ -71,7 +71,7 @@ extension XMLResponseViewController {
     guard let text = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text else { return }
       UIPasteboard.generalPasteboard().string = text
     if text.containsURL() {
-      TR064.getXMLFromURL(text)?.responseXMLDocument(TR064.completionHandler)
+      manager.getXMLFromURL(text)?.responseXMLDocument(TR064.completionHandler)
       if text.containsString("calllist") {
         self.performSegueWithIdentifier("showCallList", sender: self)
       }

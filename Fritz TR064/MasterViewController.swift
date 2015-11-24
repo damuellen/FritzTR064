@@ -70,8 +70,8 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate, TR06
     tableView.delegate = self
   }
   
-  func refreshUI() {
-    if let device = TR064Manager.sharedManager.activeDevice {
+  func refreshUI(animated: Bool) {
+    if let device = manager.device {
     self.tableData = device.services.map { service in
       (service: service, actions: TR064Manager.sharedManager[ActionsFrom: service]! )
       }}
@@ -79,7 +79,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate, TR06
   
   override func viewWillAppear(animated: Bool) {
     manager.observer = self
-    self.refreshUI()
+    self.refreshUI(true)
     bgView.frame = tableView.bounds
     self.clearsSelectionOnViewWillAppear ?= self.splitViewController?.collapsed
     view.bringSubviewToFront(navigationController!.navigationBar)
@@ -121,7 +121,7 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate, TR06
     let cell = tableView.dequeueReusableCellWithIdentifier("Section")
     cell?.backgroundColor = UIColor.blackColor()
     cell?.textLabel?.textColor = UIColor.whiteColor()
-    let object = manager.activeDevice!.services.map {$0}[section]
+    let object = manager.device!.services.map {$0}[section]
     cell?.textLabel!.text = object.serviceType.stringByReplacingOccurrencesOfString("urn:dslforum-org:service:", withString: "")
     return cell
   }

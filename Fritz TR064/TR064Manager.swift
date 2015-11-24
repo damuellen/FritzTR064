@@ -6,7 +6,6 @@
 //  Copyright © 2015 Daniel Müllenborn. All rights reserved.
 //
 
-
 import Alamofire
 
 class TR064Manager: Manager {
@@ -15,23 +14,21 @@ class TR064Manager: Manager {
       configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
       serverTrustPolicyManager: ServerTrustPolicyManager(policies: serverTrustPolicies))
   
-  static let serverTrustPolicies: [String: ServerTrustPolicy] = [NSURL(string: "https://fritz.box:49443")!.host!: .DisableEvaluation ]
+  static let serverTrustPolicies = [
+    NSURL(string: "https://fritz.box:49443")!.host!: ServerTrustPolicy.DisableEvaluation]
 
   var observer: TR064ServiceObserver?
-
   var activeService: TR064Service?
   
-  var activeDevice: TR064.Device?
-  
-  var isReady: Bool = false {
+  var device: TR064.Device? {
     didSet {
-      observer?.refreshUI()
+      observer?.refreshUI(true)
     }
   }
-  
+
   var soapResponse: Any? {
     didSet {
-      observer?.refreshUI()
+      observer?.refreshUI(true)
     }
   }
   
@@ -42,18 +39,52 @@ class TR064Manager: Manager {
   }
   
   subscript(ServiceName: String) -> [Action]? {
-    return self.activeDevice?.actions.lazy.filter { $0.name == ServiceName }
+    return self.device?.actions.lazy.filter { $0.name == ServiceName }
   }
   
   subscript(ActionsFrom service: Service) -> [Action]? {
-    return self.activeDevice?.actions.lazy.filter { $0.service == service }
+    return self.device?.actions.lazy.filter { $0.service == service }
+  }
+  
+  /// Sends an request for an action with arguments, and returns a future response.
+  func startAction(action: Action, arguments: [String] = []) -> ActionResultPromise {
+    
+    let request = sendRequest(action, arguments: arguments)
+    
+    let timer = Timeout.scheduledTimer(4) { _ in self.observer?.alert() }
+    
+    request.responseXMLDocument { (_,_,xml) in
+      timer.invalidate()
+    }
+    request.responseXMLPromise().trap { _ in
+      timer.fire()
+    }
+    return request.responsePromiseFor(Action: action)
+  }
+  
+  /// Sends an request for an action with arguments.
+  private func sendRequest(action: Action, arguments: [String] = []) -> Request {
+    
+    let request = TR064.createRequest(action)
+    request.HTTPBody = TR064.createMessage(action, arguments: arguments)
+    
+    return self.request(request).authenticate(user: account, password: pass).validate()
+  }
+  
+  func getXMLFromURL(requestURL: String) -> Request? {
+    return self.request(.GET, requestURL).validate()
+  }
+  
+  /// Use the URL from the given service to request his actions.
+  func requestActionsFor(service: Service) -> Promise<AFPValue<AEXMLDocument>, AFPError> {
+    return  self.request(.GET, "https://fritz.box:49443" + service.SCPDURL ).validate().responseXMLPromise()
   }
   
 }
 
 protocol TR064ServiceObserver {
   var manager: TR064Manager { get }
-  func refreshUI()
+  func refreshUI(animated: Bool)
   func alert()
 }
 

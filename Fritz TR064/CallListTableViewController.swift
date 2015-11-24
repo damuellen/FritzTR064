@@ -14,6 +14,7 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   private var messageLabel: UILabel?
   private var filter = false
   private var reloading = false
+  private var isIphone = UIDevice().isIphone
   
   var tableData: [Call] {
     get {
@@ -26,7 +27,7 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
     }
   }
   
-  func refreshUI() {
+  func refreshUI(animated: Bool) {
     refreshControl?.beginRefreshing()
     self.reloadDataShowAnimated()
     self.refreshControl?.endRefreshing()
@@ -126,7 +127,8 @@ class CallListTableViewController: UITableViewController, TR064ServiceObserver {
   }
   
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-    if !reloading { CellAnimator.animateCell(cell, withTransform: CellAnimator.TransformScale, andDuration: 0.2) }
+    if !reloading && isIphone { CellAnimator.animateCell(cell, withTransform: CellAnimator.TransformScale, andDuration: 0.2) }
+    if !reloading && !isIphone { CellAnimator.animateCell(cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.2) }
   }
 }
 

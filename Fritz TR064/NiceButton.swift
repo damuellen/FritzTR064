@@ -13,9 +13,9 @@ class NiceButton: UIButton {
   var blurEffectView: UIVisualEffectView!
   
   override func awakeFromNib() {
-    self.layer.cornerRadius = 10
+    self.layer.cornerRadius = 8
     self.layer.masksToBounds = true
-    addBlurEffect(.Light, addVibrancy: true).contentView.addSubview(self.titleLabel!)
+    addBlurEffect(.ExtraLight, addVibrancy: true).contentView.addSubview(self.titleLabel!)
   }
   
   private func tintedIconButton(iconNamed iconName: String) -> UIButton {
@@ -29,17 +29,25 @@ class NiceButton: UIButton {
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    self.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
+    UIView.animateWithDuration(0.2, delay: 0,
+      usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [],
+      animations: {
+        self.transform = CGAffineTransformMakeScale(0.95, 0.95)
+      }, completion: { _ in
+      //  self.addOrChangeGradientLayerWithColors(UIColor.orangeMango())
+    })
     super.touchesBegan(touches, withEvent: event)
   }
   
   override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    self.superview?.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(2))
+   // self.superview?.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(2))
     super.touchesMoved(touches, withEvent: event)
   }
   
   override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
     (self.layer.sublayers?.first as? CAGradientLayer)?.removeFromSuperlayer()
+    UIView.animateWithDuration(0.2) {
+      self.transform = CGAffineTransformIdentity }
     super.touchesEnded(touches, withEvent: event)
   }
   

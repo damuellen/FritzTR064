@@ -21,42 +21,66 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   @IBOutlet weak var Hosts: NiceButton!
   @IBOutlet weak var Actions: NiceButton!
   @IBOutlet weak var CallList: NiceButton!
-  @IBOutlet weak var Button1: NiceButton!
-  @IBOutlet weak var Button2: NiceButton!
+
+  @IBOutlet weak var Fritzbox: FritzButton!
   
+  @IBOutlet weak var VPNState: UISwitch!
+
   @IBOutlet weak var ButtonCenter: NSLayoutConstraint!
 
+  @IBOutlet var Buttons: [UIButton]!
+  
   override func viewDidLoad() {
     manager.observer = self
     manager.activeService = nil
-    configureUI()
+    self.view.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(2))
+    self.Buttons.forEach({$0.alpha = 0})
   }
 
   override func viewDidAppear(animated: Bool) {
-    if !manager.isReady {
-      SwiftSpinner.showWithDelay(2.5, title: "It's taking longer than expected", animated: true)
-    }
-    if manager.isReady {
-      refreshUI()
+    if manager.device != nil {
+      refreshUI(false)
     }
   }
   
   func alert() {
-    SwiftSpinner.show("Connecting \nto router...").addTapHandler({
-      TR064.getAvailableServices()
-      }, subtitle: "Tap to retry.")
+    let addButton = UIBarButtonItem(title: "Search Device", style: .Plain, target: self, action: "retry")
+    self.navigationItem.leftBarButtonItem = addButton
   }
   
-  func configureUI() {
-    self.view.addOrChangeGradientLayerWithColors(UIColor.beach())
+  func retry() {
+    TR064.findDevice()
   }
   
-  func refreshUI() {
+  func refreshUI(animated: Bool) {
+    
     for view in self.view.subviews where view is UIButton {
       (view as! UIButton).enabled = true
-      (view as! UIButton).hidden = false
     }
+    
+    self.navigationItem.leftBarButtonItem = nil
     SwiftSpinner.hide()
+    
+    Fritzbox.modelType = FritzButton.modelName.AVM7360
+
+    if animated {
+      self.Fritzbox.transform = CGAffineTransformMakeScale(5, 5)
+      Fritzbox.setTemplate()
+      UIView.animateWithDuration(animationDuration, animations: {
+        self.Buttons.forEach({$0.alpha = 1})
+        self.Fritzbox.transform = CGAffineTransformMakeScale(1, 1)
+        }, completion: { _ in
+          self.alwaysAnimated()})
+    } else {
+      self.alwaysAnimated()
+    }
+  }
+  
+  func alwaysAnimated() {
+    Fritzbox.setOriginal()
+    UIView.animateWithDuration(0.3) {
+      self.Buttons.forEach({$0.alpha = 1})
+    }
   }
   
   // MARK: - Segues

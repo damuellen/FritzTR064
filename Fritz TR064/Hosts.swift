@@ -18,7 +18,7 @@ class Hosts: TR064Service {
     case WakeOnLANByMACAddress = "X_AVM-DE_WakeOnLANByMACAddress"
     
     var action: Action? {
-      return manager.activeDevice?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
+      return manager.device?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }
   }
   
@@ -29,7 +29,7 @@ class Hosts: TR064Service {
   
   static func setHostName(name: String, ByMACAdress mac: String) {
     if let action = knownActions.SetHostNameByMACAdress.action {
-      TR064.startAction(action, arguments: [name, mac])
+      manager.startAction(action, arguments: [name, mac])
     }
   }
   
@@ -37,19 +37,19 @@ class Hosts: TR064Service {
     guard let action = knownActions.GetHostNumberOfEntries.action else {
       return nil
     }
-    return TR064.startAction(action)
+    return manager.startAction(action)
   }
   
   static func getHost(index: Int) -> ActionResultPromise? {
     guard let action = knownActions.GetGenericHostEntry.action else {
       return nil
     }
-     return TR064.startAction(action, arguments: ["\(index)"])
+     return manager.startAction(action, arguments: ["\(index)"])
   }
 
   static func getAllHosts() {
     var cachedHosts = [Host]()
-    if let cachedHostList = FileManager.loadValuesFromDiskCache("Hosts") {
+    if let cachedHostList = try! FileManager.loadValuesFromDiskCache("Hosts") {
       cachedHosts = extractValuesFromPropertyListArray(cachedHostList)
       self.dataSource = cachedHosts
     }
@@ -71,7 +71,7 @@ class Hosts: TR064Service {
         let newHosts = hosts.map { $0.value.convertWithAction(action) }.flatMap {$0}.map { Host(host: $0) }
         if cachedHosts.count < newHosts.count {
           self.dataSource = newHosts
-          FileManager.saveValuesToDiskCache(newHosts, name: "Hosts")
+          try! FileManager.saveValuesToDiskCache(newHosts, name: "Hosts")
         }
       }
     }
@@ -79,7 +79,7 @@ class Hosts: TR064Service {
   
   static func wakeHost(MAC: String) {
     guard let action = knownActions.WakeOnLANByMACAddress.action else { return }
-    TR064.startAction(action, arguments: [MAC])
+    manager.startAction(action, arguments: [MAC])
   }
   
 }

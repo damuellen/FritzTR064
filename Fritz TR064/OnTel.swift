@@ -14,7 +14,7 @@ class OnTel: TR064Service {
     case GetCallList
     
     var action: Action? {
-      return manager.activeDevice?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
+      return manager.device?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
     }
   }
   
@@ -25,21 +25,21 @@ class OnTel: TR064Service {
   
   static func getCallList(argument: String = "", ignoreCache: Bool = false) {
     var cachedCalls = [Call]()
-    if let cachedCallList = FileManager.loadValuesFromDiskCache("CallList") where ignoreCache == false {
+    if let cachedCallList = try? FileManager.loadValuesFromDiskCache("CallList") where ignoreCache == false {
       cachedCalls = extractValuesFromPropertyListArray(cachedCallList)
       self.dataSource = cachedCalls
     }
     guard let action = knownActions.GetCallList.action
       else { return }
-    TR064.startAction(action).then { xml in
+    manager.startAction(action).then { xml in
       guard let url = xml.value.checkForURL()
         else { return }
-      let callList = TR064.getXMLFromURL(url + argument)?.responseXMLPromise()
+      let callList = manager.getXMLFromURL(url + argument)?.responseXMLPromise()
       callList?.then { callList in
         let newCalls = Call.extractCalls(callList.value).map { Call($0) }.flatMap {$0}
         if cachedCalls.first?.id != newCalls.first?.id {
           self.dataSource = newCalls
-        FileManager.saveValuesToDiskCache(newCalls, name: "CallList")
+        try! FileManager.saveValuesToDiskCache(newCalls, name: "CallList")
         }
       }
     }
