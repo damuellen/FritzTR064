@@ -49,7 +49,7 @@ class Hosts: TR064Service {
 
   static func getAllHosts() {
     var cachedHosts = [Host]()
-    if let cachedHostList = try! FileManager.loadValuesFromDiskCache("Hosts") {
+    if let cachedHostList = try? FileManager.loadValuesFromDiskCache("Hosts") {
       cachedHosts = extractValuesFromPropertyListArray(cachedHostList)
       self.dataSource = cachedHosts
     }

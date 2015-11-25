@@ -6,6 +6,8 @@
 //  Copyright © 2015 Daniel Müllenborn. All rights reserved.
 //
 
+import Foundation
+
 struct Host {
 	
 	let macAddress: String

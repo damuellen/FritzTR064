@@ -154,21 +154,17 @@ struct TR064 {
     var requests = requestServicesDescriptions()
     
     let UPNPServicesDescriptionRequest = requests.removeFirst()
-    TR064.checkUPNPServices(UPNPServicesDescriptionRequest)
+ //   TR064.checkUPNPServices(UPNPServicesDescriptionRequest)
     if let TR064ServicesDescriptionRequest = requests.first {
       TR064.checkTR064Services(TR064ServicesDescriptionRequest)
     }
   }
   
   private static func requestServicesDescriptions() -> [Request] {
-    keychain.storeData("routerPassphrase", data: "6473".dataValue)
-    let passphrase = keychain.getData("routerPassphrase").stringValue
-    manager.passphrase = passphrase
+
     var requests: [Request] = []
     requests.append(manager.request(.GET, Device.URL + descURLs[1]))
-    if manager.passphrase != nil {
-      requests.append(manager.request(.GET, Device.URL + descURLs[0]))
-    }
+    requests.append(manager.request(.GET, Device.URL + descURLs[0]))
     return requests
   }
   

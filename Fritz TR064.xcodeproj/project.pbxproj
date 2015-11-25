@@ -57,7 +57,7 @@
 		65D5A1391BC708C900D691DB /* HostsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D5A1381BC708C900D691DB /* HostsVC.swift */; };
 		65D6BB5F1BEABA550027D0F9 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6BB5E1BEABA550027D0F9 /* Credentials.swift */; };
 		65DB0B231BC3191900D88E40 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65DB0B221BC3191900D88E40 /* NetworkExtension.framework */; };
-		65DB0B2B1BC3334400D88E40 /* keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 65DB0B2A1BC3334400D88E40 /* keychain.m */; };
+		65DDF5CC1C052B7000BFFDDE /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDF5CB1C052B7000BFFDDE /* Keychain.swift */; };
 		65E9F9531BBC4AE600DDA8E7 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E9F9521BBC4AE600DDA8E7 /* Call.swift */; };
 		65EA37DC1BCCFF6B00754DD4 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */; };
 		65EF43711BDFF9F700FBAE69 /* Timeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EF43701BDFF9F700FBAE69 /* Timeout.swift */; };
@@ -170,8 +170,7 @@
 		65D6BB5E1BEABA550027D0F9 /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Credentials.swift; path = "Fritz TR064/Credentials.swift"; sourceTree = "<group>"; };
 		65DB0B221BC3191900D88E40 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		65DB0B261BC3328600D88E40 /* Fritz TR064-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fritz TR064-Bridging-Header.h"; sourceTree = "<group>"; };
-		65DB0B291BC3334400D88E40 /* keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keychain.h; sourceTree = "<group>"; };
-		65DB0B2A1BC3334400D88E40 /* keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keychain.m; sourceTree = "<group>"; };
+		65DDF5CB1C052B7000BFFDDE /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		65E9F9521BBC4AE600DDA8E7 /* Call.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		65EF43701BDFF9F700FBAE69 /* Timeout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeout.swift; sourceTree = "<group>"; };
@@ -257,10 +256,10 @@
 		65C825691BB75E02005DF551 /* Fritz TR064 */ = {
 			isa = PBXGroup;
 			children = (
-				65F359CB1BDD8990002B1F6D /* Utilitie */,
+				65F359CB1BDD8990002B1F6D /* Utilities */,
 				65F359C91BDD893B002B1F6D /* TableViewCells */,
 				65287C0E1BC3175D00103231 /* Fritz TR064.entitlements */,
-				65F359CC1BDD89B3002B1F6D /* Keychain */,
+				65F359CC1BDD89B3002B1F6D /* Support */,
 				65F359C81BDD8922002B1F6D /* ViewController */,
 				65C825731BB75E02005DF551 /* Assets.xcassets */,
 				6559840E1BE93BA60089349F /* Main.storyboard */,
@@ -344,7 +343,7 @@
 			name = Promise;
 			sourceTree = "<group>";
 		};
-		65F359CB1BDD8990002B1F6D /* Utilitie */ = {
+		65F359CB1BDD8990002B1F6D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
 				650295FF1BD315B5008CC54A /* UIView+UIColor.swift */,
@@ -353,20 +352,19 @@
 				6508C5C71BD96A5A0088AB55 /* SwiftSpinner.swift */,
 				65C005981BC1478100FDCFFA /* FadePushSegue.swift */,
 			);
-			name = Utilitie;
+			name = Utilities;
 			sourceTree = "<group>";
 		};
-		65F359CC1BDD89B3002B1F6D /* Keychain */ = {
+		65F359CC1BDD89B3002B1F6D /* Support */ = {
 			isa = PBXGroup;
 			children = (
 				65C8256A1BB75E02005DF551 /* AppDelegate.swift */,
 				65F25DC11BED645A00719BAF /* FileManager.swift */,
+				65DDF5CB1C052B7000BFFDDE /* Keychain.swift */,
 				6594CB471BE151EA004A361A /* Reachability.swift */,
 				65DB0B261BC3328600D88E40 /* Fritz TR064-Bridging-Header.h */,
-				65DB0B291BC3334400D88E40 /* keychain.h */,
-				65DB0B2A1BC3334400D88E40 /* keychain.m */,
 			);
-			name = Keychain;
+			name = Support;
 			sourceTree = "<group>";
 		};
 		65F4695F1BDEB37C009B82A7 /* Fritz TR064Tests */ = {
@@ -526,7 +524,6 @@
 				65EA37DC1BCCFF6B00754DD4 /* MenuViewController.swift in Sources */,
 				655F62001BC139A900D723EE /* WebViewController.swift in Sources */,
 				65C825811BB76010005DF551 /* TR064.swift in Sources */,
-				65DB0B2B1BC3334400D88E40 /* keychain.m in Sources */,
 				659D59231BC9B72D006382A4 /* AlamofireXMLPromise.swift in Sources */,
 				65C8256D1BB75E02005DF551 /* MasterViewController.swift in Sources */,
 				65C005991BC1478100FDCFFA /* FadePushSegue.swift in Sources */,
@@ -551,6 +548,7 @@
 				65337A401BC166BB009925E5 /* CallListTableViewController.swift in Sources */,
 				656BDA331BC9C9520083D0DE /* Promise.swift in Sources */,
 				65C8256B1BB75E02005DF551 /* AppDelegate.swift in Sources */,
+				65DDF5CC1C052B7000BFFDDE /* Keychain.swift in Sources */,
 				65B2BC281BD6D2F300C244B1 /* Extensions.swift in Sources */,
 				65F7EB691BE6A71100AFA322 /* SideMenu.swift in Sources */,
 				65C0059B1BC14E3300FDCFFA /* XMLResponseViewController.swift in Sources */,

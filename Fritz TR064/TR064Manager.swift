@@ -32,8 +32,8 @@ class TR064Manager: Manager {
     }
   }
   
-  var passphrase: String?
-  
+  var credential = NSURLCredential(user: account, password: pass, persistence: .Permanent)
+
   private override init(configuration: NSURLSessionConfiguration, serverTrustPolicyManager: ServerTrustPolicyManager?) {
     super.init(configuration: configuration, serverTrustPolicyManager: serverTrustPolicyManager)
   }
@@ -67,9 +67,8 @@ class TR064Manager: Manager {
     
     let request = TR064.createRequest(action)
     request.HTTPBody = TR064.createMessage(action, arguments: arguments)
-    
-    return self.request(request).authenticate(user: account, password: pass).validate()
-  }
+    self.session
+    return self.request(request).authenticate(usingCredential: credential)  }
   
   func getXMLFromURL(requestURL: String) -> Request? {
     return self.request(.GET, requestURL).validate()

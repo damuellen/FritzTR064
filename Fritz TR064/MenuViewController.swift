@@ -38,7 +38,9 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   }
 
   override func viewDidAppear(animated: Bool) {
-    if manager.device != nil {
+    if manager.device == nil {
+      alert()
+    } else {
       refreshUI(false)
     }
   }

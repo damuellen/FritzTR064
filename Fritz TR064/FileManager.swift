@@ -93,3 +93,4 @@ func saveValuesToDefaults<T:PropertyListReadable>(newValues:[T], key:String) {
   let encodedValues = newValues.map{$0.propertyListRepresentation()}
   NSUserDefaults.standardUserDefaults().setObject(encodedValues, forKey:key)
 }
+
