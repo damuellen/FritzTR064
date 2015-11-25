@@ -30,28 +30,28 @@ class Keychain {
   }
   
   static func dataForKey(keyName: String) -> NSData? {
-    var keychainQueryDictionary = self.setupKeychainDictionaryForKey(keyName)
+    var keychainQuery = self.setupKeychainQueryForKey(keyName)
     var result: AnyObject?
     
-    keychainQueryDictionary[SecMatchLimit] = kSecMatchLimitOne
-    keychainQueryDictionary[SecReturnData] = kCFBooleanTrue
+    keychainQuery[SecMatchLimit] = kSecMatchLimitOne
+    keychainQuery[SecReturnData] = kCFBooleanTrue
     
     let status = withUnsafeMutablePointer(&result) {
-      SecItemCopyMatching(keychainQueryDictionary, $0)
+      SecItemCopyMatching(keychainQuery, $0)
     }
     
     return status == noErr ? result as? NSData : nil
   }
   
   static func persistentRefForKey(keyName: String) -> NSData? {
-    var keychainDictionary = self.setupKeychainDictionaryForKey(keyName)
+    var keychainQuery = self.setupKeychainQueryForKey(keyName)
     var result: AnyObject?
     
-    keychainDictionary[SecMatchLimit] = kSecMatchLimitOne
-    keychainDictionary[SecReturnPersistentRef] = kCFBooleanTrue
+    keychainQuery[SecMatchLimit] = kSecMatchLimitOne
+    keychainQuery[SecReturnPersistentRef] = kCFBooleanTrue
     
     let status = withUnsafeMutablePointer(&result) {
-      SecItemCopyMatching(keychainDictionary, $0)
+      SecItemCopyMatching(keychainQuery, $0)
     }
     
     return status == noErr ? result as? NSData : nil
@@ -66,11 +66,11 @@ class Keychain {
   }
   
   static func setData(value: NSData, forKey keyName: String) -> Bool {
-    var keychainDictionary: [String:AnyObject] = self.setupKeychainDictionaryForKey(keyName)
+    var keychainQuery: [String:AnyObject] = self.setupKeychainQueryForKey(keyName)
     
-    keychainDictionary[SecValueData] = value
-    keychainDictionary[SecReturnPersistentRef] = kCFBooleanTrue
-    let status: OSStatus = SecItemAdd(keychainDictionary, nil)
+    keychainQuery[SecValueData] = value
+    keychainQuery[SecReturnPersistentRef] = kCFBooleanTrue
+    let status: OSStatus = SecItemAdd(keychainQuery, nil)
     
     if status == errSecSuccess {
       return true
@@ -82,9 +82,9 @@ class Keychain {
   }
   
   static func removeObjectForKey(keyName: String) -> Bool {
-    let keychainDictionary: [String:AnyObject] = self.setupKeychainDictionaryForKey(keyName)
+    let keychainQuery: [String:AnyObject] = self.setupKeychainQueryForKey(keyName)
     
-    let status: OSStatus =  SecItemDelete(keychainDictionary);
+    let status: OSStatus =  SecItemDelete(keychainQuery);
     
     if status == errSecSuccess {
       return true
@@ -94,10 +94,10 @@ class Keychain {
   }
   
   private static func updateData(value: NSData, forKey keyName: String) -> Bool {
-    let keychainDictionary: [String:AnyObject] = self.setupKeychainDictionaryForKey(keyName)
+    let keychainQuery: [String:AnyObject] = self.setupKeychainQueryForKey(keyName)
     let updateDictionary = [SecValueData:value]
 
-    let status: OSStatus = SecItemUpdate(keychainDictionary, updateDictionary)
+    let status: OSStatus = SecItemUpdate(keychainQuery, updateDictionary)
     
     if status == errSecSuccess {
       return true
@@ -106,19 +106,19 @@ class Keychain {
     }
   }
   
-  private static func setupKeychainDictionaryForKey(keyName: String) -> [String:AnyObject] {
-    var keychainDictionary: [String:AnyObject] = [SecClass:kSecClassGenericPassword]
+  private static func setupKeychainQueryForKey(keyName: String) -> [String:AnyObject] {
+    var keychainQuery: [String:AnyObject] = [SecClass:kSecClassGenericPassword]
     
     let encodedIdentifier: NSData? = keyName.dataUsingEncoding(NSUTF8StringEncoding)
     
-    keychainDictionary[SecAttrGeneric] = encodedIdentifier
-    keychainDictionary[SecAttrAccount] = encodedIdentifier
+    keychainQuery[SecAttrGeneric] = encodedIdentifier
+    keychainQuery[SecAttrAccount] = encodedIdentifier
     
-    keychainDictionary[SecAttrService] = "FritzVPN"
+    keychainQuery[SecAttrService] = "FritzVPN"
     
-    keychainDictionary[SecAttrAccessible] = kSecAttrAccessibleAlwaysThisDeviceOnly
+    keychainQuery[SecAttrAccessible] = kSecAttrAccessibleAlwaysThisDeviceOnly
     
-    return keychainDictionary
+    return keychainQuery
   }
 }
 
