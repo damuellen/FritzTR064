@@ -14,6 +14,7 @@ class BackgroundGradientView: UIView {
     super.layoutSubviews()
     self.layer.sublayers?.filter(isGradientLayer).forEach { $0.frame = self.bounds }
   }
+  
 }
 
 class MenuViewController: UIViewController, TR064ServiceObserver {
@@ -21,13 +22,13 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
   @IBOutlet weak var Hosts: NiceButton!
   @IBOutlet weak var Actions: NiceButton!
   @IBOutlet weak var CallList: NiceButton!
-
+  
   @IBOutlet weak var Fritzbox: FritzButton!
   
   @IBOutlet weak var VPNState: UISwitch!
-
+  
   @IBOutlet weak var ButtonCenter: NSLayoutConstraint!
-
+  
   @IBOutlet var Buttons: [UIButton]!
   
   override func viewDidLoad() {
@@ -36,7 +37,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
     self.view.addOrChangeGradientLayerWithColors(UIColor.randomNiceColors(2))
     self.Buttons.forEach({$0.alpha = 0})
   }
-
+  
   override func viewDidAppear(animated: Bool) {
     if manager.device == nil {
       alert()
@@ -45,8 +46,11 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
     }
   }
   
+  @IBAction func enterPassword(sender: AnyObject) {
+    //  appearAlertViewWithTextField
+  }
   func alert() {
-    let addButton = UIBarButtonItem(title: "Search Device", style: .Plain, target: self, action: "retry")
+    let addButton = UIBarButtonItem(title: "Search FRITZ!Box", style: .Plain, target: self, action: "retry")
     self.navigationItem.leftBarButtonItem = addButton
   }
   
@@ -64,7 +68,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
     SwiftSpinner.hide()
     
     Fritzbox.modelType = FritzButton.modelName.AVM7360
-
+    
     if animated {
       self.Fritzbox.transform = CGAffineTransformMakeScale(5, 5)
       Fritzbox.setTemplate()
@@ -98,7 +102,7 @@ class MenuViewController: UIViewController, TR064ServiceObserver {
 }
 
 extension UIViewController {
-
+  
   func appearAlertViewWithTitle(title: String, message: String, actionTitle: [String], actionBlock: [() -> Void]) {
     appDelegate.alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
     for (actionTitle, actionBlock) in zip(actionTitle, actionBlock) {
@@ -109,7 +113,20 @@ extension UIViewController {
     self.presentViewController(appDelegate.alert!, animated: true, completion: { appDelegate.alert = nil} )
   }
   
-}
-
+  func appearAlertViewWithTextField(title: String, message: String,actionBlock: () -> Void) {
+    appDelegate.alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+    appDelegate.alert!.addTextFieldWithConfigurationHandler { (textField) in
+      textField.placeholder = "Password"
+      textField.secureTextEntry = true
+    }
+    
+    appDelegate.alert!.addTextFieldWithConfigurationHandler { (textField) in
+      textField.placeholder = "Password Confirmation"
+      textField.secureTextEntry = true
+    }
+    appDelegate.alert!.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+    appDelegate.alert!.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+    self.presentViewController(appDelegate.alert!, animated: true, completion: { appDelegate.alert = nil} )
+  }
   
-
+}

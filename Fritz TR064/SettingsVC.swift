@@ -34,7 +34,7 @@ class SettingsVC: UITableViewController {
     tableView.backgroundView = bgView
     tableView.scrollsToTop = false
     tableView.delegate = self
-    let contentInsets = UIEdgeInsetsMake(10, 0, 0, 0)
+    let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length + 5, 0, 0, 0)
     tableView.contentInset = contentInsets
   }
   
@@ -80,7 +80,7 @@ extension SettingsVC: UITextFieldDelegate {
     let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue().size
     let duration = info[UIKeyboardAnimationDurationUserInfoKey] as! Double
     let contentInsets: UIEdgeInsets
-    contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, (keyboardSize.height + 10), 0)
+    contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length + 5, 0, (keyboardSize.height + 10), 0)
     
     UIView.animateWithDuration(duration) {
       self.tableView.contentInset = contentInsets
@@ -93,7 +93,7 @@ extension SettingsVC: UITextFieldDelegate {
     let info = notification.userInfo!
     let duration = info[UIKeyboardAnimationDurationUserInfoKey] as! Double
     let contentInsets: UIEdgeInsets
-    contentInsets = UIEdgeInsetsMake(topLayoutGuide.length, 0, 0, 0)
+    contentInsets = UIEdgeInsetsMake(topLayoutGuide.length + 5, 0, 0, 0)
 
     UIView.animateWithDuration(duration) {
       self.tableView.contentInset = contentInsets

@@ -12,17 +12,37 @@ struct Service {
   
   let serviceType: String
   let controlURL: String
-  var SCPDURL: String
+  let SCPDURL: String
+  var actions: [Action]
   
 }
 
 extension Service {
+  
+  mutating func extractActionsFromDescription(xml: AEXMLDocument){
+    
+    let serviceStateTable = xml.root["serviceStateTable"].children
+    
+    let stateVariables = serviceStateTable.map {
+      StateVariable(element: $0)
+      }.flatMap {$0}
+    
+    let actionList = xml.root["actionList"].children
+    
+    self.actions = actionList.map {
+      Action(element: $0, stateVariables: stateVariables, service: self)
+      }.flatMap{$0}
+  }
+  
+}
 
+extension Service {
+  
   init?(element: AEXMLElement) {
     guard let serviceType = element["serviceType"].value,
       controlURL = element["controlURL"].value,
       SCPDURL = element["SCPDURL"].value else { return nil }
-    self.init(serviceType: serviceType, controlURL: controlURL, SCPDURL: SCPDURL)
+    self.init(serviceType: serviceType, controlURL: controlURL, SCPDURL: SCPDURL, actions: [])
   }
   
 }
@@ -39,7 +59,7 @@ extension Service: PropertyListReadable {
   
   func propertyListRepresentation() -> NSDictionary {
     let representation:[String:AnyObject] =
-    ["serviceType":serviceType, "controlURL":controlURL, "SCPDURL":SCPDURL]
+    ["serviceType":serviceType, "controlURL":controlURL, "SCPDURL":SCPDURL, "actions":actions.map { $0.propertyListRepresentation() } as NSArray]
     return representation
   }
   
@@ -48,10 +68,11 @@ extension Service: PropertyListReadable {
     guard let values = propertyListRepresentation,
       serviceType = values["serviceType"] as? String,
       controlURL = values["controlURL"] as? String,
-      SCPDURL = values["SCPDURL"] as? String
+      SCPDURL = values["SCPDURL"] as? String,
+      actionsArray = (values["actions"] as? NSArray)
       else { return nil }
-    
-    self.init(serviceType: serviceType, controlURL: controlURL, SCPDURL: SCPDURL)
+    let actions = actionsArray.map { Action(propertyListRepresentation: $0 as? NSDictionary) }.flatMap {$0}
+    self.init(serviceType: serviceType, controlURL: controlURL, SCPDURL: SCPDURL, actions: actions)
   }
   
 }

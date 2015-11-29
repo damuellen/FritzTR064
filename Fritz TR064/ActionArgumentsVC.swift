@@ -21,6 +21,7 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   let bgView = GradientView(frame: CGRectZero)
   
   var action: Action!
+  var service: Service!
   
   var needsInput = false {
     didSet {
@@ -60,7 +61,7 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
     self.navigationItem.title = action.name
     self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
   }
-
+  
   func checkInputArguments() {
     
   }
@@ -84,11 +85,11 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   // MARK: - Segues
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
- //   bgView.removeFromSuperview()
+    //   bgView.removeFromSuperview()
     if segue.identifier == "sendAction" {
       let controller = ((segue.destinationViewController as! UINavigationController).topViewController as! XMLResponseViewController)
       controller.action = self.action
-      TR064Manager.sharedManager.startAction(action, arguments: arguments).then { xml in
+      TR064Manager.sharedManager.startAction(service, action: action, arguments: arguments).then { xml in
         if let result = xml.value.convertWithAction(self.action) {
           TR064Manager.sharedManager.soapResponse = result
         }
@@ -97,7 +98,7 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   }
   
   @IBOutlet weak var text: UITextField!
-
+  
   // MARK: - Table View
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -159,17 +160,13 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   }
   
   override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    if indexPath.section == 0 && self.tableData.input.count > 0 {
-      return 74
-    }else {
-      return UITableViewAutomaticDimension
-    }
+    return indexPath.section == 0 && self.tableData.input.count > 0 ? 74 : UITableViewAutomaticDimension
   }
-    
+  
   override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
     return false
   }
-
+  
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
     cell.backgroundColor = UIColor.clearColor()
     cell.backgroundView?.backgroundColor = UIColor.clearColor()
@@ -177,4 +174,3 @@ class ActionArgumentsVC: UITableViewController, UITextFieldDelegate {
   }
   
 }
-

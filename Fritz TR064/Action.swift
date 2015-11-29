@@ -18,15 +18,10 @@ let serviceURL = "https://fritz.box:49443"
 
 struct Action {
   
-  let service: Service
   var name: String
   var needsInput = false
   var input = [Name: StateVariable]()
   var output = [Name: StateVariable]()
-  
-  var url: String {
-    return serviceURL + service.controlURL
-  }
   
 }
 
@@ -41,7 +36,6 @@ extension Action {
       }
     }
     self.name = value
-    self.service = service
     element["argumentList"].children.forEach { argument in
       let stateVariable = stateVariables.lazy.filter { argument["relatedStateVariable"].value == $0.name }.first
       switch argument["direction"].value {
@@ -90,7 +84,7 @@ extension StateVariable {
 }
 
 extension Action: Hashable, Equatable {
-  var hashValue: Int { return url.hashValue ^ name.hashValue}
+  var hashValue: Int { return name.hashValue}
 }
 
 func ==(lhs: Action, rhs: Action) -> Bool {
@@ -132,8 +126,7 @@ extension Action: PropertyListReadable {
       outputs[name] = stateVariable.propertyListRepresentation()
     }
     let representation:[String:AnyObject] =
-    ["service":service.propertyListRepresentation(),
-      "Name":name, "NeedsInput":needsInput,
+    ["Name":name, "NeedsInput":needsInput,
       "Input": inputs, "Output":outputs]
     
     return representation
@@ -142,8 +135,6 @@ extension Action: PropertyListReadable {
   init?(propertyListRepresentation: NSDictionary?) {
     
     guard let values = propertyListRepresentation,
-      serviceDict = (values["service"] as? NSDictionary),
-      service = Service(propertyListRepresentation: serviceDict),
       name = values["Name"] as? String,
       needsInput = values["NeedsInput"] as? Bool,
       input = values["Input"] as? [String:NSDictionary],
@@ -159,7 +150,7 @@ extension Action: PropertyListReadable {
     for (name, variables) in output {
       outputs[name] = StateVariable(propertyListRepresentation: variables)
     }
-    self.init(service: service, name: name, needsInput: needsInput, input: inputs, output: outputs)
+    self.init(name: name, needsInput: needsInput, input: inputs, output: outputs)
   }
 
 }

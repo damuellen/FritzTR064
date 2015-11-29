@@ -8,15 +8,17 @@
 
 import Alamofire
 
+typealias ActionResultPromise = Promise<AFPValue<AEXMLElement>, AFPError>
+
 class TR064Manager: Manager {
   
   static let sharedManager: TR064Manager = TR064Manager(
-      configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
-      serverTrustPolicyManager: ServerTrustPolicyManager(policies: serverTrustPolicies))
+    configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
+    serverTrustPolicyManager: ServerTrustPolicyManager(policies: serverTrustPolicies))
   
   static let serverTrustPolicies = [
     NSURL(string: "https://fritz.box:49443")!.host!: ServerTrustPolicy.DisableEvaluation]
-
+  
   var observer: TR064ServiceObserver?
   var activeService: TR064Service?
   
@@ -25,31 +27,35 @@ class TR064Manager: Manager {
       observer?.refreshUI(true)
     }
   }
-
+  
   var soapResponse: Any? {
     didSet {
       observer?.refreshUI(true)
     }
   }
   
-  var credential = NSURLCredential(user: account, password: pass, persistence: .Permanent)
-
+  var credential = NSURLCredential(user: account, password: pass, persistence: .None)
+  
   private override init(configuration: NSURLSessionConfiguration, serverTrustPolicyManager: ServerTrustPolicyManager?) {
     super.init(configuration: configuration, serverTrustPolicyManager: serverTrustPolicyManager)
   }
   
-  subscript(ServiceName: String) -> [Action]? {
-    return self.device?.actions.lazy.filter { $0.name == ServiceName }
+  subscript(serviceType: String) -> Service? {
+    return self.device?.services.lazy.filter { $0.serviceType == serviceType }.first
+  }
+  
+  subscript(serviceType: String) -> [Action]? {
+    return self.device?.services.lazy.filter { $0.serviceType == serviceType }.first?.actions
   }
   
   subscript(ActionsFrom service: Service) -> [Action]? {
-    return self.device?.actions.lazy.filter { $0.service == service }
+    return self.device?.services.lazy.filter { $0 == service }.first?.actions
   }
   
   /// Sends an request for an action with arguments, and returns a future response.
-  func startAction(action: Action, arguments: [String] = []) -> ActionResultPromise {
+  func startAction(service: Service, action: Action, arguments: [String] = []) -> ActionResultPromise {
     
-    let request = sendRequest(action, arguments: arguments)
+    let request = sendRequest(service, action: action, arguments: arguments)
     
     let timer = Timeout.scheduledTimer(4) { _ in self.observer?.alert() }
     
@@ -63,10 +69,10 @@ class TR064Manager: Manager {
   }
   
   /// Sends an request for an action with arguments.
-  private func sendRequest(action: Action, arguments: [String] = []) -> Request {
+  private func sendRequest(service: Service, action: Action, arguments: [String] = []) -> Request {
     
-    let request = TR064.createRequest(action)
-    request.HTTPBody = TR064.createMessage(action, arguments: arguments)
+    let request = TR064.createRequest(service, action: action)
+    request.HTTPBody = TR064.createMessage(service, action: action, arguments: arguments)
     self.session
     return self.request(request).authenticate(usingCredential: credential)  }
   
@@ -75,7 +81,7 @@ class TR064Manager: Manager {
   }
   
   /// Use the URL from the given service to request his actions.
-  func requestActionsFor(service: Service) -> Promise<AFPValue<AEXMLDocument>, AFPError> {
+  func requestActionsForService(service: Service) -> Promise<AFPValue<AEXMLDocument>, AFPError> {
     return  self.request(.GET, "https://fritz.box:49443" + service.SCPDURL ).validate().responseXMLPromise()
   }
   

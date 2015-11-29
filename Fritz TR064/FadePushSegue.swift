@@ -8,7 +8,7 @@
 
 import UIKit
 
-let animationDuration = 0.5
+let animationDuration = 0.4
 
 class FadePushSegue: UIStoryboardSegue {
   
@@ -17,7 +17,7 @@ class FadePushSegue: UIStoryboardSegue {
     let destination = ((destinationViewController as! UINavigationController).topViewController as! XMLResponseViewController)
     destination.bgView.colors = (sourceViewController as! ActionArgumentsVC).bgView.colors
     let transition = CATransition()
-    transition.duration = 1
+    transition.duration = 0.8
     transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
     transition.type = kCATransitionFade
     source.navigationController?.view.layer.addAnimation(transition, forKey:kCATransition)
@@ -25,5 +25,3 @@ class FadePushSegue: UIStoryboardSegue {
   }
   
 }
-
-

@@ -18,6 +18,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
   
 	let bgView = GradientView(frame: CGRectZero)
   var action: Action?
+  var service: Service?
   
   func refreshUI(animated: Bool) {
     tableView.reloadData()
@@ -55,7 +56,7 @@ class XMLResponseViewController: UITableViewController, UITextFieldDelegate, TR0
       actionTitle: ["Retry"],
       actionBlock: [{
         if let action = self.action {
-        self.manager.startAction(action)
+          self.manager.startAction(self.service!, action: action)
         }
         }])
   }
@@ -114,5 +115,3 @@ extension XMLResponseViewController {
   }
   
 }
-
-

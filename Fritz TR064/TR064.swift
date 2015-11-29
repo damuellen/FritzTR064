@@ -8,14 +8,6 @@
 
 import Alamofire
 
-typealias ActionResultPromise = Promise<AFPValue<AEXMLElement>, AFPError>
-
-enum TR064Error: ErrorType {
-  case MissingService
-  case MissingAction
-  case NoAnswer
-}
-
 struct TR064 {
   
   class Device {
@@ -52,8 +44,9 @@ struct TR064 {
         manager.observer?.refreshUI(true)
       }
     }
-    var uuid: String
     
+    var uuid: String
+    var isCachedOnDisk: Bool = false
     
     var name: String {
       didSet {
@@ -62,9 +55,8 @@ struct TR064 {
     }
     
     weak var manager: TR064Manager! = TR064Manager.sharedManager
-    var services: [Service] = []
     
-    var actions: [Action] = []
+    var services: [Service] = []
     
     init(discription: AFPValue<AEXMLDocument>) {
       let prefix = NSCharacterSet(charactersInString: "uuid:")
@@ -77,65 +69,34 @@ struct TR064 {
     }
     
     func fetchCachedObjects() -> Bool {
-      if let services = try? FileManager.loadValuesFromDiskCache(uuid + "-services"),
-        actions = try? FileManager.loadValuesFromDiskCache(uuid + "-actions") {
-          
+      do {
+        if let services = try FileManager.loadCompressedValuesFromDiskCache(uuid + "-services") {
           self.services = extractValuesFromPropertyListArray(services)
-          self.actions = extractValuesFromPropertyListArray(actions)
+          self.isCachedOnDisk = true
           return true
+        }
+      } catch FileError.FileNotFound {
+        return false
+      } catch {
+        return false
       }
       return false
     }
     
-    /// Helper function to get known services from tr064desc.xml.
-    func extractServicesFromDescription(discription: AFPValue<AEXMLDocument>) -> [Service] {
-      
-      let discription = discription.value
-      
-      let internetGatewayDevice = discription.root["device"],
-      LANDevice = discription.root["device"]["deviceList"].children[0],
-      WANDevice = discription.root["device"]["deviceList"].children[1]
-      
-      let serviceList = internetGatewayDevice["serviceList"].children
-        + LANDevice["serviceList"].children
-        + WANDevice["serviceList"].children
-      
-      let services = serviceList.map { service in Service(element: service) }.flatMap {$0}
-      self.services += services
-      return services
-    }
+    static let manager = TR064Manager.sharedManager
+    static let descURLs = ["/tr64desc.xml", "/igddesc.xml"]
     
-    func extractServicesFromInternetGatewayDescription(discription: AFPValue<AEXMLDocument>) -> [Service] {
-      
-      let discription = discription.value
-      
-      let serviceList = discription.root["device"]["deviceList"]["device"]["serviceList"].children
-        + discription.root["device"]["deviceList"]["device"]["deviceList"]["device"]["serviceList"].children
-      
-      let services = serviceList.map { service in Service(element: service) }.flatMap {$0}
-      self.services += services
-      return services
-    }
-    
-    func commitActionsToDevice(action: (Promise<AFPValue<AEXMLDocument>, AFPError>), service: Service) {
-      
-      action.then { xml in
-        
-        let serviceStateTable = xml.value.root["serviceStateTable"].children
-        let stateVariables = serviceStateTable.map {
-          StateVariable(element: $0)
-          }.flatMap {$0}
-        let actionList = xml.value.root["actionList"].children
-        let actions = actionList.map {
-          Action(element: $0, stateVariables: stateVariables, service: service)
-          }.flatMap {$0}
-        self.actions += actions
-        }.trap { error in
-          self.manager.observer?.alert()
+    static let completionHandler = { (_:NSURLRequest?, _:NSHTTPURLResponse?, XML:Result<AEXMLDocument>) -> Void in
+      guard let xml = XML.value else { return }
+      var values: [String:String] = [:]
+      xml.root.all!.forEach { element in
+        if let value = element.value {
+          values[element.name] = value }
       }
+      manager.soapResponse = values
     }
     
-  }
+  }// Device End
   
   static let manager = TR064Manager.sharedManager
   static let descURLs = ["/tr64desc.xml", "/igddesc.xml"]
@@ -150,64 +111,84 @@ struct TR064 {
     manager.soapResponse = values
   }
   
+  private static func extractServicesFromTR064Description(discription: AFPValue<AEXMLDocument>) -> [AEXMLElement] {
+    
+    let discription = discription.value
+    
+    let internetGatewayDevice = discription.root["device"],
+    LANDevice = discription.root["device"]["deviceList"].children[0],
+    WANDevice = discription.root["device"]["deviceList"].children[1]
+    
+    let serviceList = internetGatewayDevice["serviceList"].children
+      + LANDevice["serviceList"].children
+      + WANDevice["serviceList"].children
+    
+    return serviceList
+  }
+  
+  private static func extractServicesFromIGDDescription(discription: AFPValue<AEXMLDocument>) -> [AEXMLElement] {
+    
+    let discription = discription.value
+    
+    let serviceList = discription.root["device"]["deviceList"]["device"]["serviceList"].children
+      + discription.root["device"]["deviceList"]["device"]["deviceList"]["device"]["serviceList"].children
+    
+    return serviceList
+  }
+  
   static func findDevice() {
-    var requests = requestServicesDescriptions()
+    let resultServices = requestServicesDescriptions()
     
-    let UPNPServicesDescriptionRequest = requests.removeFirst()
- //   TR064.checkUPNPServices(UPNPServicesDescriptionRequest)
-    if let TR064ServicesDescriptionRequest = requests.first {
-      TR064.checkTR064Services(TR064ServicesDescriptionRequest)
-    }
-  }
-  
-  private static func requestServicesDescriptions() -> [Request] {
-
-    var requests: [Request] = []
-    requests.append(manager.request(.GET, Device.URL + descURLs[1]))
-    requests.append(manager.request(.GET, Device.URL + descURLs[0]))
-    return requests
-  }
-  
-  private static func checkTR064Services(request: Request) {
-    
-    request.responseXMLPromise().trap({ error in
-      manager.observer?.alert()
-    }).then { xml in
-      if manager.device == nil {
-        manager.device = Device(discription: xml)
-        if !manager.device!.fetchCachedObjects() {
-          let services = manager.device!.extractServicesFromDescription(xml)
-          var allActions: [Promise<AFPValue<AEXMLDocument>, AFPError>] = []
-          for service in services {
-            let actions = manager.requestActionsFor(service)
-            allActions.append(actions)
-            manager.device!.commitActionsToDevice(actions, service: service)
-          }
-          whenAllFinalized(allActions).delay(1).then {
-            try! FileManager.saveValuesToDiskCache(manager.device!.services, name: manager.device!.uuid + "-services")
-            try! FileManager.saveValuesToDiskCache(manager.device!.actions, name: manager.device!.uuid + "-actions")
-          }
+    whenAll(resultServices).then { services in
+      
+      manager.device = Device(discription: services.first!)
+      if !manager.device!.fetchCachedObjects() {
+        let UPNPServicesDescription = services.first!
+        checkUPNPServices(UPNPServicesDescription)
+        
+        if let TR064ServicesDescription = services.last where services.count > 1 {
+          checkTR064Services(TR064ServicesDescription)
         }
       }
     }
   }
   
-  private static func checkUPNPServices(request: Request) {
+  private static func requestServicesDescriptions() -> [Promise<AFPValue<AEXMLDocument>, AFPError>] {
     
-    request.validate().responseXMLPromise().trap({ error in
-      manager.observer?.alert()
-    }).then { xml in
-      if manager.device == nil {
-        manager.device = Device(discription: xml)
-        if !manager.device!.fetchCachedObjects() {
-          let services = manager.device!.extractServicesFromInternetGatewayDescription(xml)
-          var allActions: [Promise<AFPValue<AEXMLDocument>, AFPError>] = []
-          for service in services {
-            let actions = manager.requestActionsFor(service)
-            allActions.append(actions)
-            manager.device!.commitActionsToDevice(actions, service: service)
-          }
-        }
+    return [manager.request(.GET, Device.URL + descURLs[1]).responseXMLPromise(),
+      manager.request(.GET, Device.URL + descURLs[0]).responseXMLPromise()]
+  }
+  
+  private static func checkTR064Services(response: AFPValue<AEXMLDocument>) {
+    
+    let serviceElements = extractServicesFromTR064Description(response)
+    
+    for service in serviceElements {
+      
+      guard var service = Service(element: service) else { return }
+      
+      let actions = manager.requestActionsForService(service)
+      
+      actions.then { xml in
+        service.extractActionsFromDescription(xml.value)
+        manager.device?.services += [service]
+      }
+    }
+  }
+  
+  private static func checkUPNPServices(response: AFPValue<AEXMLDocument>) {
+    
+    let serviceElements = extractServicesFromIGDDescription(response)
+    
+    for service in serviceElements {
+      
+      guard var service = Service(element: service) else { return }
+      
+      let actions = manager.requestActionsForService(service)
+      
+      actions.then { xml in
+        service.extractActionsFromDescription(xml.value)
+        manager.device?.services += [service]
       }
     }
   }
@@ -215,8 +196,11 @@ struct TR064 {
   static let getAvailableServices: ()->Void = {
     TR064.findDevice()
     Timeout.scheduledTimer(5, repeats: true) { timer in
-      if manager.device != nil {
-        timer.invalidate()
+      if let device = manager.device {
+        if !device.isCachedOnDisk {
+          try! print(FileManager.saveCompressedValuesToDiskCache(device.services, name: device.uuid + "-services"))
+          timer.invalidate()
+        }
       } else {
         manager.observer?.alert()
       }
@@ -224,7 +208,7 @@ struct TR064 {
   }
   
   /// Creates an envelope with the action and it arguments.
-  static func createMessage(action: Action, arguments: [String] = []) -> NSData? {
+  static func createMessage(service: Service, action: Action, arguments: [String] = []) -> NSData? {
     
     let soapRequest = AEXMLDocument()
     
@@ -235,7 +219,7 @@ struct TR064 {
     let body = envelope.addChild(name: "s:Body")
     
     let actionBody = body.addChild(name: "u:\(action.name)", attributes:
-      ["xmlns:u": action.service.serviceType])
+      ["xmlns:u": service.serviceType])
     
     for (argument, value) in zip(action.input.keys, arguments) {
       actionBody.addChild(name: argument, value: value)
@@ -245,11 +229,11 @@ struct TR064 {
   }
   
   /// Creates an request for an action.
-  static func createRequest(action: Action) -> NSMutableURLRequest {
+  static func createRequest(service: Service, action: Action) -> NSMutableURLRequest {
     
-    let request = NSMutableURLRequest(URL: NSURL(string: action.url)!)
+    let request = NSMutableURLRequest(URL: NSURL(string: TR064.Device.URL + service.controlURL)!)
     request.addValue("text/xml; charset=utf-8", forHTTPHeaderField:"Content-Type")
-    request.addValue("\(action.service.serviceType)#\(action.name)", forHTTPHeaderField: "SOAPAction")
+    request.addValue("\(service.serviceType)#\(action.name)", forHTTPHeaderField: "SOAPAction")
     request.HTTPMethod = "POST"
     return request
   }

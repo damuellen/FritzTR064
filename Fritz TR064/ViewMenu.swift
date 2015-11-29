@@ -10,11 +10,13 @@ import UIKit
 
 enum ViewMenu: Int {
   
-  case Hosts, CallList ,Actions, Settings, Info
+  case Home, Hosts, CallList ,Actions, Settings, Info
   
   var viewController: UIViewController {
     let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main",bundle: nil)
     switch self {
+    case .Home:
+      return mainStoryboard.instantiateViewControllerWithIdentifier("Menu")
     case .Hosts:
       return mainStoryboard.instantiateViewControllerWithIdentifier("HostsTVC")
     case .CallList:
@@ -31,6 +33,8 @@ enum ViewMenu: Int {
   var navigationController: UINavigationController? {
     let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main",bundle: nil)
     switch self {
+    case .Home:
+      return mainStoryboard.instantiateViewControllerWithIdentifier("MenuNC") as! SideMenuNavigationController
     case .Hosts:
       return mainStoryboard.instantiateViewControllerWithIdentifier("HostsNC") as! SideMenuNavigationController
     case .CallList:
@@ -47,6 +51,8 @@ enum ViewMenu: Int {
   var splitViewController: UISplitViewController? {
     let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main",bundle: nil)
     switch self {
+    case .Home:
+      return nil
     case .Hosts:
       return nil
     case .CallList:
@@ -62,6 +68,8 @@ enum ViewMenu: Int {
   
   var menuLabelText: String {
     switch self {
+    case .Home:
+      return "Home"
     case .Hosts:
       return "Hosts"
     case .CallList:

@@ -30,13 +30,9 @@ struct Contact {
       self.realName = realName
       self.services = services
       self.numbers = numbers
-
-      if let URL = imageURL {
-        self.imageURL = URL
-      } else {
-        self.imageURL = nil
-      }
+      self.imageURL = imageURL
   }
+  
   /*
   static func ContactFromXML(phonebook: AEXMLElement) -> Contact {
     var uniqueid: Int

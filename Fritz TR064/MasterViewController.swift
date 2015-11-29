@@ -23,30 +23,26 @@ extension MasterViewController: UISearchResultsUpdating, UISearchBarDelegate {
     return actions.filter { $0.name.lowercaseString.containsString(filter.lowercaseString) }
   }
   
-  func filterActionByService(actions: [Action], filter: String)-> [Action] {
-    return actions.filter { $0.service.serviceType.lowercaseString.containsString(filter.lowercaseString) }
-  }
-  
 }
 
 class MasterViewController: UITableViewController, UISearchDisplayDelegate, TR064ServiceObserver   {
   
-  private var tableData = [(service: Service, actions: [Action])]() {
+  private var tableData: [(service: Service, actions: [Action])] = [] {
     didSet {
       filteredData = tableData
     }
   }
-  private var filteredData = [(service: Service, actions: [Action])]() {
+  private var filteredData: [(service: Service, actions: [Action])] = [] {
     didSet {
       tableView.reloadData()
     }
   }
-
+  
   let bgView = GradientView(frame: CGRectZero)
   
   private let resultSearchController =  UISearchController(searchResultsController: nil)
   var detailViewController: ActionArgumentsVC?
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     if let split = self.splitViewController {
@@ -70,11 +66,12 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate, TR06
     tableView.delegate = self
   }
   
+  var services: [Service] { return manager.device?.services ?? [] }
+  
   func refreshUI(animated: Bool) {
-    if let device = manager.device {
-    self.tableData = device.services.map { service in
-      (service: service, actions: TR064Manager.sharedManager[ActionsFrom: service]! )
-      }}
+    self.tableData = services.map { service in
+      (service: service, actions: manager[ActionsFrom: service]! )
+    }
   }
   
   override func viewWillAppear(animated: Bool) {
@@ -97,12 +94,13 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate, TR06
   // MARK: - Segues
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-		
+    
     guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
     let vc = (segue.destinationViewController as! UINavigationController).topViewController as! ActionArgumentsVC
     vc.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
     vc.navigationItem.leftItemsSupplementBackButton = true
-		vc.action = self.filteredData[indexPath.section].actions[indexPath.row]
+    vc.service = self.filteredData[indexPath.section].service
+    vc.action = self.filteredData[indexPath.section].actions[indexPath.row]
     vc.showArguments(segue)
     resultSearchController.dismissViewControllerAnimated(true, completion: {})
   }
@@ -121,26 +119,27 @@ class MasterViewController: UITableViewController, UISearchDisplayDelegate, TR06
     let cell = tableView.dequeueReusableCellWithIdentifier("Section")
     cell?.backgroundColor = UIColor.blackColor()
     cell?.textLabel?.textColor = UIColor.whiteColor()
-    let object = manager.device!.services.map {$0}[section]
+    let object = services.map {$0}[section]
     cell?.textLabel!.text = object.serviceType.stringByReplacingOccurrencesOfString("urn:dslforum-org:service:", withString: "")
     return cell
   }
-    
+  
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let service = self.filteredData[indexPath.section].service
     let action = self.filteredData[indexPath.section].actions[indexPath.row]
     if action.needsInput {
       let cell = tableView.dequeueReusableCellWithIdentifier("Input", forIndexPath: indexPath)
       cell.textLabel!.text = action.name  // .stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
-      cell.detailTextLabel?.text = action.url
+      cell.detailTextLabel?.text = service.controlURL
       return cell
     } else {
       let cell = tableView.dequeueReusableCellWithIdentifier("Output", forIndexPath: indexPath)
       cell.textLabel!.text = action.name  // .stringByReplacingOccurrencesOfString("X_AVM-DE_", withString: "")
-      cell.detailTextLabel?.text = action.url
+      cell.detailTextLabel?.text = service.controlURL
       return cell
     }
   }
-
+  
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
     cell.backgroundColor = UIColor.clearColor()
     cell.backgroundView?.backgroundColor = UIColor.clearColor()

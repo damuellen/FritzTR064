@@ -57,6 +57,13 @@ extension NSData {
   }
 }
 
+extension CollectionType {
+
+  public var isNotEmpty: Bool {
+    return !isEmpty
+  }
+
+}
 extension String {
   
   var isEmpty: Bool  {

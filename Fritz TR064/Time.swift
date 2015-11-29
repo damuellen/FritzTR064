@@ -16,7 +16,7 @@ class Time: TR064Service {
     case getInfo = "GetInfo"
     
     var action: Action? {
-      return manager.device?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
+      return manager[serviceType]?.filter { $0.name == self.rawValue }.first
     }
   }
   

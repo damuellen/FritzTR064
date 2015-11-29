@@ -14,7 +14,7 @@ class OnTel: TR064Service {
     case GetCallList
     
     var action: Action? {
-      return manager.device?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
+      return manager[serviceType]?.filter { $0.name == self.rawValue }.first
     }
   }
   
@@ -24,14 +24,15 @@ class OnTel: TR064Service {
   }
   
   static func getCallList(argument: String = "", ignoreCache: Bool = false) {
-    var cachedCalls = [Call]()
-    if let cachedCallList = try? FileManager.loadValuesFromDiskCache("CallList") where ignoreCache == false {
+    var cachedCalls: [Call] = []
+    if let cachedCallList = try? FileManager.loadCompressedValuesFromDiskCache(manager.device!.uuid + "-callList") where ignoreCache == false {
       cachedCalls = extractValuesFromPropertyListArray(cachedCallList)
       self.dataSource = cachedCalls
     }
-    guard let action = knownActions.GetCallList.action
+    guard let service: Service = manager[serviceType],
+      action = knownActions.GetCallList.action
       else { return }
-    manager.startAction(action).then { xml in
+    manager.startAction(service, action: action).then { xml in
       guard let url = xml.value.checkForURL()
         else { return }
       let callList = manager.getXMLFromURL(url + argument)?.responseXMLPromise()
@@ -39,7 +40,9 @@ class OnTel: TR064Service {
         let newCalls = Call.extractCalls(callList.value).map { Call($0) }.flatMap {$0}
         if cachedCalls.first?.id != newCalls.first?.id {
           self.dataSource = newCalls
-        try! FileManager.saveValuesToDiskCache(newCalls, name: "CallList")
+          do {
+            try FileManager.saveCompressedValuesToDiskCache(newCalls, name: manager.device!.uuid + "-callList")
+          } catch { debugPrint("Error caching calllist") }
         }
       }
     }
@@ -56,6 +59,5 @@ class OnTel: TR064Service {
   static func getCallListAfter(id: Int) {
     getCallList("&id=\(id)")
   }
-  
   
 }

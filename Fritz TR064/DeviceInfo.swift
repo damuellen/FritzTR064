@@ -17,7 +17,7 @@ class DeviceInfo: TR064Service {
     case GetDeviceLog
     
     var action: Action? {
-      return manager.device?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
+      return manager[serviceType]?.filter { $0.name == self.rawValue }.first
     }
   }
   
@@ -27,17 +27,19 @@ class DeviceInfo: TR064Service {
   }
   
   static func getInfo() -> ActionResultPromise? {
-    guard let action = knownActions.GetInfo.action
+    guard let service: Service = manager[serviceType],
+      action = knownActions.GetInfo.action
       else { return nil }
-    return manager.startAction(action).then { xml in
+    return manager.startAction(service, action: action).then { xml in
       self.dataSource = xml.value.convertWithAction(action)!
     }
   }
   
   static func getDeviceLog() -> ActionResultPromise? {
-    guard let action = knownActions.GetDeviceLog.action
+    guard let service: Service = manager[serviceType],
+      action = knownActions.GetDeviceLog.action
       else { return nil }
-    return manager.startAction(action).then { xml in
+    return manager.startAction(service, action: action).then { xml in
       self.dataSource = xml.value.convertWithAction(action)!
     }
   }

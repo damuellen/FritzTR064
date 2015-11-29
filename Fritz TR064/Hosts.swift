@@ -18,7 +18,7 @@ class Hosts: TR064Service {
     case WakeOnLANByMACAddress = "X_AVM-DE_WakeOnLANByMACAddress"
     
     var action: Action? {
-      return manager.device?.actions.filter { $0.service.serviceType == serviceType && $0.name == self.rawValue }.first
+      return manager[serviceType]?.filter { $0.name == self.rawValue }.first
     }
   }
   
@@ -28,23 +28,26 @@ class Hosts: TR064Service {
   }
   
   static func setHostName(name: String, ByMACAdress mac: String) {
-    if let action = knownActions.SetHostNameByMACAdress.action {
-      manager.startAction(action, arguments: [name, mac])
+    if let service: Service = manager[serviceType],
+      action = knownActions.SetHostNameByMACAdress.action {
+      manager.startAction(service, action: action, arguments: [name, mac])
     }
   }
   
   static func getHostNumberOfEntries() -> ActionResultPromise? {
-    guard let action = knownActions.GetHostNumberOfEntries.action else {
+    guard let service: Service = manager[serviceType],
+      action = knownActions.GetHostNumberOfEntries.action else {
       return nil
     }
-    return manager.startAction(action)
+    return manager.startAction(service, action: action)
   }
   
   static func getHost(index: Int) -> ActionResultPromise? {
-    guard let action = knownActions.GetGenericHostEntry.action else {
+    guard let service: Service = manager[serviceType],
+      action = knownActions.GetGenericHostEntry.action else {
       return nil
     }
-     return manager.startAction(action, arguments: ["\(index)"])
+    return manager.startAction(service, action: action, arguments: ["\(index)"])
   }
 
   static func getAllHosts() {
@@ -78,8 +81,9 @@ class Hosts: TR064Service {
   }
   
   static func wakeHost(MAC: String) {
-    guard let action = knownActions.WakeOnLANByMACAddress.action else { return }
-    manager.startAction(action, arguments: [MAC])
+    guard let service: Service = manager[serviceType],
+      action = knownActions.WakeOnLANByMACAddress.action else { return }
+    manager.startAction(service, action: action, arguments: [MAC])
   }
   
 }

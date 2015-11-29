@@ -62,12 +62,8 @@
 		65EA37DC1BCCFF6B00754DD4 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EA37DB1BCCFF6B00754DD4 /* MenuViewController.swift */; };
 		65EF43711BDFF9F700FBAE69 /* Timeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EF43701BDFF9F700FBAE69 /* Timeout.swift */; };
 		65F25DC21BED645A00719BAF /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DC11BED645A00719BAF /* FileManager.swift */; };
-		65F25DC51BED6A0200719BAF /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DC11BED645A00719BAF /* FileManager.swift */; };
-		65F25DC61BED6AEA00719BAF /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E9F9521BBC4AE600DDA8E7 /* Call.swift */; };
-		65F25DC71BED6AF700719BAF /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C825821BB76048005DF551 /* Service.swift */; };
 		65F25DC81BED6B4900719BAF /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8257E1BB75E86005DF551 /* AEXML.swift */; };
 		65F25DC91BED6B6000719BAF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B2BC271BD6D2F300C244B1 /* Extensions.swift */; };
-		65F25DCA1BED6BFB00719BAF /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C825841BB76079005DF551 /* Action.swift */; };
 		65F25DCE1BEDB03B00719BAF /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F25DCD1BEDB03B00719BAF /* libcompression.tbd */; };
 		65F25DD01BEF8BCF00719BAF /* TransitionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DCF1BEF8BCF00719BAF /* TransitionsController.swift */; };
 		65F25DD21BEFB3CF00719BAF /* ViewMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F25DD11BEFB3CF00719BAF /* ViewMenu.swift */; };
@@ -489,10 +485,6 @@
 				65F25DC81BED6B4900719BAF /* AEXML.swift in Sources */,
 				65F25DC91BED6B6000719BAF /* Extensions.swift in Sources */,
 				656B31821BECE94000CAF1F4 /* TodayViewController.swift in Sources */,
-				65F25DC71BED6AF700719BAF /* Service.swift in Sources */,
-				65F25DCA1BED6BFB00719BAF /* Action.swift in Sources */,
-				65F25DC61BED6AEA00719BAF /* Call.swift in Sources */,
-				65F25DC51BED6A0200719BAF /* FileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
