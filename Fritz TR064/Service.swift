@@ -23,15 +23,15 @@ extension Service {
     
     let serviceStateTable = xml.root["serviceStateTable"].children
     
-    let stateVariables = serviceStateTable.map {
+    let stateVariables = serviceStateTable.flatMap {
       StateVariable(element: $0)
-      }.flatMap {$0}
+      }
     
     let actionList = xml.root["actionList"].children
     
-    self.actions = actionList.map {
+    self.actions = actionList.flatMap {
       Action(element: $0, stateVariables: stateVariables, service: self)
-      }.flatMap{$0}
+      }
   }
   
 }
@@ -71,7 +71,7 @@ extension Service: PropertyListReadable {
       SCPDURL = values["SCPDURL"] as? String,
       actionsArray = (values["actions"] as? NSArray)
       else { return nil }
-    let actions = actionsArray.map { Action(propertyListRepresentation: $0 as? NSDictionary) }.flatMap {$0}
+    let actions = actionsArray.flatMap { Action(propertyListRepresentation: $0 as? NSDictionary) }
     self.init(serviceType: serviceType, controlURL: controlURL, SCPDURL: SCPDURL, actions: actions)
   }
   

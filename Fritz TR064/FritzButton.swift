@@ -29,6 +29,7 @@ class FritzButton: UIButton {
       }
     }
   }
+
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     UIView.animateWithDuration(0.2, delay: 0,
@@ -46,15 +47,15 @@ class FritzButton: UIButton {
   }
   
   func setTemplate() {
-    let imageTemplate =  modelType?.image.imageWithRenderingMode(.AlwaysTemplate)
+    let imageTemplate =  modelType.image.imageWithRenderingMode(.AlwaysTemplate)
     self.setBackgroundImage(imageTemplate, forState: .Normal)
   }
   
   func setOriginal() {
-    let image =  modelType?.image.imageWithRenderingMode(.AlwaysOriginal)
+    let image =  modelType.image.imageWithRenderingMode(.AlwaysOriginal)
     self.setImage(image, forState: .Normal)
   }
   
-  var modelType: modelName?
+  var modelType: modelName = .AVM3490
 
 }

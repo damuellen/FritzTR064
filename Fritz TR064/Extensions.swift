@@ -46,7 +46,6 @@ extension UITableViewController {
         }, completion: { _ in
           self.refreshControl?.endRefreshing()
       })
-    
     }
   }
 }

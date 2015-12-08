@@ -19,14 +19,9 @@ class Keychain {
     SecAttrService = kSecAttrService as String,
     SecAttrGeneric = kSecAttrGeneric as String,
     SecAttrAccount = kSecAttrAccount as String
-  
+
   static func stringForKey(keyName: String) -> String? {
-    let keychainData: NSData? = self.dataForKey(keyName)
-    var stringValue: String?
-    if let data = keychainData {
-      stringValue = NSString(data: data, encoding: NSUTF8StringEncoding) as String?
-    }
-    return stringValue
+    return self.dataForKey(keyName).flatMap { NSString(data: $0, encoding: NSUTF8StringEncoding) as String? }
   }
   
   static func dataForKey(keyName: String) -> NSData? {

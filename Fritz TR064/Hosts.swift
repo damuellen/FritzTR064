@@ -71,7 +71,7 @@ class Hosts: TR064Service {
       }
       guard let action = knownActions.GetGenericHostEntry.action else { return }
       whenAll(hosts).then { hosts in
-        let newHosts = hosts.map { $0.value.convertWithAction(action) }.flatMap {$0}.map { Host(host: $0) }
+        let newHosts = hosts.flatMap { $0.value.convertWithAction(action) }.map { Host(host: $0) }
         if cachedHosts.count < newHosts.count {
           self.dataSource = newHosts
           try! FileManager.saveValuesToDiskCache(newHosts, name: "Hosts")

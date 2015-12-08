@@ -25,7 +25,7 @@ class OnTel: TR064Service {
   
   static func getCallList(argument: String = "", ignoreCache: Bool = false) {
     var cachedCalls: [Call] = []
-    if let cachedCallList = try? FileManager.loadCompressedValuesFromDiskCache(manager.device!.uuid + "-callList") where ignoreCache == false {
+    if let cachedCallList = try? FileManager.loadCompressedValuesFromDiskCache(manager.device!.uuid.UUIDString + "-callList") where ignoreCache == false {
       cachedCalls = extractValuesFromPropertyListArray(cachedCallList)
       self.dataSource = cachedCalls
     }
@@ -37,12 +37,12 @@ class OnTel: TR064Service {
         else { return }
       let callList = manager.getXMLFromURL(url + argument)?.responseXMLPromise()
       callList?.then { callList in
-        let newCalls = Call.extractCalls(callList.value).map { Call($0) }.flatMap {$0}
+        let newCalls = Call.extractCalls(callList.value).flatMap { Call($0) }
         if cachedCalls.first?.id != newCalls.first?.id {
           self.dataSource = newCalls
           do {
-            try FileManager.saveCompressedValuesToDiskCache(newCalls, name: manager.device!.uuid + "-callList")
-          } catch { debugPrint("Error caching calllist") }
+            try FileManager.saveCompressedValuesToDiskCache(newCalls, name: manager.device!.uuid.UUIDString + "-callList")
+          } catch { debugPrint("Error caching callList") }
         }
       }
     }

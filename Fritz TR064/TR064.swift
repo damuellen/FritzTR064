@@ -45,7 +45,7 @@ struct TR064 {
       }
     }
     
-    var uuid: String
+    var uuid: NSUUID
     var isCachedOnDisk: Bool = false
     
     var name: String {
@@ -61,16 +61,16 @@ struct TR064 {
     init(discription: AFPValue<AEXMLDocument>) {
       let prefix = NSCharacterSet(charactersInString: "uuid:")
       let name = discription.value.root["device"]["friendlyName"].stringValue,
-      uuid = discription.value.root["device"]["UDN"].stringValue.stringByTrimmingCharactersInSet(prefix)
+      uuidString = discription.value.root["device"]["UDN"].stringValue.stringByTrimmingCharactersInSet(prefix)
       debugPrint("name: ",name)
-      debugPrint("uuid: ",uuid)
+      debugPrint("uuid: ",uuidString)
       self.name = name
-      self.uuid = uuid
+      self.uuid = NSUUID(UUIDString: uuidString) ?? NSUUID()
     }
     
     func fetchCachedObjects() -> Bool {
       do {
-        if let services = try FileManager.loadCompressedValuesFromDiskCache(uuid + "-services") {
+        if let services = try FileManager.loadCompressedValuesFromDiskCache(uuid.UUIDString + "-services") {
           self.services = extractValuesFromPropertyListArray(services)
           self.isCachedOnDisk = true
           return true
@@ -198,7 +198,7 @@ struct TR064 {
     Timeout.scheduledTimer(5, repeats: true) { timer in
       if let device = manager.device {
         if !device.isCachedOnDisk {
-          try! print(FileManager.saveCompressedValuesToDiskCache(device.services, name: device.uuid + "-services"))
+          try! print(FileManager.saveCompressedValuesToDiskCache(device.services, name: device.uuid.UUIDString + "-services"))
           timer.invalidate()
         }
       } else {

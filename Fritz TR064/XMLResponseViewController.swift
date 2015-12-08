@@ -106,8 +106,8 @@ extension XMLResponseViewController {
   }
   
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-    cell.backgroundColor = UIColor.clearColor()
-    cell.backgroundView?.backgroundColor = UIColor.clearColor()
+    cell.backgroundColor = .clearColor()
+    cell.backgroundView?.backgroundColor = .clearColor()
     cell.alpha = 0
     UIView.animateWithDuration(animationDuration) {
       cell.alpha = 1

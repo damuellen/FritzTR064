@@ -44,8 +44,16 @@ class TR064Manager: Manager {
     return self.device?.services.lazy.filter { $0.serviceType == serviceType }.first
   }
   
+  subscript(serviceType: [String]) -> [Service] {
+    return self.device?.services.filter { serviceType.contains($0.serviceType) } ?? []
+  }
+  
   subscript(serviceType: String) -> [Action]? {
     return self.device?.services.lazy.filter { $0.serviceType == serviceType }.first?.actions
+  }
+  
+  subscript(serviceType: [String]) -> [Action]? {
+    return self.device?.services.lazy.filter {  serviceType.contains($0.serviceType) }.flatMap { $0.actions }
   }
   
   subscript(ActionsFrom service: Service) -> [Action]? {
@@ -89,6 +97,7 @@ class TR064Manager: Manager {
 
 protocol TR064ServiceObserver {
   var manager: TR064Manager { get }
+  var bgView: GradientView { get }
   func refreshUI(animated: Bool)
   func alert()
 }
